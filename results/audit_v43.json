@@ -1,0 +1,36 @@
+{
+  "protocol": "fixed-negative-sign; 10 paired seeds; no post-hoc sign selection",
+  "model": "distilgpt2",
+  "id_dataset": "Salesforce/wikitext:wikitext-2-raw-v1",
+  "ood_dataset": "fancyzhx/ag_news:test",
+  "seeds": [10103, 10301, 10501, 10709, 10903, 11113, 11311, 11503, 11701, 11909],
+  "G1_pre_mix_branches_matched": true,
+  "G2_lorentz_beats_residual_95CI": true,
+  "G3_lorentz_beats_euclid_95CI": true,
+  "G4_lorentz_beats_random_95CI": true,
+  "G5_OOD_noninferior_to_all": true,
+  "G6_minimum_effect_1e-4_nats": true,
+  "G7_wins_at_least_7_of_10_vs_all": true,
+  "PASS_NEGATIVE_LORENTZ_SPECIFIC": true,
+  "selected_paired_results": {
+    "test_lorentz_neg_minus_euclid_neg": {
+      "mean": -0.00035504608154299786,
+      "ci95_t": [-0.0004488782458982899, -0.0002612139171877058],
+      "wins": 10,
+      "n": 10
+    },
+    "test_lorentz_neg_minus_random_neg": {
+      "mean": -0.0004974693298340326,
+      "ci95_t": [-0.000577645740919406, -0.0004172929187486593],
+      "wins": 10,
+      "n": 10
+    },
+    "ood_lorentz_neg_minus_residual": {
+      "mean": -0.00005416145324721455,
+      "ci95_t": [-0.00008158380261810043, -0.000026739103876328664],
+      "wins": 9,
+      "n": 10
+    }
+  },
+  "claim_boundary": "Engineering evidence for a small negative-Lorentz adapter effect; not evidence of OU K=1 attraction or physical token collapse."
+}

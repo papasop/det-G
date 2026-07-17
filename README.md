@@ -17,11 +17,15 @@ when the local metric block has Lorentzian signature, equivalently `det G < 0`.
 ## Repository contents
 
 ```text
-k=1 quantum.TEX   Main LaTeX manuscript
+k=1 quantum.TEX                                  Main LaTeX manuscript
+experiments/k1_throttle_v43_negative_replication.py
+                                                 Standalone V4.3 DistilGPT-2
+                                                 negative-Lorentz replication
+results/audit_v43.json                           Preregistered ten-seed audit
+docs/V43_RESULT_BOUNDARIES.md                    Interpretation boundary
 ```
 
-At the moment, the repository contains the manuscript source only. The TeX file
-references several PDF figures:
+The TeX file references several PDF figures:
 
 - `fig1_signature_gate.pdf`
 - `fig2_oneway_barrier.pdf`
@@ -50,12 +54,13 @@ corresponding `\includegraphics` lines.
 ## Geometric deep learning interpretation
 
 The language-model interpretation takes the manuscript's signature gate as an
-engineering principle:
+engineering hypothesis:
 
 - Hidden representations should be regularized or parameterized so their
   effective local metric remains Lorentzian (`det G < 0`).
-- Token output can be modeled as a boundary event near a critical determinant
-  surface, rather than only as unconstrained softmax sampling.
+- Token output may be studied as a boundary event near a critical determinant
+  surface, rather than only as unconstrained softmax sampling. This repository
+  does not establish physical wave-function collapse in language models.
 - Optimization can be viewed as flow along a pseudo-Riemannian structure,
   replacing flat Euclidean updates with geometry-aware dynamics.
 
@@ -77,69 +82,70 @@ where:
 - `det G > 0` marks the Euclidean regime in which this representation is not
   supported by the K=1 OU-FP construction.
 
-## Reported implementation results
+## V4.3 reproducibility: negative-Lorentz DistilGPT-2 replication
 
-The broader implementation notes associated with this project describe several
-validation layers:
-
-| Layer | Purpose | Reported result |
-| --- | --- | --- |
-| V1 | Geometric probe for next-token correctness | AUROC improved from `0.7491` to `0.8380` |
-| V2 | Early-exit ablation | Negative/informative result: shallow classification did not isolate the geometry |
-| V3 | Lorentz-constrained adapter training | Test loss `4.7280` vs. frozen baseline `4.7508` |
-| V3.2 | Null-flow / critical algebra audit | `det A_c = 0` to machine precision |
-| V3.3 | Initialization sensitivity | Near-critical starts reduce the need for explicit constraints |
-
-Summary table from the implementation notes:
-
-| Variant | Test loss | Test PPL | OOD loss | ECE |
-| --- | ---: | ---: | ---: | ---: |
-| Frozen base | 4.7508 | 115.68 | 4.7995 | 0.056 |
-| AdamW/free | 4.7323 | 113.56 | 4.7932 | 0.053 |
-| Lorentz | 4.7280 | 113.07 | 4.7919 | 0.052 |
-
-These implementation scripts and result files are not yet present in this
-repository. Until they are added, the empirical claims above should be read as
-project notes rather than independently reproducible repository artifacts.
-
-## Planned implementation layout
-
-The associated implementation notes refer to the following target structure:
-
-```text
-k1_geometric_llm/
-|-- k1_token_collapse_v1.py      # Geometric probe / AUROC validation
-|-- k1_token_collapse_v2.py      # Matched ablation
-|-- k1_token_collapse_v3.py      # Lorentz-constrained fine-tuning
-|-- k1_token_collapse_v32.py     # Null-flow audit
-|-- k1_token_collapse_v33.py     # Initialization sensitivity
-|-- h14c3_optimizer/
-|   |-- compact_klr.py
-|   |-- retraction.py
-|   `-- response_operator.py
-|-- metrics/
-`-- results/
-```
-
-Suggested runtime dependencies for that future implementation:
+This repository includes a standalone V4.3 experiment:
 
 ```bash
-pip install torch transformers datasets numpy matplotlib
+python experiments/k1_throttle_v43_negative_replication.py
 ```
 
-Example commands from the implementation notes:
+The script is designed as a standalone Colab/GPU run. It compares frozen
+DistilGPT-2 with parameter-matched adapter branches under a fixed
+negative-sign protocol:
+
+- Model: `distilgpt2`
+- ID dataset: `Salesforce/wikitext`, `wikitext-2-raw-v1`
+- OOD dataset: `fancyzhx/ag_news`, `test`
+- Block counts: `train=500`, `val=160`, `test=500`, `ood=500`
+- Sequence length: `96`
+- Adapter rank: `2 * planes = 16`
+- Ten paired seeds:
+  `10103, 10301, 10501, 10709, 10903, 11113, 11311, 11503, 11701, 11909`
+- Matched parameter budget across residual, negative-Euclidean,
+  negative-random, and negative-Lorentz branches
+- Pre-mix branch normalization by per-token RMS over planes/components
+- No post-hoc sign selection
+
+The preregistered audit is stored in `results/audit_v43.json`.
+
+### Exact V4.3 result
+
+- `PASS_NEGATIVE_LORENTZ_SPECIFIC = true`
+- Pre-mix normalization passed.
+- Lorentz-negative beat residual, Euclid-negative, and Random-negative at the
+  preregistered paired 95% CI threshold.
+- Test Lorentz-negative minus Euclid-negative:
+  mean `-0.0003550461`, 95% CI `[-0.0004488782, -0.0002612139]`, wins `10/10`.
+- Test Lorentz-negative minus Random-negative:
+  mean `-0.0004974693`, 95% CI `[-0.0005776457, -0.0004172929]`, wins `10/10`.
+- OOD Lorentz-negative minus residual:
+  mean `-0.0000541615`, 95% CI `[-0.0000815838, -0.0000267391]`, wins `9/10`.
+
+Allowed interpretation:
+
+> In the tested frozen DistilGPT-2 small-data adapter setting, a pre-mix
+> scale-matched negative-Lorentz branch produced a small, reproducible,
+> geometry-specific cross-entropy improvement over matched residual,
+> negative-Euclidean, and negative-random controls across ten paired seeds.
+
+Required limitations:
+
+- The useful branch used the negative direction and exhibited negative
+  estimated K1 regression; this is not evidence for OU attraction to `K=1`.
+- This does not validate physical wave-function collapse or a critical token
+  commit transition.
+- The absolute loss improvement is small.
+- Evidence is currently limited to DistilGPT-2 with WikiText ID evaluation and
+  AG News OOD evaluation in this experiment.
+- GPT-2-scale and independently implemented replication remain future work.
+
+See `docs/V43_RESULT_BOUNDARIES.md` for the full interpretation boundary.
+
+Suggested dependencies:
 
 ```bash
-python k1_token_collapse_v3.py \
-  --seed 20260719 \
-  --epochs 3 \
-  --lr 0.0008 \
-  --planes 8
-
-python k1_token_collapse_v32.py \
-  --seeds 10103,10301,10501 \
-  --epochs 3 \
-  --outdir k1_results
+pip install torch transformers datasets numpy pandas matplotlib seaborn
 ```
 
 ## Building the manuscript
