@@ -1,0 +1,43 @@
+{
+  "analysis_type": "secondary pooled audit of consecutive experiments; no retraining",
+  "model": "gpt2",
+  "historical_facts": {
+    "V4.3_distilgpt2_10seed_passed": true,
+    "V4.4_preregistered_screen_passed": false,
+    "V4.6_fixed_mask_primary_hypothesis_passed": false,
+    "V4.6_full_lorentz_heldout_test_wins_vs_residual": "7/7"
+  },
+  "gpt2_seed_sets": {
+    "V4.4": [10103, 10301, 10501],
+    "V4.6": [10709, 10903, 11113, 11311, 11503, 11701, 11909]
+  },
+  "gates": {
+    "protocol_consistent_and_10_unique_seeds": true,
+    "lorentz_beats_residual_95CI": true,
+    "lorentz_beats_euclid_95CI": true,
+    "lorentz_beats_random_95CI": true,
+    "test_wins_at_least_8_of_10_vs_all": true,
+    "OOD_noninferior_to_all": true,
+    "minimum_test_effect_1e-4_nats": true
+  },
+  "test": {
+    "lorentz_minus_residual": {"mean": -0.0005835447311401509, "ci95_t": [-0.0008143075960762105, -0.00035278186620409124], "wins": 9, "n": 10},
+    "lorentz_minus_euclid": {"mean": -0.000545594787597814, "ci95_t": [-0.0007623162828540775, -0.00032887329234155047], "wins": 9, "n": 10},
+    "lorentz_minus_random": {"mean": -0.0006135261535646919, "ci95_t": [-0.0008366609648533823, -0.0003903913422760014], "wins": 9, "n": 10}
+  },
+  "ood": {
+    "lorentz_minus_residual": {"mean": -0.00010957260131831959, "ci95_t": [-0.00018830437589215652, -0.00003084082674448267], "wins": 8, "n": 10},
+    "lorentz_minus_euclid": {"mean": -0.00010217857360856897, "ci95_t": [-0.0001821214592758367, -0.000022235687941301235], "wins": 8, "n": 10},
+    "lorentz_minus_random": {"mean": -0.00011784229278584135, "ci95_t": [-0.00019578678501062024, -0.00003989780056106247], "wins": 8, "n": 10}
+  },
+  "cohort_heterogeneity_I2_percent": {
+    "test_vs_residual": 0.0,
+    "test_vs_euclid": 0.0,
+    "test_vs_random": 0.0,
+    "ood_vs_residual": 0.0,
+    "ood_vs_euclid": 0.0,
+    "ood_vs_random": 0.0
+  },
+  "PASS_GPT2_10SEED_SECONDARY_POOLED_REPLICATION": true,
+  "claim_boundary": "Small negative-Lorentz adapter engineering effect; not OU K=1 attraction, physical wave-function collapse, or Token-collapse validation."
+}

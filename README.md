@@ -21,8 +21,15 @@ k=1 quantum.TEX                                  Main LaTeX manuscript
 experiments/k1_throttle_v43_negative_replication.py
                                                  Standalone V4.3 DistilGPT-2
                                                  negative-Lorentz replication
+experiments/k1_throttle_v44_gpt2_screen.py       V4.4 GPT-2 three-seed screen
+experiments/k1_v45_gpt2_failure_diagnostic.py    V4.5 read-only diagnosis
+experiments/k1_v46_gpt2_mask_holdout.py          V4.6 mask/full-Lorentz holdout
+experiments/k1_v47_gpt2_pooled_audit.py          V4.7 pooled GPT-2 audit
 results/audit_v43.json                           Preregistered ten-seed audit
+results/audit_v47_summary.json                   Compact V4.7 evidence summary
 docs/V43_RESULT_BOUNDARIES.md                    Interpretation boundary
+docs/V47_EVIDENCE_AND_CLAIM_BOUNDARY.md          V4.7 claim boundary
+docs/K1_LLM_EVIDENCE.md                          Research status through V4.7
 ```
 
 The TeX file references several PDF figures:
@@ -82,17 +89,53 @@ where:
 - `det G > 0` marks the Euclidean regime in which this representation is not
   supported by the K=1 OU-FP construction.
 
-## V4.3 reproducibility: negative-Lorentz DistilGPT-2 replication
+## K1 LLM evidence through V4.7
 
-This repository includes a standalone V4.3 experiment:
+A pre-mix scale-matched, full-layer negative-Lorentz adapter produced a
+small, reproducible cross-entropy improvement over matched residual,
+negative-Euclidean, and negative-random controls in DistilGPT-2 and in a
+secondary ten-seed pooled GPT-2 analysis. The GPT-2 pooled Test improvements
+were significant at paired 95% intervals and showed 9/10 wins against each
+control.
+
+The effective direction was negative and is not OU attraction toward `K=1`.
+These experiments do not validate physical wave-function collapse or a
+Token-collapse transition. Absolute improvements were small and remain limited
+to the tested models, datasets, and adapter protocol.
+
+### Experiment history
+
+| Experiment | Status | Meaning |
+| --- | --- | --- |
+| V4.3 DistilGPT-2 10 seeds | Passed | Negative-Lorentz engineering effect in this setting |
+| V4.4 GPT-2 3-seed screen | Failed | Screening GO rule did not pass |
+| V4.5 diagnosis | Exploratory | Suggested local seed/layer sensitivity |
+| V4.6 fixed Mask | Failed | Fixed layer-mask hypothesis did not generalize |
+| V4.6 full-Lorentz control | Positive held-out result | 7/7 Test wins over residual |
+| V4.7 GPT-2 pooled 10 seeds | Passed, secondary | Pooled common-control replication |
+
+V4.7 is a secondary pooled analysis of two consecutive GPT-2 experiments, not
+a newly preregistered standalone ten-seed experiment. The V4.4 screen failure
+and V4.6 fixed Mask failure are part of the evidence record and should remain
+visible.
+
+See `docs/K1_LLM_EVIDENCE.md` and
+`docs/V47_EVIDENCE_AND_CLAIM_BOUNDARY.md` for the full evidence boundary.
+
+### Reproducibility entry points
+
+The scripts are standalone Colab/GPU experiments:
 
 ```bash
 python experiments/k1_throttle_v43_negative_replication.py
+python experiments/k1_throttle_v44_gpt2_screen.py
+python experiments/k1_v45_gpt2_failure_diagnostic.py
+python experiments/k1_v46_gpt2_mask_holdout.py
+python experiments/k1_v47_gpt2_pooled_audit.py
 ```
 
-The script is designed as a standalone Colab/GPU run. It compares frozen
-DistilGPT-2 with parameter-matched adapter branches under a fixed
-negative-sign protocol:
+V4.3 compares frozen DistilGPT-2 with parameter-matched adapter branches under
+a fixed negative-sign protocol:
 
 - Model: `distilgpt2`
 - ID dataset: `Salesforce/wikitext`, `wikitext-2-raw-v1`
@@ -108,39 +151,29 @@ negative-sign protocol:
 - No post-hoc sign selection
 
 The preregistered audit is stored in `results/audit_v43.json`.
+The compact V4.7 pooled GPT-2 summary is stored in
+`results/audit_v47_summary.json`.
 
-### Exact V4.3 result
+### Selected results
 
-- `PASS_NEGATIVE_LORENTZ_SPECIFIC = true`
-- Pre-mix normalization passed.
-- Lorentz-negative beat residual, Euclid-negative, and Random-negative at the
-  preregistered paired 95% CI threshold.
-- Test Lorentz-negative minus Euclid-negative:
+- V4.3: `PASS_NEGATIVE_LORENTZ_SPECIFIC = true`.
+- V4.3 Test Lorentz-negative minus Euclid-negative:
   mean `-0.0003550461`, 95% CI `[-0.0004488782, -0.0002612139]`, wins `10/10`.
-- Test Lorentz-negative minus Random-negative:
+- V4.3 Test Lorentz-negative minus Random-negative:
   mean `-0.0004974693`, 95% CI `[-0.0005776457, -0.0004172929]`, wins `10/10`.
-- OOD Lorentz-negative minus residual:
+- V4.3 OOD Lorentz-negative minus residual:
   mean `-0.0000541615`, 95% CI `[-0.0000815838, -0.0000267391]`, wins `9/10`.
-
-Allowed interpretation:
-
-> In the tested frozen DistilGPT-2 small-data adapter setting, a pre-mix
-> scale-matched negative-Lorentz branch produced a small, reproducible,
-> geometry-specific cross-entropy improvement over matched residual,
-> negative-Euclidean, and negative-random controls across ten paired seeds.
-
-Required limitations:
-
-- The useful branch used the negative direction and exhibited negative
-  estimated K1 regression; this is not evidence for OU attraction to `K=1`.
-- This does not validate physical wave-function collapse or a critical token
-  commit transition.
-- The absolute loss improvement is small.
-- Evidence is currently limited to DistilGPT-2 with WikiText ID evaluation and
-  AG News OOD evaluation in this experiment.
-- GPT-2-scale and independently implemented replication remain future work.
-
-See `docs/V43_RESULT_BOUNDARIES.md` for the full interpretation boundary.
+- V4.6 full-Lorentz held-out control: Test Lorentz minus residual mean
+  `-0.000601889`, paired 95% CI `[-0.000800628, -0.000403150]`, wins `7/7`.
+- V4.7 GPT-2 pooled Test Lorentz minus residual:
+  mean `-0.000583545`, paired 95% CI `[-0.000814308, -0.000352782]`,
+  wins `9/10`.
+- V4.7 GPT-2 pooled Test Lorentz minus Euclid:
+  mean `-0.000545595`, paired 95% CI `[-0.000762316, -0.000328873]`,
+  wins `9/10`.
+- V4.7 GPT-2 pooled Test Lorentz minus Random:
+  mean `-0.000613526`, paired 95% CI `[-0.000836661, -0.000390391]`,
+  wins `9/10`.
 
 Suggested dependencies:
 
