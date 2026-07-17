@@ -1,0 +1,975 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[margin=1in]{geometry}
+\setlength{\emergencystretch}{3em}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{booktabs}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\hypersetup{colorlinks=true,linkcolor=blue,citecolor=blue,urlcolor=blue}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{remark}{Remark}
+
+\title{\textbf{$K=1$ Chronogeometrodynamics}\\[4pt]
+\large Lorentzian Signature as a Geometric Precondition for the Schr\"odinger Representation}
+\author{Y.\,Y.\,N.\ Li}
+\date{}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+Within the $K{=}1$ chronogeometrodynamic framework, and conditional on a
+physically selected non-degenerate local metric block $G$, we identify a
+signature-gated condition for the existence of a Schr\"odinger-type
+wavefunction representation. The Ornstein--Uhlenbeck/Fokker--Planck
+construction admits a similarity transform with Schr\"odinger structure
+if and only if the critical damping is real; since the $K{=}1$ stability
+condition gives $d_c>0 \Leftrightarrow \det G<0$, the wavefunction
+representation exists, within this construction, if and only if the
+underlying metric block has Lorentzian signature. This is the
+load-bearing result of the paper. The upstream reconstruction of $G$ from
+information-time data is not part of the load-bearing proof and would
+require metric-capacity compatibility.
+
+Treating the signature variable $\Delta=\det G$ as an effective
+dynamical variable, the induced Lorentzian-side noise scales as
+$D_L(\Delta)\propto\sqrt{|\Delta|}$ and self-suppresses as
+$\Delta\to0^-$. Thus $D(0^-)=0$ while $D(0^+)=D_0>0$, giving a one-way
+signature-boundary protection mechanism in the ideal boundary model and a
+strong one-way bias in regularised finite-time simulations. The
+discontinuity at $\Delta=0$ obstructs smooth detailed balance (Proposition~\ref{prop:DB}). The same
+construction yields the ground-state identity $|\psi_0|^2=\rho_{\rm eq}$.
+
+Beyond the support theorem, we briefly discuss two downstream operational
+closures: an active-time readout for supported trajectories and an
+effective measurement-channel diagnostic whose $\mu=2$ point reproduces
+Born weights. These closures are not used as evidence for metric
+signature switching or physical collapse.
+\end{abstract}
+
+%=====================================================================
+\section{Introduction}\label{sec:intro}
+%=====================================================================
+
+The central result of this paper is a geometric \emph{existence condition} for the Schr\"odinger representation of a wave function. Within the $K{=}1$ framework, $\psi$ is not a primitive object but a derived one: it is obtained as a similarity transform of an Ornstein--Uhlenbeck (OU) probability density~\cite{Nelson,Risken}, and that transform carries Schr\"odinger structure only when the underlying metric signature is Lorentzian. Signature therefore acts as a \emph{gate} on the definability of $\psi$.
+When the signature variable is treated as an effective dynamical degree
+of freedom, this gate can be studied dynamically rather than assumed:
+
+\begin{quote}
+\itshape
+\textbf{Status of claims in this paper.}
+The claims are organised in three layers.
+\begin{enumerate}
+\item \textbf{Layer I: theorem-level result.}
+Given a physically selected non-degenerate local quadratic form $G$,
+the $K{=}1$ OU--Fokker--Planck construction admits a normalisable
+Schr\"odinger-type wavefunction representation if and only if
+$\det G<0$. This is the load-bearing result.
+\item \textbf{Layer II: effective-dynamics consequences.}
+The induced Lorentzian-side noise scales as
+$D_L(\Delta)\propto\sqrt{|\Delta|}$, giving ideal one-way
+signature-boundary protection and, in the regularised finite-time model, a
+strong one-way bias over the physically relevant self-suppressed regime.
+The ground-state identity $|\psi_0|^2=\rho_{\rm eq}$ follows from the
+same OU equilibrium structure.
+\item \textbf{Layer III: downstream operational closures.}
+The measurement interpretation, together with the two operational
+closures added in this revision (active-time reconstruction and the
+$\mu=2$ measurement-channel diagnostic point), are downstream applications. They are
+weaker in status and should not be read as direct evidence for physical
+metric signature switching.
+\end{enumerate}
+The paper should be evaluated primarily on Layer I.
+\end{quote}
+
+The body of the paper follows this hierarchy. Section~\ref{sec:wavefunction}
+proves the signature gate (Theorem~\ref{thm:main}); Section~\ref{sec:barrier}
+derives ideal one-way boundary protection from
+$D_L(\Delta)\propto\sqrt{|\Delta|}$ and tests its finite-time regularised
+robustness; Section~\ref{sec:activetime} adds the
+active-time closure for supported trajectories;
+Section~\ref{sec:mu2} gives a $\mu=2$ measurement-channel diagnostic. The interpretive
+collapse-like scenario is deferred to the Discussion
+(\S\ref{sec:discussion}). The approach
+operates one level below the Schr\"odinger equation, at its
+geometric precondition, which distinguishes it from interpretations that take the
+equation as given.
+
+
+\noindent The collapse-like measurement scenario discussed later
+(\S\ref{sec:discussion}) is interpretive and is not used as evidence for
+the theorem.
+
+\medskip\noindent\textbf{Scope.} All theoretical results are derived in the $2\times 2$ setting natural to a single Rindler horizon. The $(1{+}3)$-dimensional extension is discussed in \S\ref{sec:discussion} but not required for the core results. The operational closures (\S\ref{sec:activetime}, \S\ref{sec:mu2}) are validated on a Qiskit statevector/gate-model and Qiskit/Aer measurement testbed.
+
+\medskip\noindent
+These two closures are inserted after the support and protection results,
+so that the paper's logical order is support, stability, evolution, and
+measurement.
+
+%=====================================================================
+\section{Minimal $K{=}1$ background used in this paper}\label{sec:review}
+%=====================================================================
+
+The $K{=}1$ framework treats spacetime geometry as the outcome of a stochastic optimisation: the system drives the quadratic form $K(x) = x^\top G x$ toward the target value $K = 1$, with dissipation and noise competing around the target surface $\{K{=}1\}$. We collect the specific results of the $K{=}1$ framework needed below and take them as established background.
+
+\paragraph{Motivation from information time.}
+In the broader $K{=}1$ programme, the local cost form $G$ may be
+motivated by an information-time layer
+\[
+dt_{\rm info}:=\frac{d\Phi}{H},
+\]
+where $\Phi$ parametrises structural variation and $H>0$ is the
+local cost per unit variation. The signed leading quadratic form
+associated with the local second-order part of $dt_{\rm info}^2$ is
+then modelled as the metric block $G$. The present paper does not rely
+on a full reconstruction from $dt_{\rm info}$: the load-bearing
+arguments begin once a non-degenerate local form $G$ and the
+$K{=}1$ stability results are given. The information-time origin of $G$
+is thus motivational in the present work; the load-bearing results are
+conditional on a physically selected non-degenerate local quadratic
+form~$G$.
+
+Let $G$ be a non-degenerate symmetric $2\times 2$ real matrix, $V = \tfrac{1}{2}(K-1)^2$ the cost function, and $J_G = \alpha G^{-1}J$ the unique symplectic generator. The stochastic dynamics is $dx = (J_G - D)\nabla V\,dt + \sigma\,dW_t$ (It\^o), with $D = d_c I$ at critical damping.
+
+\begin{itemize}
+\item \textbf{Stability boundary}: $d_c > 0 \Leftrightarrow \mathrm{Sig}(G) = (1,1)$ (Lorentzian), with $d_c = \alpha\sqrt{-1/\det G}$. For the Rindler metric $G = \mathrm{diag}(-\sigma_1^2, 1)$, this simplifies to $d_c = \alpha/\sigma_1$. The Lorentzian requirement follows from cost-asymmetry axioms.
+\item \textbf{Restoring rate}: $\kappa_K = 4d_c$ for a normalised $G$-eigenvector on $\{K{=}1\}$.
+\item \textbf{OU process}: Near $K{=}1$, the deviation $\varepsilon = K - 1$ obeys the Ornstein--Uhlenbeck reduction~\eqref{eq:ou_reduction}, in which $\sigma_K = 2\sigma\|Gx_*\|$ is the projected noise amplitude.
+\end{itemize}
+
+\noindent The two load-bearing background relations are the signature gate
+\begin{equation}
+d_c=\alpha\sqrt{-\frac{1}{\det G}},
+\qquad
+d_c>0
+\;\Longleftrightarrow\;
+\det G<0
+\;\Longleftrightarrow\;
+\mathrm{Sig}(G)=(1,1),
+\label{eq:signature_gate_dc}
+\end{equation}
+and the Ornstein--Uhlenbeck reduction it induces near $\{K{=}1\}$,
+\begin{equation}
+d\varepsilon
+=
+-\kappa_K\varepsilon\,dt+\sigma_K\,dW_t,
+\qquad
+\kappa_K=4d_c,
+\qquad
+T_{\mathrm{eff}}
+=
+\frac{\sigma_K^2}{2\kappa_K}
+=
+\frac{\sigma^2}{2d_c}.
+\label{eq:ou_reduction}
+\end{equation}
+
+\medskip\noindent
+\textbf{Status of the stability boundary.}
+The signature gate~\eqref{eq:signature_gate_dc} and the
+restoring-rate relation $\kappa_K=4d_c$ are taken here as background laws
+of the $K{=}1$ framework; the present paper does not re-derive them. What
+the present paper establishes is their consequence for the
+OU--FP--Schr\"odinger representation. In particular, the load-bearing
+equivalence $d_c>0\Leftrightarrow\det G<0$ in~\eqref{eq:signature_gate_dc}
+is used in \S\ref{sec:wavefunction}
+(reality and positivity of $d_c$ hold iff $\det G<0$, and for a
+non-degenerate symmetric $2\times2$ form this is Lorentzian signature),
+so the main theorem rests only on this stated background law and not on
+any separately assumed premise.
+
+\medskip\noindent
+\textbf{Thermodynamic material not used below.}
+The Clausius/Tolman bridge (the identification $T_{\rm eff}=T_{\rm tol}$,
+the Clausius relation $\delta Q=T_{\rm eff}\,\delta S$, and the resulting
+$\sigma^2=\hbar\kappa/(\pi\sigma_1^2)$) belongs to the broader $K{=}1$
+programme and is \emph{not} part of the load-bearing proof in the present
+wavefunction paper. Nothing below depends on it.
+
+\medskip\noindent
+\textbf{Use in the following sections.}
+The next two sections use the above ingredients in sequence.
+Section~\ref{sec:wavefunction} uses the stability-boundary condition
+$d_c>0\Leftrightarrow\det G<0$ to show that the
+Schr\"odinger-type wavefunction representation exists exactly on the
+Lorentzian side. Section~\ref{sec:barrier} then treats
+$\Delta=\det G$ as an effective dynamical variable and uses the
+scaling $D_L(\Delta)\propto\sqrt{|\Delta|}$ to derive the ideal
+one-way signature-boundary protection mechanism and its regularised
+finite-time bias.
+
+%=====================================================================
+\section{Signature-gated Schr\"odinger representation}\label{sec:wavefunction}
+%=====================================================================
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=0.92\textwidth]{fig1_signature_gate.pdf}
+\caption{Schematic signature gate for the wavefunction. On the Lorentzian side
+($\det G<0$) the critical damping $d_c$ is real and positive, the
+Ornstein--Uhlenbeck process and a normalisable Fokker--Planck
+equilibrium exist, and the FP$\to$Schr\"odinger similarity transform
+yields a definable $\psi$. On the Euclidean side ($\det G>0$),
+$d_c=i\omega$ is imaginary, no real OU process or normalisable
+equilibrium exists, and the Schr\"odinger-type representation is
+unsupported within this construction. Thus
+Lorentzian signature acts as the geometric support gate for the
+Schr\"odinger-type representation (Theorem~\ref{thm:main}).}
+\label{fig:gate}
+\end{figure}
+
+\subsection{Fokker--Planck to Schr\"odinger}
+
+The OU reduction~\eqref{eq:ou_reduction} generates the FP equation
+\begin{equation}
+\partial_t \rho = \partial_\varepsilon\bigl[\kappa_K \varepsilon\,\rho\bigr] + D_K\,\partial_\varepsilon^2 \rho,
+\label{eq:FP}
+\end{equation}
+with $D_K = \sigma_K^2/2$ and stationary solution $\rho_{\mathrm{eq}} \propto e^{-\kappa_K \varepsilon^2/(2D_K)} = e^{-V/T_{\mathrm{eff}}}$.
+
+The similarity transform $\rho = e^{-U/2}\psi$ with $U = V/T_{\mathrm{eff}}$ converts~\eqref{eq:FP} to
+\begin{equation}
+\partial_t \psi = -H_s\,\psi, \qquad H_s = -D_K\partial_\varepsilon^2 + \frac{\kappa_K^2\varepsilon^2}{4D_K} - \frac{\kappa_K}{2}.
+\label{eq:imaginary_time}
+\end{equation}
+This is the quantum harmonic oscillator in imaginary time. Its spectrum is
+$E_n = n\kappa_K$ for $n=0,1,2,\dots$ (i.e.\ $\{0,\kappa_K,2\kappa_K,\dots\}$);
+the constant $-\kappa_K/2$ in~\eqref{eq:imaginary_time} fixes the ground-state
+energy to $E_0=0$, so that $\psi_0\propto e^{-U/2}$ is a genuine zero mode and the
+Boltzmann equilibrium $\rho_{\mathrm{eq}}=|\psi_0|^2$ is stationary. Wick rotating
+$t \to i\tau$:
+\begin{equation}
+i\,\partial_\tau \psi = H_s\,\psi.
+\label{eq:Schrodinger}
+\end{equation}
+
+\begin{remark}[What is standard vs.\ what $K{=}1$ adds]
+The similarity transform FP~$\to$~imaginary-time Schr\"odinger is standard~\cite{Nelson,Risken}; the Wick rotation $t \to i\tau$ is a formal algebraic operation that maps the spectral structure of the FP generator to a Hermitian Hamiltonian. It is not a claim of physical equivalence between dissipative relaxation and unitary evolution; the physical content resides entirely in the OU/FP dynamics, and the Wick-rotated equation inherits its structure as a mathematical consequence. The $K{=}1$ framework adds two things: (i)~the parameters $\kappa_K$, $D_K$ are not free but determined by $\det G$ through the stability-boundary and restoring-rate results of \S\ref{sec:review}; (ii)~the existence of the OU process --- and hence of $\psi$ --- is conditional on signature, providing a geometric on/off switch absent in Nelson's original construction.
+\end{remark}
+
+\subsection{Existence requires Lorentzian signature}
+
+The chain~\eqref{eq:FP}--\eqref{eq:Schrodinger} requires (Figure~\ref{fig:gate}):
+\begin{enumerate}
+\item $d_c > 0$ (OU process exists $\Rightarrow$ $\kappa_K > 0$ $\Rightarrow$ FP has a normalisable stationary solution).
+\item $d_c > 0 \Leftrightarrow \det G < 0$ (Lorentzian).
+\end{enumerate}
+
+For Euclidean signature ($\det G > 0$), $d_c$ is formally imaginary: $d_c = i\omega$ with $\omega = \alpha/\sigma_1$. The OU process does not exist (no real restoring rate), the FP equation has no normalisable stationary solution, and the similarity transform does not yield a physical $\psi$.
+
+The following theorem is conditional on a physically selected
+non-degenerate local quadratic form $G$. It does not claim that $G$ is
+uniquely reconstructed from $dt_{\rm info}$ within the present paper.
+
+\begin{theorem}[Wavefunction existence within the $K{=}1$ OU--FP construction]\label{thm:main}
+Given a physically selected non-degenerate local quadratic form $G$ in
+the $K{=}1$ OU--FP construction, the Fokker--Planck equation admits a
+similarity transform with Schr\"odinger structure if and only if
+$\mathrm{Sig}(G) = (1,1)$ (Lorentzian). Equivalently, within this construction, a Schr\"odinger-type representation of the OU/FP relaxation can be defined if and only if $\det G<0$.
+\end{theorem}
+
+\begin{proof}
+The similarity transform $\rho = e^{-U/2}\psi$ is well-defined and yields a Hermitian Hamiltonian $H_s$ with real energy spectrum iff the FP generator has real damping coefficient $d_c > 0$. By the stability-boundary relation~\eqref{eq:signature_gate_dc}, $d_c>0\iff\det G<0$. The converse follows from the failure of normalisability when $d_c$ is imaginary. Hence the equivalence.
+\end{proof}
+
+\begin{corollary}[Signature switching removes the Schr\"odinger representation]\label{cor:switch}
+If the metric block crosses from Lorentzian to Euclidean signature, the geometric precondition for the Schr\"odinger-type representation is removed within the present construction.
+\end{corollary}
+
+\begin{remark}[Status of the FP--Schr\"odinger correspondence]
+The similarity transform FP~$\to$~imaginary-time Schr\"odinger is standard~\cite{Nelson,Risken}; stochastic quantisation provides a separate field-theoretic stochastic framework~\cite{ParisiWu}, but the present argument uses only the finite-dimensional OU--FP similarity transform. The $K{=}1$ framework adds the \emph{conditional} aspect: the correspondence exists only when $\det G < 0$, providing a geometric on/off switch absent in Nelson's original construction. Within the adopted $K{=}1$ local expansion, the OU structure is the compatible linearisation near the $K{=}1$ surface. For $V = \tfrac{1}{2}(K-1)^2$ as defined in Law~III of the framework, the ground state $\psi_0 \propto e^{-U/2}$ is exact; if $V$ contained higher-order terms, $\psi_0$ would be modified, but the existence condition $d_c > 0 \Leftrightarrow \det G < 0$ is independent of the form of~$V$ and holds non-perturbatively. The physical interpretation --- that $\psi$ exists when the signature is Lorentzian and ceases to exist when it is not --- is an inference from the mathematical structure, not a separate postulate.
+\end{remark}
+
+\subsection{Ground-state probability as Boltzmann equilibrium}
+
+The ground-state wave function satisfies $\psi_0 \propto e^{-U/2}$; upon normalisation,
+\begin{equation}
+\psi_0 = Z^{-1/2} e^{-U/2},
+\qquad
+Z = \int e^{-U}\,d\varepsilon,
+\qquad
+|\psi_0|^2=\rho_{\mathrm{eq}}.
+\label{eq:ground_state_identity}
+\end{equation}
+Indeed $|\psi_0|^2 = Z^{-1}e^{-U} = \rho_{\mathrm{eq}}$: the ground-state probability equals the Boltzmann distribution --- not a postulate but a consequence of metric self-consistency.
+
+\begin{remark}[Ground state only]
+This identity holds exactly for the ground state. For excited states, $e^{-U/2}\psi_n$ can be negative and is not a probability density. However, the $K{=}1$ chain derives a concrete Hamiltonian $H_s$ (Eq.~\ref{eq:imaginary_time}); the fact that $|\psi|^2$ is the unique conserved non-negative density under the unitary evolution generated by $H_s$ is a mathematical property of the derived operator, not an external postulate.
+\end{remark}
+
+%=====================================================================
+\section{Signature dynamics: one-way boundary protection}\label{sec:barrier}
+%=====================================================================
+
+Section~\ref{sec:wavefunction} showed that $\psi$ requires Lorentzian signature. But is Lorentzian signature stable? Can fluctuations push the system across $\Delta = 0$ into a Euclidean regime where $\psi$ ceases to exist? We now treat $\Delta = \det G$ as a dynamical variable and show that the answer is asymmetric: \emph{Lorentzian~$\to$~Euclidean escape is
+blocked in the ideal boundary model and strongly suppressed over the
+physical regularised regime, whereas Euclidean~$\to$~Lorentzian return is
+spontaneous.} The mechanism is summarised schematically in Figure~\ref{fig:barrier_fig}.
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=0.78\textwidth]{fig2_oneway_barrier.pdf}
+\caption{Schematic one-way signature-boundary protection. On the
+Lorentzian side, $D_L(\Delta)\propto\sqrt{|\Delta|}$ self-quenches as
+$\Delta\to0^-$, closing the diffusion channel at the boundary. On the
+Euclidean side, $D_E(\Delta)=D_0>0$ remains finite. Thus
+$D(0^-)=0\neq D(0^+)=D_0$, giving ideal one-way protection and a strong
+regularised finite-time bias (\S\ref{sec:detailed_balance}). The
+corresponding parameter grid is reported in Appendix~\ref{app:barrier_num}.}
+\label{fig:barrier_fig}
+\end{figure}
+
+\subsection{Noise coefficient from fluctuation-dissipation}
+
+From the $K{=}1$ OU process (\S\ref{sec:review}), the effective temperature is $T_{\mathrm{eff}} = \sigma^2\sigma_1/(2\alpha)$. For the Rindler metric $G = \mathrm{diag}(-\sigma_1^2, 1)$, the determinant is $\Delta = \det G = -\sigma_1^2$, giving $\sigma_1 = \sqrt{|\Delta|}$ and hence
+\[
+T_{\mathrm{eff}} = \frac{\sigma^2}{2\alpha}\sqrt{|\Delta|}.
+\]
+By the fluctuation-dissipation relation (mobility set to unity), the noise coefficient $D_L$ for the $\Delta$ dynamics equals the local effective temperature, $D_L = T_{\mathrm{eff}}$:
+\begin{equation}
+D_L(\Delta) = \frac{\sigma^2}{2\alpha}\sqrt{|\Delta|}, \qquad \Delta < 0.
+\label{eq:D_Lor}
+\end{equation}
+Strictly, this identification involves a variable transformation from $\varepsilon = K - 1$ to $\Delta = \det G$, introducing a Jacobian that affects the numerical coefficient but not the scaling $D_L \propto \sqrt{|\Delta|} \to 0$ as $\Delta \to 0^-$. The scaling holds for any diagonal Lorentzian $G$ (since $T_{\mathrm{eff}} \propto \sigma_1 \to 0$); the coefficient $\sigma^2/(2\alpha)$ is Rindler-specific. Only the scaling enters the barrier analysis below.
+
+In the Euclidean regime ($\Delta > 0$), no OU process exists; the noise is external (e.g., thermal environment):
+\begin{equation}
+D_E(\Delta) = D_0 > 0, \qquad \Delta > 0.
+\label{eq:D_Euc}
+\end{equation}
+The value $D_0$ is a modelling assumption. Physically, the Euclidean regime lacks the OU self-suppression mechanism that drives $D_L \to 0$: without a real restoring rate ($d_c$ is imaginary for $\det G > 0$), there is no feedback loop to quench fluctuations. External noise sources (thermal, gravitational, or quantum vacuum fluctuations) have no reason to vanish at $\Delta = 0$, so $D_E > 0$ is the natural default. The ideal boundary asymmetry requires only $D_0 > 0$. In the regularised finite-time model, the observed crossing bias also depends on the diffusion amplitude and on how rapidly $D_L$ self-suppresses near the boundary.
+
+\subsection{Entropic barrier from Lorentzian side}
+
+As $\Delta \to 0^-$: $D_L \to 0$. The Fokker--Planck stationary distribution (It\^o convention) is
+\begin{equation}
+\rho_{\mathrm{ss}}(\Delta) \propto \frac{1}{D(\Delta)}\exp\!\biggl(\int^{\Delta}\frac{F(s)}{D(s)}\,ds\biggr).
+\label{eq:rho_ss}
+\end{equation}
+The $1/D$ prefactor diverges as $\Delta \to 0^-$: in the It\^o convention, probability density accumulates near the boundary. However, $D \to 0$ means the diffusive flux vanishes --- the system cannot cross $\Delta = 0$ because the effective diffusion coefficient drops to zero. The stationary current $J_{\mathrm{ss}} = F\rho - \partial_\Delta(D\rho) = 0$ confirms zero net flux within the Lorentzian interior (the boundary requires separate analysis; see \S\ref{sec:detailed_balance}). This creates an effective barrier: the OU process suppresses its own fluctuations near the signature boundary.
+
+From the Euclidean side ($\Delta > 0$), $D_E = D_0$ is constant. No self-suppression operates, and the confining potential drives the system toward $\Delta_0 < 0$ (Lorentzian): the Euclidean side is downhill.
+
+\begin{remark}[Noise interpretation]
+Equation~\eqref{eq:rho_ss} is the It\^o-convention stationary distribution, consistent with the Euler--Maruyama simulation below and the Fokker--Planck barrier~\eqref{eq:barrier} in Appendix~\ref{app:multimode}. In the Stratonovich convention, the stationary distribution takes a different form that yields an entropic correction $-\tfrac{1}{2}\ln D \to +\infty$ as $\Delta \to 0^-$, resembling a divergent effective potential. Both conventions give the same physical conclusion: $D \to 0$ at the boundary prevents crossing from the Lorentzian side. The ideal boundary asymmetry is convention-independent.
+\end{remark}
+
+The finite-time regularised SDE simulations are reported in Appendix~\ref{app:barrier_num}; they support the same one-way bias over the self-suppressed regime but are not used in the proof of Theorem~\ref{thm:main}.
+
+\subsection{Detailed balance: analytical proof}\label{sec:detailed_balance}
+
+\begin{proposition}[Obstruction to smooth detailed balance]\label{prop:DB}
+Smooth detailed balance across the signature boundary is obstructed in
+the minimal signature-diffusion model.
+\end{proposition}
+
+\begin{proof}
+The FP stationary condition $J_{\mathrm{ss}} = F\rho - \partial_\Delta(D\rho) = 0$ requires $D\rho$ to have a continuous derivative at every point.
+
+At $\Delta = 0$:
+\begin{equation}
+D(0^-) = \lim_{\Delta \to 0^-} \frac{\sigma^2}{2\alpha}\sqrt{|\Delta|} = 0, \qquad D(0^+) = D_0 > 0.
+\end{equation}
+$D(\Delta)$ is discontinuous at $\Delta = 0$. Therefore a smooth zero-current continuation of $D\rho$ across the boundary is obstructed: the standard detailed-balance condition cannot be imposed globally without an additional interface rule.
+
+The discontinuity is not a modelling choice: $D_L \propto T_{\mathrm{eff}} \to 0$ in~\eqref{eq:D_Lor} follows from the OU self-suppression (the OU process exists only for $d_c > 0$, i.e., Lorentzian signature), while $D_E = D_0 > 0$ in~\eqref{eq:D_Euc} follows from the absence of self-suppression in the Euclidean regime.
+\end{proof}
+
+\begin{remark}
+Detailed balance \emph{holds} within the Lorentzian regime, where $D(\Delta)$ is continuous and the system obeys standard Langevin dynamics. The violation is only across the signature boundary.
+\end{remark}
+
+%=====================================================================
+\section{Evolution closure: supported trajectories and the active-time clock}\label{sec:activetime}
+%=====================================================================
+
+The signature-support result (\S\ref{sec:wavefunction}) guarantees that,
+on the Lorentzian side $\det G<0$, a Schr\"odinger-type wavefunction
+representation exists. Once supported, the wavefunction traces a
+trajectory in projective Hilbert space, and that trajectory carries an
+operational \emph{active-time} readout. This section is an operational
+closure of the evolution layer: it is not a proof of $\det G<0$ and not a
+modification of the Schr\"odinger equation.
+
+\subsection{Path-capacity clock}
+
+For pure Hamiltonian evolution $i\,\partial_t|\psi\rangle=H|\psi\rangle$
+($\hbar=1$), the Fubini--Study line element along the trajectory obeys the
+Anandan--Aharonov relation $d\Phi_{\rm FS}=\Delta H\,dt$, with
+$\Delta H=\sqrt{\langle H^2\rangle-\langle H\rangle^2}$~\cite{ProvostVallee,AnandanAharonov}.
+Identifying the local path capacity with the energy uncertainty,
+$H_{\rm cap}=\Delta H$, we define the reconstructed information-time
+increment
+\begin{equation}
+dt_{\rm info}^{q}=\frac{d\Phi_{\rm FS}}{H_{\rm cap}},\qquad H_{\rm cap}=\Delta H,
+\label{eq:clockA}
+\end{equation}
+so that, for the correct generator,
+\begin{equation}
+dt_{\rm info}^{q}\approx dt_{\rm ext}^{\rm active},\qquad
+R:=\frac{dt_{\rm info}^{q}}{dt_{\rm ext}}\longrightarrow 1 .
+\label{eq:Rdef}
+\end{equation}
+We stress the operational status of \eqref{eq:clockA}--\eqref{eq:Rdef}: it
+is an operational reconstruction of external \emph{active} time; it is
+\emph{not} a new Schr\"odinger equation; it does \emph{not} recover idle
+laboratory waiting time (intervals with $d\Phi_{\rm FS}=0$ contribute
+nothing); and it depends on the correct generator/capacity pairing, since
+a mismatched capacity yields a predictable $R\neq1$.
+
+Statevector and gate-model checks confirm $R\to1$ for the correctly paired generator and $R\neq1$ for mismatched capacities; the witnessed table, figure, and convergence data are given in Appendix~\ref{app:activetime_num}.
+
+\section{Measurement-channel diagnostic: the $\mu=2$ effective point}\label{sec:mu2}
+%=====================================================================
+
+Independently of the interpretive collapse-like scenario discussed later
+in \S\ref{sec:measurement}, the measurement channel
+itself can be given an operational closure by an effective determinant
+geometry. As with the active-time clock, this is an operational closure,
+not a direct proof of the fundamental $\det G<0$ condition.
+
+\subsection{Effective determinant and log-capacity action}
+
+On the outcome-probability coordinate $s\in(0,1]$, introduce
+\begin{equation}
+\det G_{\rm eff}(s)=-s^{\mu},\qquad
+H_{\rm cap}(s)=\sqrt{-\det G_{\rm eff}(s)}=s^{\mu/2},
+\label{eq:detGeffB}
+\end{equation}
+sharing the negative-determinant motif of the signature layer. The
+log-capacity action accumulated in reaching outcome probability $p$ is
+\begin{equation}
+B_\mu(p)=\int_p^1 s^{-\mu/2}\,ds,
+\label{eq:BmuB}
+\end{equation}
+and the outcome law is $P_\mu(a)\propto\exp[-B_\mu(p_a)]$ with
+$p_a=|c_a|^2$ the ideal projective probability, realised operationally by
+an unsharp POVM detector~\cite{Busch}.
+
+\subsection{The $\mu=2$ diagnostic point}
+
+At $\mu=2$, the effective determinant~\eqref{eq:detGeffB} gives $H_{\rm cap}(s)=s$ and
+\begin{equation}
+B_2(p)=-\log p,\qquad \exp[-B_2(p)]=p,\qquad P(a)=|c_a|^2 .
+\label{eq:bornB}
+\end{equation}
+At $\mu=2$, the effective channel reproduces Born weights,
+$P(a)=|c_a|^2$, within this diagnostic parametrisation. We read $\mu$ as a measurement-channel diagnostic, not a
+microscopic universal constant: $\mu\neq2$ signals detector/channel
+imperfection, not a violation of quantum mechanics, and the construction
+does not solve outcome selection or pointer selection. This provides a measurement-channel analogue of the ground-state identity
+$|\psi_0|^2=\rho_{\rm eq}$ of \S\ref{sec:wavefunction}, but it is not used
+as a derivation of the Born rule from the fundamental signature dynamics.
+
+The diagnostic was checked numerically on ideal and noisy measurement channels (POVM detector-strength flow and readout-noise mitigation); the witnessed tables and figure are given in Appendix~\ref{app:mu2_num}.
+
+\section{Discussion}\label{sec:discussion}
+%=====================================================================
+
+\subsection{Logical status of the added operational closures}
+
+The condition $\det G<0$ remains the foundational support condition. The
+active-time and $\mu=2$ results do not directly measure or prove
+$\det G<0$; instead they provide two operational closures of the same
+wavefunction-geometric framework, one in evolution and one in
+measurement. The hierarchy is:
+\begin{enumerate}
+\item \textbf{Signature layer:} $\det G<0$ supports the
+Schr\"odinger-type representation.
+\item \textbf{Evolution closure:} supported trajectories reconstruct
+active time.
+\item \textbf{Measurement closure:} the effective determinant geometry
+reproduces Born weights at the $\mu=2$ diagnostic point.
+\end{enumerate}
+We do not claim a new Schr\"odinger equation, recovery of idle laboratory
+time, a violation of standard quantum mechanics, a solution of outcome
+selection, a direct experimental measurement of $\det G$, or that
+$\mu=2$ proves a fundamental microscopic metric. In particular, the
+information-time origin of $G$ is motivational: a full upstream
+reconstruction of $G$ from $dt_{\rm info}$ would require metric-capacity
+compatibility between the cost form $G$ and the capacity $H$, which is
+not established here; throughout, $G$ is taken as a physically selected
+non-degenerate local quadratic form. As an application
+direction, path-capacity diagnostics may later be useful as
+generator-fidelity or timing diagnostics in controlled quantum evolution.
+
+\subsection{Phenomenological measurement reading}\label{sec:measurement}
+
+The signature-support mechanism suggests a possible interpretation of measurement as a transient failure and recovery of the Lorentzian precondition for one effective mode; by Corollary~\ref{cor:switch}, such a signature excursion removes and then restores that mode's Schr\"odinger representation. Environmental coupling could lower the finite multi-mode barrier of the coupled model~\eqref{eq:multimode} discussed in Appendix~\ref{app:multimode}, allowing a temporary Euclidean excursion. This remains a phenomenological scenario: the multi-mode coupling, pointer selection, and single-outcome selection are not derived here. The scenario is therefore not used as evidence for Theorem~\ref{thm:main}.
+
+A comparison with other approaches to the measurement problem is given in Appendix~\ref{app:comparison}.
+
+\subsection{Relation to decoherence}
+
+Standard decoherence explains the apparent disappearance of interference through environmental entanglement and identifies preferred pointer states via einselection~\cite{Zurek,Schlosshauer}. The $K{=}1$ one-way barrier is compatible with decoherence and adds geometric content: environmental coupling increases $D_{\mathrm{cross}}$, catalysing the Kramers escape that drives $\Delta$ across the signature boundary. The barrier structure provides a geometric counterpart to the irreversibility of decoherence (the $D$ discontinuity at $\Delta = 0$ suppresses spontaneous recoherence within this effective model) and identifies the restarted OU equilibrium through the
+ground-state identity~\eqref{eq:ground_state_identity} (Boltzmann equilibrium of the restarted OU process). The $K{=}1$ mechanism suggests an additional geometric obstruction to recoherence, but a full comparison with Loschmidt-echo reversibility is left for future work. However, the $K{=}1$ framework does not yet reproduce einselection or pointer-state selection, which remain open problems discussed in \S\ref{sec:open}.
+
+\subsection{Relation to Penrose and GRW}
+
+The placement of the non-unitarity relative to GRW and Penrose was
+summarised in \S\ref{sec:measurement}: GRW modifies the wavefunction
+dynamics, Penrose invokes gravitational self-energy, while the present
+proposal acts on the geometric precondition for the wavefunction
+representation. The present framework should therefore be read as
+complementary to, rather than a replacement for, those approaches. A
+quantitative bridge to Penrose-type gravitational self-energy criteria
+remains open.
+
+\subsection{Broader programme: information time}
+
+The information-time layer is not part of the load-bearing proof in this
+paper. Its role is motivational: it explains why one may seek a local
+cost form $G$ below the Schr\"odinger equation. The load-bearing chain in
+the present work is downstream:
+\[
+G \longrightarrow K=x^\top Gx \longrightarrow J_G
+\longrightarrow \mathrm{OU}
+\longrightarrow \mathrm{FP}
+\longrightarrow \psi .
+\]
+
+A full upstream derivation of the first arrow from
+\[
+dt_{\rm info}=\frac{d\Phi}{H}
+\]
+would require a metric-capacity compatibility condition: the path element
+$d\Phi$ and the capacity $H$ cannot be chosen independently. The capacity
+must measure the norm of the true local generator in the same underlying
+geometry that defines the path element. Without this compatibility,
+$d\Phi/H$ is only a formal parametrisation; with it, the ratio becomes an
+operational reconstruction rule for elapsed effective time.
+
+This upstream reconstruction of $G$, $H$, and the effective evolution
+parameter is deferred to the broader information-time programme. The
+present paper proves the downstream conditional statement: given a
+physically selected non-degenerate local quadratic form $G$, Lorentzian
+signature is the gate for stable OU--FP--Schr\"odinger dynamics.
+
+\subsection{$(1{+}3)$-dimensional extension}
+
+The core theorem is two-dimensional and local. A full $(1+3)$-dimensional
+completion is not needed for the present result. In higher dimension, one expects
+each normal two-plane to carry an analogous signature-gated OU--FP structure,
+while the coupling between such planes becomes a new dynamical input. Deriving
+this coupling, and connecting it to gravitational thermodynamics, is left to
+future work.
+
+\subsection{Open questions}\label{sec:open}
+
+The remaining problems fall into three priority levels.
+
+\paragraph{High priority.}
+\begin{enumerate}
+\item Outcome selection: what determines which eigenvalue is realised in
+a single measurement event?
+\item Derivation of the $\mu=2$ measurement-channel diagnostic point from the
+underlying $K{=}1$ signature dynamics, rather than treating it as an
+effective channel geometry.
+\end{enumerate}
+
+\paragraph{Medium priority.}
+\begin{enumerate}
+\item Derivation of the multi-mode coupling $\gamma$ from $K{=}1$
+geometry.
+\item Dimensional restoration and estimates of effective transition-rate
+scales.
+\item Construction of a direct observable coupled to $\Delta=\det G$.
+\end{enumerate}
+
+\paragraph{Lower priority.}
+\begin{enumerate}
+\item Full $(1{+}3)$D completion, and the Tolman identification
+$T_{\mathrm{eff}}=T_{\mathrm{tol}}$ as a derived rather than
+phenomenological input.
+\item Compatibility with path-integral Wick rotation.
+\item Extension to multi-particle quantum mechanics.
+\end{enumerate}
+
+%=====================================================================
+\section{Conclusion}\label{sec:conclusion}
+%=====================================================================
+
+The load-bearing result of this paper is Theorem~\ref{thm:main}:
+within the $K{=}1$ OU--Fokker--Planck construction, a
+Schr\"odinger-type wavefunction representation exists if and only if
+$\det G<0$.
+
+Two consequences then follow. First, treating
+$\Delta=\det G$ as an effective variable gives ideal one-way
+signature-boundary protection, and in the regularised finite-time model a
+strong one-way bias over the physically relevant self-suppressed regime,
+because $D_L(\Delta)\propto\sqrt{|\Delta|}\to0$ on the Lorentzian side while
+$D(0^+)>0$ on the Euclidean side. Second, the OU equilibrium gives the
+ground-state identity $|\psi_0|^2=\rho_{\rm eq}$.
+
+Downstream of the theorem, a measurement proposal based on transient
+failure and recovery of the Lorentzian precondition was discussed, and two
+operational closures were added: an active-time reconstruction along
+supported trajectories and a $\mu=2$ effective determinant measurement-channel
+diagnostic. None of these is a direct proof of physical metric-signature
+switching or collapse. A full upstream derivation of $G$ from
+$dt_{\rm info}$ requires metric-capacity compatibility and is left to the
+broader information-time programme.
+
+The approach does not modify the Schr\"odinger equation. It operates at the level of the equation's geometric precondition --- Lorentzian signature --- and shows that the precondition is dynamical.
+
+The active-time and measurement-channel sections are downstream diagnostics
+and do not enter the proof of the signature-support theorem.
+
+
+%=====================================================================
+\appendix
+%=====================================================================
+
+\section{Multi-mode coupling and finite barrier}\label{app:multimode}
+%=====================================================================
+
+
+In $(1{+}3)$D, multiple horizon directions coexist. We adopt an illustrative mean-field model with $N$ modes:
+\begin{equation}
+d\varepsilon_n = -\kappa_n \varepsilon_n\,dt + \sigma\,dW_n + \gamma\sum_{m\neq n}(\varepsilon_m - \varepsilon_n)\,dt,
+\label{eq:multimode}
+\end{equation}
+where $\gamma > 0$ is the inter-mode coupling. Under mean-field approximation, each mode's $\sigma_1$ couples to the others through a shared effective $\bar\varepsilon = N^{-1}\sum\varepsilon_m$. The effective noise on mode~1's $\sigma_1$ decomposes as
+\begin{equation}
+D_{\mathrm{total}} = \underbrace{D_{\mathrm{self}}}_{\propto \sigma_1 \to 0} + \underbrace{D_{\mathrm{cross}}}_{> 0}.
+\end{equation}
+Here $D_{\mathrm{self}} \propto \gamma^2\sigma^2\sigma_1/(2\alpha N)$ arises from mode~1's own OU fluctuations, which vanish as $\sigma_1 \to 0$ by the same mechanism as the single-mode case. The cross-mode contribution $D_{\mathrm{cross}} \approx \gamma^2(N{-}1)T_{\mathrm{eff,others}}/N^2$ arises from modes $2,\ldots,N$ whose $\sigma_{1,m} > 0$ (they remain Lorentzian) and whose OU processes provide finite noise. At the boundary: $D_{\mathrm{self}}/D_{\mathrm{total}} \to 0$ and $D_{\mathrm{cross}}/D_{\mathrm{total}} \to 1$.
+
+The Fokker--Planck stationary solution for mode~1, $\rho_{\mathrm{ss}} \propto D^{-1}\exp\!\bigl(\int F/D\,d\sigma_1\bigr)$, yields a finite barrier (here the order parameter is $\sigma_1 = \sqrt{|\Delta|}$, so the signature boundary $\Delta\to0^-$ corresponds to $\sigma_1\to0^+$):
+\begin{equation}
+B_{\mathrm{FP}} = \Phi_{\mathrm{FP}}(\text{boundary}) - \Phi_{\mathrm{FP}}(\text{minimum}), \qquad \Phi_{\mathrm{FP}} = -\!\int \frac{F}{D}\,d\sigma_1 + \ln D.
+\label{eq:barrier}
+\end{equation}
+
+In this mean-field multi-mode model, the barrier becomes finite once
+$D_{\mathrm{cross}}>0$, but remains exponentially large for typical
+small-coupling parameters. The numerical barrier height is therefore
+model-dependent and is not used as a load-bearing result. A measurement
+apparatus that couples additional environmental modes increases
+$D_{\mathrm{cross}}$ and lowers the barrier; this is the sense in which it
+can catalyse a signature excursion.
+
+\begin{remark}[Self-consistency of the multi-mode picture]
+The multi-mode picture shows how finite cross-mode fluctuations could
+make signature excursions possible without imposing a separate collapse
+postulate. This remains a phenomenological mechanism until the coupling
+$\gamma$ is derived from the underlying geometry.
+\end{remark}
+
+
+
+
+
+
+\section{Regularised barrier simulations}\label{app:barrier_num}
+
+\subsection{One-way barrier: Monte Carlo verification}
+
+We simulate the It\^o Langevin equation for $\Delta$ with state-dependent noise:
+\begin{equation}
+d\Delta = F(\Delta)\,dt + \sqrt{2D(\Delta)}\,dW_t,
+\end{equation}
+where $F(\Delta)$ includes a confining drift toward $\Delta_0 < 0$ and an entropic correction from the state-dependent noise. At $\Delta = 0$, the effective potential is regularised (finite barrier replaces the singularity); no artificial boundary condition is imposed. The one-way direction is set by the vanishing of the boundary diffusion, $D(0^-) = 0$ vs $D(0^+) > 0$; whether escape is fully blocked within a finite horizon additionally depends on how fast $D_L$ suppresses near the boundary (the exponent $\eta_{\rm reg}$ introduced below).
+
+\medskip\noindent In $100$ runs per direction ($dt = 10^{-3}$, $N_{\mathrm{steps}} = 60{,}000$), Lorentzian-to-Euclidean crossings were never observed, while Euclidean-to-Lorentzian return occurred in all runs (mean return time $0.652$), with all stated validation checks satisfied.
+
+\noindent Across the grid $D_0 \in \{0.01, 0.05, 0.1, 0.5\}$ and $\eta_{\rm reg} \in \{0.1, 0.5, 1.0, 2.0\}$, the behaviour is one-way in $13/16$ cells --- for all $D_0 \le 0.05$ (every $\eta_{\rm reg}$) and for all $\eta_{\rm reg} \ge 1$ (every $D_0$). The physical scaling $D_L \propto \sqrt{|\Delta|}$ ($\eta_{\rm reg} = 1/2$) is one-way for $D_0 \lesssim 0.1$. It is overcome only where a large diffusion amplitude meets a shallow suppression exponent ($D_0 = 0.5$ with $\eta_{\rm reg} \le 0.5$), where $D_L$ does not vanish fast enough near the boundary to block escape within the simulated horizon.
+
+\begin{table}[ht]
+\centering
+\caption{Regularised finite-time one-way bias grid. ``one-way'' means
+that Lorentzian-to-Euclidean escape is not observed within the simulated
+horizon while Euclidean-to-Lorentzian return occurs. ``overcome'' denotes
+the parameter cells where the regularised finite-time barrier is overcome.}
+\label{tab:barrier_grid}
+\footnotesize
+\setlength{\tabcolsep}{4.5pt}
+\begin{tabular}{ccccc}
+\toprule
+$D_0$ & $\eta_{\rm reg}=0.1$ & $\eta_{\rm reg}=0.5$ &
+$\eta_{\rm reg}=1.0$ & $\eta_{\rm reg}=2.0$ \\
+\midrule
+$0.01$ & one-way & one-way & one-way & one-way \\
+$0.05$ & one-way & one-way & one-way & one-way \\
+$0.10$ & overcome & one-way & one-way & one-way \\
+$0.50$ & overcome & overcome & one-way & one-way \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{Intrinsic barrier: Euclidean trap test}
+
+As a control, artificial trapping on the Euclidean side can suppress
+return if made sufficiently strong, but no such natural Euclidean trap is
+generated within the minimal $K{=}1$ model: the free energy
+$\mathcal{F}(\sigma_1)$ is everywhere concave
+($d^2\mathcal{F}/d\sigma_1^2 < 0$ for all $\sigma_1 > 0$), precluding any
+Euclidean minimum. This supports the interpretation that the one-way
+behaviour comes from the diffusion asymmetry rather than from an imposed
+potential shape.
+
+
+
+\section{Active-time reconstruction: numerical validation}\label{app:activetime_num}
+
+\subsection{Qiskit validation}
+
+We evolve a single qubit under a smooth time-dependent Hamiltonian
+(TEST~A, statevector evolution) and under a digital gate-clock with idle
+segments (TEST~B), forming $R$ from \eqref{eq:clockA}--\eqref{eq:Rdef}
+with the correct, wrong-scale ($0.8H$), and wrong-frozen capacity
+generators. The witnessed aggregate ratios are given in
+Table~\ref{tab:activetime} and Figure~\ref{fig:activetime}.
+
+\begin{table}[ht]
+\centering
+\caption{Witnessed active-time reconstruction $R$ (Qiskit statevector /
+gate model). TEST~A: time-dependent generator, $2000$ steps. TEST~B:
+gate-clock with idle segments. The wrong-scale row is a calibration
+control: the predicted value is $1/0.8=1.25$.}
+\begin{tabular}{llcc}
+\toprule
+Test & Capacity generator & Reconstructed $R$ & Predicted \\
+\midrule
+A (time-dependent) & correct        & $0.9999999$ & $1$ \\
+A (time-dependent) & wrong-scale $0.8H$ & $1.2499999$ & $1.25$ \\
+A (time-dependent) & wrong-frozen   & $0.8972$     & $\neq1$ \\
+\midrule
+B (gate-clock, active) & correct        & $1.0000000$ & $1$ \\
+B (gate-clock, active) & wrong-scale $0.8H$ & $1.2500000$ & $1.25$ \\
+B (gate-clock, total incl.\ idle) & correct & $0.7253$ & $<1$ (idle invisible) \\
+\bottomrule
+\end{tabular}
+\label{tab:activetime}
+\end{table}
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=\textwidth]{fig3_activetime_clock.pdf}
+\caption{Active-time clock (witnessed Qiskit runs). \textbf{(a)} TEST~A:
+per-step $R=dt_{\rm info}^{q}/dt_{\rm ext}$; the correct generator sits at
+$R=1$, the wrong-scale generator at $R=1.25=1/0.8$, the wrong-frozen
+generator oscillates away from $1$. The horizontal guides mark
+the correct-clock value $R=1$ and the wrong-scale calibration value
+$R=1.25$. \textbf{(b)} TEST~B: active-time
+reconstruction is exact ($R=1.000$) while the reconstruction over total
+time including idle intervals falls short ($R=0.725$). \textbf{(c)} Both
+tests converge at second order in the step size (log-log slope
+$\approx2.00$).}
+\label{fig:activetime}
+\end{figure}
+
+The correct generator reconstructs the active external time to
+$|R-1|\sim10^{-7}$; the wrong-scale generator lands on the predicted
+$R=1.25=1/0.8$; the wrong-frozen generator fails; and the idle-included
+total falls short ($R_{\rm total}=0.725\neq1$), confirming that idle
+waiting is invisible to the clock. Reconstruction converges at second
+order in the step size (log-log slope $1.998$), and a scan over $30$
+random initial states gives worst-case
+$|R_{\rm total}-1|=3.3\times10^{-7}$, with all stated validation checks
+satisfied. This closes the
+evolution layer operationally; it does not measure $\det G$.
+
+
+%=====================================================================
+
+
+\section{$\mu=2$ diagnostic: numerical validation}\label{app:mu2_num}
+
+\subsection{Qiskit/Aer validation}
+
+We prepare $1$--$3$ qubit states, measure in $Z/X/Y$ and random global
+bases on Qiskit/Aer ($65{,}536$ shots), and fit $\hat\mu$ from
+\eqref{eq:BmuB}--\eqref{eq:bornB} against the observed statistics under
+(A) an unsharp POVM detector of strength $\kappa_{\rm det}$ and (B) readout noise of
+rate $e$ (raw and mitigated). The witnessed medians are given in
+Table~\ref{tab:mu2} and Figure~\ref{fig:mu2}.
+
+\begin{table}[ht]
+\centering
+\caption{Witnessed $\mu=2$ measurement-channel diagnostics (Qiskit/Aer,
+$65{,}536$ shots). Left block: POVM detector-strength flow. Right block:
+readout-noise diagnostic (raw vs.\ mitigated).}
+\begin{tabular}{cc@{\hskip 2.2em}ccc}
+\toprule
+\multicolumn{2}{c}{POVM strength flow} & \multicolumn{3}{c}{Readout-noise diagnostic}\\
+\cmidrule(r){1-2}\cmidrule(l){3-5}
+$\kappa_{\rm det}$ & median $\hat\mu$ & error $e$ & raw $\hat\mu$ & mitigated $\hat\mu$\\
+\midrule
+$0.00$ & $0.050$ & $0.00$ & $1.997$ & $1.997$\\
+$0.20$ & $0.050$ & $0.01$ & $1.942$ & $2.000$\\
+$0.50$ & $0.541$ & $0.04$ & $1.760$ & $1.999$\\
+$0.80$ & $1.454$ & $0.10$ & $1.418$ & $2.005$\\
+$0.97$ & $1.905$ & $0.15$ & $1.146$ & $1.996$\\
+$1.00$ & $1.995$ & & & \\
+\bottomrule
+\end{tabular}
+\label{tab:mu2}
+\end{table}
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=\textwidth]{fig4_mu2_diagnostic.pdf}
+\caption{$\mu=2$ measurement-channel diagnostic (witnessed Qiskit/Aer runs).
+\textbf{(a)} POVM detector-strength flow: the fitted median $\hat\mu$
+(band = IQR) approaches $\mu=2$, the point that reproduces Born weights, as
+$\kappa_{\rm det}\to1$ ($\hat\mu\approx1.99$ at $\kappa_{\rm det}=1$).
+\textbf{(b)} Readout noise drives the raw fitted $\hat\mu$ away from
+$2$, while standard confusion-matrix mitigation restores
+$\hat\mu\approx2$. The diagnostic therefore tracks measurement-channel
+imperfection rather than a violation of quantum mechanics.}
+\label{fig:mu2}
+\end{figure}
+
+Ideal projective measurement sits at $\mu=2$ (Born weights reproduced)
+($\hat\mu=1.997$ at $e=0$); the detector-strength flow moves $\hat\mu$
+monotonically to $2$ (median $\hat\mu=1.995$ at $\kappa_{\rm det}=1$); readout noise
+drives $\hat\mu$ away from $2$ (to $1.146$ at $e=0.15$); and mitigation
+restores $\hat\mu\approx2$ (worst-case mitigated-median $|\hat\mu-2|=0.005$
+across the error range), with all stated diagnostic checks satisfied. This
+closes the measurement layer operationally; it is not evidence that the
+simulator violates quantum mechanics, and not a direct measurement of
+$\det G$.
+
+
+%=====================================================================
+
+
+\section{Comparison with other approaches}\label{app:comparison}
+
+
+
+Table~\ref{tab:comparison} places the present work in context.
+
+\begin{table}[ht]
+\centering
+\caption{Comparison with other approaches to the measurement problem.}
+\label{tab:comparison}
+\begin{tabular}{lcl}
+\toprule
+Approach & Level & What is changed \\
+\midrule
+Copenhagen~\cite{vonNeumann} & Interpretation & Add projection postulate \\
+Decoherence~\cite{Zurek} & Mechanism & Environment-induced superselection \\
+Many-worlds~\cite{Everett} & Interpretation & Reinterpret universal wave function \\
+GRW~\cite{GRW} & Dynamics & Add stochastic term to evolution \\
+Penrose~\cite{Penrose} & Validity condition & Gravitational instability of superposition \\
+\midrule
+$K{=}1$ (this work) & \textbf{Precondition} & \textbf{Signature-gated support of $\psi$} \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+
+
+\bigskip
+\noindent\textbf{Statements and Declarations}
+
+\medskip
+\noindent\textbf{Funding.} No funding was received.
+
+\medskip
+\noindent\textbf{Competing interests.} None.
+
+\medskip
+\noindent\textbf{Data availability.}
+No external experimental dataset was used. The numerical data,
+witnessed outputs, analysis scripts, and figure-generation files
+supporting the computational results of this study are available from
+the author upon reasonable request. The requestable reproducibility
+package includes the numerical outputs used to generate
+Tables~\ref{tab:barrier_grid}, \ref{tab:activetime},
+and~\ref{tab:mu2}, and Figures~\ref{fig:activetime} and~\ref{fig:mu2},
+together with the
+corresponding analysis and plotting files. Figures~\ref{fig:gate} and
+\ref{fig:barrier_fig} are schematic diagrams of the analytic arguments
+rather than data-generated plots. The symbolic and numerical checks of
+the OU--Schr\"odinger conjugation and spectrum, the zero-current
+It\^o stationary distribution, the $\mu=2$ log-capacity action, and the
+finite multi-mode barrier are included in the same reproducibility
+package available upon reasonable request.
+
+\begin{thebibliography}{20}
+
+\bibitem{Nelson}
+Nelson, E.:
+Derivation of the Schr\"odinger equation from Newtonian mechanics.
+Phys.\ Rev.\ \textbf{150}, 1079--1085 (1966).
+\url{https://doi.org/10.1103/PhysRev.150.1079}
+
+\bibitem{vonNeumann}
+von~Neumann, J.:
+Mathematische Grundlagen der Quantenmechanik.
+Springer, Berlin (1932).
+
+\bibitem{Zurek}
+Zurek, W.H.:
+Decoherence, einselection, and the quantum origins of the classical.
+Rev.\ Mod.\ Phys.\ \textbf{75}, 715--775 (2003).
+\url{https://doi.org/10.1103/RevModPhys.75.715}
+
+\bibitem{Schlosshauer}
+Schlosshauer, M.:
+Decoherence and the Quantum-to-Classical Transition.
+Springer, Berlin (2007).
+\url{https://doi.org/10.1007/978-3-540-35775-9}
+
+\bibitem{Everett}
+Everett, H.:
+``Relative state'' formulation of quantum mechanics.
+Rev.\ Mod.\ Phys.\ \textbf{29}, 454--462 (1957).
+\url{https://doi.org/10.1103/RevModPhys.29.454}
+
+\bibitem{GRW}
+Ghirardi, G.C., Rimini, A., Weber, T.:
+Unified dynamics for microscopic and macroscopic systems.
+Phys.\ Rev.\ D \textbf{34}, 470--491 (1986).
+\url{https://doi.org/10.1103/PhysRevD.34.470}
+
+\bibitem{Penrose}
+Penrose, R.:
+On gravity's role in quantum state reduction.
+Gen.\ Relativ.\ Gravit.\ \textbf{28}, 581--600 (1996).
+\url{https://doi.org/10.1007/BF02105068}
+
+\bibitem{Risken}
+Risken, H.:
+The Fokker--Planck Equation: Methods of Solution and Applications, 2nd edn.
+Springer, Berlin (1989).
+\url{https://doi.org/10.1007/978-3-642-61544-3}
+
+\bibitem{ParisiWu}
+Parisi, G., Wu, Y.:
+Perturbation theory without gauge fixing.
+Sci.\ Sin.\ \textbf{24}, 483--496 (1981).
+
+\bibitem{ProvostVallee}
+Provost, J.P., Vallee, G.:
+Riemannian structure on manifolds of quantum states.
+Commun.\ Math.\ Phys.\ \textbf{76}, 289--301 (1980).
+\url{https://doi.org/10.1007/BF02193559}
+
+\bibitem{AnandanAharonov}
+Anandan, J., Aharonov, Y.:
+Geometry of quantum evolution.
+Phys.\ Rev.\ Lett.\ \textbf{65}, 1697--1700 (1990).
+\url{https://doi.org/10.1103/PhysRevLett.65.1697}
+
+\bibitem{Busch}
+Busch, P., Grabowski, M., Lahti, P.J.:
+Operational Quantum Physics.
+Lecture Notes in Physics, vol.\ m31. Springer, Berlin (1995).
+\url{https://doi.org/10.1007/978-3-540-49239-9}
+
+\end{thebibliography}
+
+\end{document}
