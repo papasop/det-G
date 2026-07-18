@@ -1,0 +1,403 @@
+ device = cuda
+{
+  "seed": 20260719,
+  "seeds": [
+    50101,
+    50311,
+    50503
+  ],
+  "model_name": "facebook/opt-125m",
+  "seq_len": 96,
+  "train_blocks": 500,
+  "val_blocks": 160,
+  "test_blocks": 500,
+  "ood_blocks": 500,
+  "batch": 4,
+  "epochs": 3,
+  "lr_aux": 0.0008,
+  "lr_factor_adam": 0.0008,
+  "weight_decay": 0.0001,
+  "rank": 16,
+  "controller_hidden": 8,
+  "product_budget": 0.0002,
+  "product_budget_eps": 1e-12,
+  "max_factor_scale": 10000.0,
+  "grad_clip_aux": 1.0,
+  "patience": 2,
+  "sigma_max": 2.0,
+  "correction_cap": 0.1,
+  "ood_tolerance_nats": 0.02,
+  "budget_match_rtol": 0.05,
+  "outdir": "k1_v57_geoflow_detg_2x2_screen_results",
+  "geoflow_commit": "17f87315c5e442e548721e82034111071f9f4f8f"
+}
+{'train': 500, 'val': 160, 'test': 500, 'ood': 500}
+Loading weights: 100% 197/197 [00:00<00:00, 9463.94it/s]PREFLIGHT PASS {'trainable': {'residual': 295740, 'geometry': 295740, 'generic': 295740}, 'layers': 12, 'hidden': 768}
+
+################################################################################################
+PAIRED SEED 50101
+
+adamw   x residual trainable=295740
+epoch 1: train=4.2996 val=4.0437 budget=2.000e-04
+epoch 2: train=4.2974 val=4.0413 budget=2.000e-04
+epoch 3: train=4.2945 val=4.0380 budget=2.000e-04
+
+geoflow x residual trainable=295740
+epoch 1: train=4.2970 val=4.0367 budget=2.000e-04
+epoch 2: train=4.2842 val=4.0217 budget=2.000e-04
+epoch 3: train=4.2671 val=4.0037 budget=2.000e-04
+
+adamw   x geometry trainable=295740
+epoch 1: train=4.2987 val=4.0419 budget=2.000e-04
+epoch 2: train=4.2944 val=4.0371 budget=2.000e-04
+epoch 3: train=4.2888 val=4.0309 budget=2.000e-04
+
+geoflow x geometry trainable=295740
+epoch 1: train=4.2936 val=4.0285 budget=2.000e-04
+epoch 2: train=4.2701 val=4.0022 budget=2.000e-04
+epoch 3: train=4.2421 val=3.9752 budget=2.000e-04
+
+adamw   x generic  trainable=295740
+epoch 1: train=4.2992 val=4.0427 budget=2.000e-04
+epoch 2: train=4.2950 val=4.0373 budget=2.000e-04
+epoch 3: train=4.2886 val=4.0303 budget=2.000e-04
+
+geoflow x generic  trainable=295740
+epoch 1: train=4.2956 val=4.0318 budget=2.000e-04
+epoch 2: train=4.2727 val=4.0037 budget=2.000e-04
+epoch 3: train=4.2427 val=3.9751 budget=2.000e-04
+
+################################################################################################
+PAIRED SEED 50311
+
+adamw   x residual trainable=295740
+epoch 1: train=4.2995 val=4.0437 budget=2.000e-04
+epoch 2: train=4.2973 val=4.0411 budget=2.000e-04
+epoch 3: train=4.2943 val=4.0377 budget=2.000e-04
+
+geoflow x residual trainable=295740
+epoch 1: train=4.2970 val=4.0369 budget=2.000e-04
+epoch 2: train=4.2843 val=4.0217 budget=2.000e-04
+epoch 3: train=4.2671 val=4.0037 budget=2.000e-04
+
+adamw   x geometry trainable=295740
+epoch 1: train=4.2986 val=4.0418 budget=2.000e-04
+epoch 2: train=4.2942 val=4.0368 budget=2.000e-04
+epoch 3: train=4.2884 val=4.0304 budget=2.000e-04
+
+geoflow x geometry trainable=295740
+epoch 1: train=4.2937 val=4.0287 budget=2.000e-04
+epoch 2: train=4.2701 val=4.0023 budget=2.000e-04
+epoch 3: train=4.2421 val=3.9753 budget=2.000e-04
+
+adamw   x generic  trainable=295740
+epoch 1: train=4.2992 val=4.0426 budget=2.000e-04
+epoch 2: train=4.2948 val=4.0372 budget=2.000e-04
+epoch 3: train=4.2883 val=4.0299 budget=2.000e-04
+
+geoflow x generic  trainable=295740
+epoch 1: train=4.2957 val=4.0320 budget=2.000e-04
+epoch 2: train=4.2728 val=4.0038 budget=2.000e-04
+epoch 3: train=4.2427 val=3.9752 budget=2.000e-04
+
+################################################################################################
+PAIRED SEED 50503
+
+adamw   x residual trainable=295740
+epoch 1: train=4.2995 val=4.0436 budget=2.000e-04
+epoch 2: train=4.2973 val=4.0411 budget=2.000e-04
+epoch 3: train=4.2942 val=4.0376 budget=2.000e-04
+
+geoflow x residual trainable=295740
+epoch 1: train=4.2970 val=4.0370 budget=2.000e-04
+epoch 2: train=4.2844 val=4.0220 budget=2.000e-04
+epoch 3: train=4.2673 val=4.0042 budget=2.000e-04
+
+adamw   x geometry trainable=295740
+epoch 1: train=4.2986 val=4.0418 budget=2.000e-04
+epoch 2: train=4.2942 val=4.0368 budget=2.000e-04
+epoch 3: train=4.2883 val=4.0302 budget=2.000e-04
+
+geoflow x geometry trainable=295740
+epoch 1: train=4.2937 val=4.0290 budget=2.000e-04
+epoch 2: train=4.2703 val=4.0028 budget=2.000e-04
+epoch 3: train=4.2422 val=3.9759 budget=2.000e-04
+
+adamw   x generic  trainable=295740
+epoch 1: train=4.2992 val=4.0426 budget=2.000e-04
+epoch 2: train=4.2947 val=4.0370 budget=2.000e-04
+epoch 3: train=4.2881 val=4.0296 budget=2.000e-04
+
+geoflow x generic  trainable=295740
+epoch 1: train=4.2957 val=4.0322 budget=2.000e-04
+epoch 2: train=4.2729 val=4.0043 budget=2.000e-04
+epoch 3: train=4.2429 val=3.9758 budget=2.000e-04
+
+MEAN ± SD
+                                loss          accuracy               ece         
+                               mean      std     mean      std     mean      std
+optimizer controller split                                                      
+adamw     generic    ood   4.089430 0.000071 0.341958 0.000072 0.032719 0.000103
+                     test  4.408713 0.000323 0.271069 0.000043 0.038529 0.000039
+                     val   4.029938 0.000345 0.319249 0.000099 0.030173 0.000224
+          geometry   ood   4.089489 0.000084 0.341868 0.000084 0.032828 0.000067
+                     test  4.409266 0.000330 0.270979 0.000036 0.038639 0.000033
+                     val   4.030480 0.000360 0.319162 0.000136 0.030372 0.000469
+          residual   ood   4.090908 0.000040 0.341882 0.000094 0.033548 0.000099
+                     test  4.416638 0.000180 0.270431 0.000064 0.039705 0.000073
+                     val   4.037768 0.000166 0.318316 0.000075 0.031552 0.000255
+geoflow   generic    ood   4.086936 0.000174 0.341215 0.000103 0.026398 0.000170
+                     test  4.352116 0.000119 0.276250 0.000095 0.029620 0.000109
+                     val   3.975361 0.000399 0.326107 0.000298 0.018263 0.000251
+          geometry   ood   4.086950 0.000152 0.341188 0.000182 0.026515 0.000263
+                     test  4.352247 0.000109 0.276167 0.000042 0.029794 0.000113
+                     val   3.975431 0.000393 0.326128 0.000308 0.018214 0.000313
+          residual   ood   4.086457 0.000074 0.341701 0.000127 0.029666 0.000055
+                     test  4.381566 0.000104 0.273285 0.000084 0.034287 0.000052
+                     val   4.003860 0.000255 0.321615 0.000195 0.025231 0.000064
+
+============================================================================================================
+K1 V5.7 GEOFLOW × TOKEN-THROTTLE 2×2 SCREEN
+============================================================================================================
+{
+  "protocol": "OPT-125M frozen backbone; gauge-compatible lambda(h)BAh; 3 untouched screening seeds; exact first-order product-budget matching",
+  "geoflow_commit": "17f87315c5e442e548721e82034111071f9f4f8f",
+  "cells": {
+    "A": "adamw_geometry",
+    "B": "adamw_generic",
+    "C": "geoflow_geometry",
+    "D": "geoflow_generic"
+  },
+  "residual_anchors": [
+    "adamw_residual",
+    "geoflow_residual"
+  ],
+  "comparisons": {
+    "test:C-A_geoflow_effect_on_geometry": {
+      "values": [
+        -0.057508790969849066,
+        -0.0568867263793944,
+        -0.05666291236877452
+      ],
+      "mean": -0.057019476572672666,
+      "sd": 0.00043828599373071356,
+      "ci95_t": [
+        -0.058108327213070674,
+        -0.05593062593227466
+      ],
+      "negative_wins": 3,
+      "n": 3
+    },
+    "test:D-B_geoflow_effect_on_generic": {
+      "values": [
+        -0.05707944488525385,
+        -0.056496181488037145,
+        -0.05621412658691405
+      ],
+      "mean": -0.056596584320068345,
+      "sd": 0.00044130996575007987,
+      "ci95_t": [
+        -0.05769294752969496,
+        -0.05550022111044173
+      ],
+      "negative_wins": 3,
+      "n": 3
+    },
+    "test:C-D_geometry_vs_generic_under_geoflow": {
+      "values": [
+        0.00013794517517062843,
+        0.00013582038879356162,
+        0.0001173877716063032
+      ],
+      "mean": 0.00013038444519016443,
+      "sd": 1.1305477542816098e-05,
+      "ci95_t": [
+        0.00010229781536720922,
+        0.00015847107501311964
+      ],
+      "negative_wins": 0,
+      "n": 3
+    },
+    "test:A-B_geometry_vs_generic_under_adamw": {
+      "values": [
+        0.0005672912597658453,
+        0.0005263652801508201,
+        0.0005661735534667756
+      ],
+      "mean": 0.0005532766977944803,
+      "sd": 2.331267072937752e-05,
+      "ci95_t": [
+        0.0004953601391634355,
+        0.0006111932564255251
+      ],
+      "negative_wins": 0,
+      "n": 3
+    },
+    "test:interaction": {
+      "values": [
+        -0.00042934608459521684,
+        -0.00039054489135725845,
+        -0.00044878578186047235
+      ],
+      "mean": -0.0004228922526043159,
+      "sd": 2.9651969448536135e-05,
+      "ci95_t": [
+        -0.0004965577732573394,
+        -0.0003492267319512925
+      ],
+      "negative_wins": 3,
+      "n": 3
+    },
+    "test:C-geoflow_residual": {
+      "values": [
+        -0.029335540771484148,
+        -0.029294115066528015,
+        -0.02932775878906213
+      ],
+      "mean": -0.029319138209024764,
+      "sd": 2.2017221848217364e-05,
+      "ci95_t": [
+        -0.029373836434503413,
+        -0.029264439983546116
+      ],
+      "negative_wins": 3,
+      "n": 3
+    },
+    "test:A-adamw_residual": {
+      "values": [
+        -0.007199800491332731,
+        -0.007434801101684485,
+        -0.007480161666870266
+      ],
+      "mean": -0.007371587753295827,
+      "sd": 0.00015049100553879153,
+      "ci95_t": [
+        -0.00774545830836479,
+        -0.006997717198226865
+      ],
+      "negative_wins": 3,
+      "n": 3
+    },
+    "ood:C-A_geoflow_effect_on_geometry": {
+      "values": [
+        -0.0026629657745358415,
+        -0.002350526809691722,
+        -0.002604053497313963
+      ],
+      "mean": -0.0025391820271805088,
+      "sd": 0.000166014328948356,
+      "ci95_t": [
+        -0.002951617767716006,
+        -0.0021267462866450117
+      ],
+      "negative_wins": 3,
+      "n": 3
+    },
+    "ood:D-B_geoflow_effect_on_generic": {
+      "values": [
+        -0.0025836563110352984,
+        -0.0022838516235355044,
+        -0.0026155738830562214
+      ],
+      "mean": -0.002494360605875675,
+      "sd": 0.00018300329665158578,
+      "ci95_t": [
+        -0.0029490026879962707,
+        -0.002039718523755079
+      ],
+      "negative_wins": 3,
+      "n": 3
+    },
+    "ood:C-D_geometry_vs_generic_under_geoflow": {
+      "values": [
+        -8.014678954282317e-06,
+        9.479522713462529e-07,
+        5.0355911255017816e-05
+      ],
+      "mean": 1.4429728190693917e-05,
+      "sd": 3.1434060536305804e-05,
+      "ci95_t": [
+        -6.366310944238749e-05,
+        9.252256582377533e-05
+      ],
+      "negative_wins": 1,
+      "n": 3
+    },
+    "ood:A-B_geometry_vs_generic_under_adamw": {
+      "values": [
+        7.129478454626081e-05,
+        6.762313842756384e-05,
+        3.883552551275926e-05
+      ],
+      "mean": 5.9251149495527976e-05,
+      "sd": 1.7775503460087603e-05,
+      "ci95_t": [
+        1.5090787077455368e-05,
+        0.00010341151191360058
+      ],
+      "negative_wins": 0,
+      "n": 3
+    },
+    "ood:interaction": {
+      "values": [
+        -7.930946350054313e-05,
+        -6.667518615621759e-05,
+        1.1520385742258554e-05
+      ],
+      "mean": -4.4821421304834054e-05,
+      "sd": 4.920066724143277e-05,
+      "ci95_t": [
+        -0.00016705251880770928,
+        7.740967619804118e-05
+      ],
+      "negative_wins": 2,
+      "n": 3
+    },
+    "ood:C-geoflow_residual": {
+      "values": [
+        0.00044239425659231557,
+        0.0005959911346442581,
+        0.00044002723693914447
+      ],
+      "mean": 0.0004928042093919061,
+      "sd": 8.937033541833383e-05,
+      "ci95_t": [
+        0.0002707780704215006,
+        0.0007148303483623115
+      ],
+      "negative_wins": 0,
+      "n": 3
+    },
+    "ood:A-adamw_residual": {
+      "values": [
+        -0.0013704891204833203,
+        -0.0014201278686529761,
+        -0.0014647140502930256
+      ],
+      "mean": -0.001418443679809774,
+      "sd": 4.7135037057964094e-05,
+      "ci95_t": [
+        -0.0015355430533235928,
+        -0.001301344306295955
+      ],
+      "negative_wins": 3,
+      "n": 3
+    }
+  },
+  "mean_product_budget_by_cell": {
+    "adamw_generic": 0.0002,
+    "adamw_geometry": 0.0002,
+    "adamw_residual": 0.0002,
+    "geoflow_generic": 0.0002,
+    "geoflow_geometry": 0.0002,
+    "geoflow_residual": 0.0002
+  },
+  "G1_product_budget_matched_within_5pct": true,
+  "G2_C_beats_A_directional_2of3": true,
+  "G3_C_beats_D_directional_2of3": false,
+  "G4_negative_specific_interaction_directional_2of3": true,
+  "G5_OOD_noninferior": true,
+  "GO_TO_10_NEW_SEEDS": false,
+  "claim_boundary": "A GO supports only a preregistered replication. It is not evidence of physical collapse or universal geometry specificity."
+}
+Saved to k1_v57_geoflow_detg_2x2_screen_results

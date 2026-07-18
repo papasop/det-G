@@ -1,0 +1,385 @@
+ device = cuda
+{
+  "seed": 20260719,
+  "seeds": [
+    51307,
+    51511,
+    51709
+  ],
+  "model_name": "facebook/opt-125m",
+  "seq_len": 96,
+  "train_blocks": 500,
+  "val_blocks": 160,
+  "test_blocks": 500,
+  "ood_blocks": 500,
+  "batch": 4,
+  "epochs": 3,
+  "lr_aux": 0.0008,
+  "weight_decay": 0.0001,
+  "rank": 16,
+  "controller_hidden": 8,
+  "product_budget": 0.0002,
+  "product_budget_eps": 1e-12,
+  "max_factor_scale": 10000.0,
+  "grad_clip_aux": 1.0,
+  "patience": 2,
+  "sigma_max": 2.0,
+  "correction_cap": 0.1,
+  "ood_tolerance_nats": 0.02,
+  "budget_match_rtol": 0.05,
+  "calibration_quantiles": [
+    0.01,
+    0.1,
+    0.25,
+    0.5,
+    0.75,
+    0.9,
+    0.99
+  ],
+  "calibration_targets": [
+    0.6,
+    0.75,
+    0.9,
+    1.0,
+    1.1,
+    1.25,
+    1.4
+  ],
+  "calibration_tolerance": 0.05,
+  "outdir": "k1_v59_geometric_incremental_feature_screen_results",
+  "geoflow_commit": "17f87315c5e442e548721e82034111071f9f4f8f"
+}
+{'train': 500, 'val': 160, 'test': 500, 'ood': 500}
+Loading weights: 100% 197/197 [00:00<00:00, 8627.91it/s]PREFLIGHT PASS {'trainable': {'residual': 295836, 'generic_base': 295836, 'plus_geometry': 295836, 'plus_random': 295836, 'plus_entropy': 295836}, 'layers': 12, 'hidden': 768}
+
+################################################################################################
+PAIRED SEED 51307
+
+geoflow x residual       trainable=295836
+epoch 1: train=4.2971 val=4.0369 budget=2.000e-04
+epoch 2: train=4.2842 val=4.0218 budget=2.000e-04
+epoch 3: train=4.2671 val=4.0038 budget=2.000e-04
+
+geoflow x generic_base   trainable=295836
+epoch 1: train=4.2958 val=4.0323 budget=2.000e-04
+epoch 2: train=4.2732 val=4.0046 budget=2.000e-04
+epoch 3: train=4.2434 val=3.9758 budget=2.000e-04
+
+geoflow x plus_geometry  trainable=295836
+epoch 1: train=4.2958 val=4.0323 budget=2.000e-04
+epoch 2: train=4.2732 val=4.0046 budget=2.000e-04
+epoch 3: train=4.2434 val=3.9758 budget=2.000e-04
+
+geoflow x plus_random    trainable=295836
+epoch 1: train=4.2958 val=4.0323 budget=2.000e-04
+epoch 2: train=4.2732 val=4.0046 budget=2.000e-04
+epoch 3: train=4.2434 val=3.9758 budget=2.000e-04
+
+geoflow x plus_entropy   trainable=295836
+epoch 1: train=4.2958 val=4.0323 budget=2.000e-04
+epoch 2: train=4.2733 val=4.0046 budget=2.000e-04
+epoch 3: train=4.2434 val=3.9758 budget=2.000e-04
+
+################################################################################################
+PAIRED SEED 51511
+
+geoflow x residual       trainable=295836
+epoch 1: train=4.2970 val=4.0369 budget=2.000e-04
+epoch 2: train=4.2843 val=4.0219 budget=2.000e-04
+epoch 3: train=4.2673 val=4.0039 budget=2.000e-04
+
+geoflow x generic_base   trainable=295836
+epoch 1: train=4.2957 val=4.0323 budget=2.000e-04
+epoch 2: train=4.2733 val=4.0048 budget=2.000e-04
+epoch 3: train=4.2438 val=3.9760 budget=2.000e-04
+
+geoflow x plus_geometry  trainable=295836
+epoch 1: train=4.2957 val=4.0322 budget=2.000e-04
+epoch 2: train=4.2734 val=4.0048 budget=2.000e-04
+epoch 3: train=4.2438 val=3.9760 budget=2.000e-04
+
+geoflow x plus_random    trainable=295836
+epoch 1: train=4.2958 val=4.0323 budget=2.000e-04
+epoch 2: train=4.2733 val=4.0048 budget=2.000e-04
+epoch 3: train=4.2438 val=3.9760 budget=2.000e-04
+
+geoflow x plus_entropy   trainable=295836
+epoch 1: train=4.2957 val=4.0322 budget=2.000e-04
+epoch 2: train=4.2733 val=4.0048 budget=2.000e-04
+epoch 3: train=4.2437 val=3.9760 budget=2.000e-04
+
+################################################################################################
+PAIRED SEED 51709
+
+geoflow x residual       trainable=295836
+epoch 1: train=4.2970 val=4.0367 budget=2.000e-04
+epoch 2: train=4.2842 val=4.0217 budget=2.000e-04
+epoch 3: train=4.2669 val=4.0036 budget=2.000e-04
+
+geoflow x generic_base   trainable=295836
+epoch 1: train=4.2957 val=4.0321 budget=2.000e-04
+epoch 2: train=4.2731 val=4.0045 budget=2.000e-04
+epoch 3: train=4.2432 val=3.9757 budget=2.000e-04
+
+geoflow x plus_geometry  trainable=295836
+epoch 1: train=4.2957 val=4.0320 budget=2.000e-04
+epoch 2: train=4.2731 val=4.0045 budget=2.000e-04
+epoch 3: train=4.2432 val=3.9757 budget=2.000e-04
+
+geoflow x plus_random    trainable=295836
+epoch 1: train=4.2957 val=4.0320 budget=2.000e-04
+epoch 2: train=4.2731 val=4.0044 budget=2.000e-04
+epoch 3: train=4.2432 val=3.9757 budget=2.000e-04
+
+geoflow x plus_entropy   trainable=295836
+epoch 1: train=4.2956 val=4.0320 budget=2.000e-04
+epoch 2: train=4.2731 val=4.0044 budget=2.000e-04
+epoch 3: train=4.2432 val=3.9757 budget=2.000e-04
+
+MEAN ± SD
+                                   loss          accuracy               ece         
+                                  mean      std     mean      std     mean      std
+optimizer controller    split                                                      
+geoflow   generic_base  ood   4.086481 0.000281 0.341576 0.000094 0.028481 0.000076
+                        test  4.368779 0.000187 0.274160 0.000084 0.032901 0.000103
+                        val   3.991410 0.000142 0.323394 0.000150 0.023387 0.000069
+          plus_entropy  ood   4.086485 0.000304 0.341597 0.000079 0.028459 0.000049
+                        test  4.368764 0.000206 0.274257 0.000032 0.032803 0.000019
+                        val   3.991425 0.000145 0.323459 0.000199 0.023474 0.000387
+          plus_geometry ood   4.086497 0.000283 0.341535 0.000139 0.028517 0.000110
+                        test  4.368783 0.000192 0.274257 0.000052 0.032802 0.000069
+                        val   3.991414 0.000132 0.323416 0.000136 0.023622 0.000230
+          plus_random   ood   4.086483 0.000287 0.341576 0.000064 0.028477 0.000057
+                        test  4.368782 0.000187 0.274194 0.000154 0.032867 0.000167
+                        val   3.991408 0.000134 0.323524 0.000136 0.023486 0.000263
+          residual      ood   4.086678 0.000189 0.341799 0.000043 0.029601 0.000027
+                        test  4.381409 0.000201 0.273333 0.000137 0.034256 0.000133
+                        val   4.003761 0.000157 0.321571 0.000038 0.025071 0.000245
+
+============================================================================================================
+K1 V5.9 INCREMENTAL GEOMETRIC-FEATURE SCREEN
+============================================================================================================
+{
+  "protocol": "OPT-125M; fixed GeoFlow and shared 7-input MLP; one candidate feature changed; 3 untouched screening seeds; validation-only per-layer quantile calibration",
+  "geoflow_commit": "17f87315c5e442e548721e82034111071f9f4f8f",
+  "adaptive_arms": [
+    "generic_base",
+    "plus_geometry",
+    "plus_entropy",
+    "plus_random"
+  ],
+  "residual_anchor": "residual",
+  "comparisons": {
+    "test:plus_geometry-generic_base": {
+      "values": [
+        3.883361817003106e-06,
+        1.04408264167688e-05,
+        -5.16891478952175e-07
+      ],
+      "mean": 4.602432251606577e-06,
+      "sd": 5.514135661007222e-06,
+      "ci95_t": [
+        -9.096545656909843e-06,
+        1.8301410160122998e-05
+      ],
+      "negative_wins": 1,
+      "n": 3
+    },
+    "test:plus_geometry-plus_entropy": {
+      "values": [
+        5.342483521353358e-06,
+        1.7482757568743068e-05,
+        3.596687316953506e-05
+      ],
+      "mean": 1.9597371419877163e-05,
+      "sd": 1.5421316550005413e-05,
+      "ci95_t": [
+        -1.871439450794449e-05,
+        5.790913734769882e-05
+      ],
+      "negative_wins": 0,
+      "n": 3
+    },
+    "test:plus_geometry-plus_random": {
+      "values": [
+        3.593444824367964e-06,
+        3.0612945556285354e-06,
+        -3.730773925347819e-06
+      ],
+      "mean": 9.7465515154956e-07,
+      "sd": 4.083698455495135e-06,
+      "ci95_t": [
+        -9.170632952706461e-06,
+        1.1119943255805582e-05
+      ],
+      "negative_wins": 1,
+      "n": 3
+    },
+    "test:plus_geometry-residual": {
+      "values": [
+        -0.012591423034667315,
+        -0.012664871215820384,
+        -0.012619890213012575
+      ],
+      "mean": -0.012625394821166758,
+      "sd": 3.703220708885466e-05,
+      "ci95_t": [
+        -0.012717395348176128,
+        -0.012533394294157387
+      ],
+      "negative_wins": 3,
+      "n": 3
+    },
+    "ood:plus_geometry-generic_base": {
+      "values": [
+        1.7717361450841906e-05,
+        1.5193939209012797e-05,
+        1.3399124145330177e-05
+      ],
+      "mean": 1.543680826839496e-05,
+      "sd": 2.1693391601319935e-06,
+      "ci95_t": [
+        1.0047436106067807e-05,
+        2.082618043072211e-05
+      ],
+      "negative_wins": 0,
+      "n": 3
+    },
+    "ood:plus_geometry-plus_entropy": {
+      "values": [
+        -9.292602539012762e-06,
+        3.363800048905574e-05,
+        9.885787963348491e-06
+      ],
+      "mean": 1.1410395304463824e-05,
+      "sd": 2.1505871052966865e-05,
+      "ci95_t": [
+        -4.201746185568848e-05,
+        6.483825246461613e-05
+      ],
+      "negative_wins": 1,
+      "n": 3
+    },
+    "ood:plus_geometry-plus_random": {
+      "values": [
+        9.904861450138469e-06,
+        1.9594192504968078e-05,
+        1.0936737059985546e-05
+      ],
+      "mean": 1.3478597005030698e-05,
+      "sd": 5.321331887571952e-06,
+      "ci95_t": [
+        2.586088775683611e-07,
+        2.6698585132493037e-05
+      ],
+      "negative_wins": 0,
+      "n": 3
+    },
+    "ood:plus_geometry-residual": {
+      "values": [
+        -9.69085693354188e-05,
+        -0.000285091400145987,
+        -0.0001604309082035016
+      ],
+      "mean": -0.0001808102925616358,
+      "sd": 9.573235572721564e-05,
+      "ci95_t": [
+        -0.000418641841667523,
+        5.7021256544251346e-05
+      ],
+      "negative_wins": 3,
+      "n": 3
+    }
+  },
+  "mean_product_budget_by_cell": {
+    "geoflow_generic_base": 0.0002,
+    "geoflow_plus_entropy": 0.0002,
+    "geoflow_plus_geometry": 0.0002,
+    "geoflow_plus_random": 0.0002,
+    "geoflow_residual": 0.0002
+  },
+  "calibrated_throttle_summary": [
+    {
+      "cell": "geoflow_generic_base",
+      "split": "ood",
+      "lambda_mean": 0.989805969900555,
+      "lambda_std": 0.17124743700027467
+    },
+    {
+      "cell": "geoflow_generic_base",
+      "split": "test",
+      "lambda_mean": 0.9985129707654318,
+      "lambda_std": 0.16638021978239217
+    },
+    {
+      "cell": "geoflow_generic_base",
+      "split": "val",
+      "lambda_mean": 0.9963596918516688,
+      "lambda_std": 0.16833128204776182
+    },
+    {
+      "cell": "geoflow_plus_entropy",
+      "split": "ood",
+      "lambda_mean": 0.9910193696816763,
+      "lambda_std": 0.16338299428423245
+    },
+    {
+      "cell": "geoflow_plus_entropy",
+      "split": "test",
+      "lambda_mean": 0.9964755215115018,
+      "lambda_std": 0.16649419508543278
+    },
+    {
+      "cell": "geoflow_plus_entropy",
+      "split": "val",
+      "lambda_mean": 0.9954721476054854,
+      "lambda_std": 0.16630785702727735
+    },
+    {
+      "cell": "geoflow_plus_geometry",
+      "split": "ood",
+      "lambda_mean": 0.9877760693497128,
+      "lambda_std": 0.16975763461987178
+    },
+    {
+      "cell": "geoflow_plus_geometry",
+      "split": "test",
+      "lambda_mean": 0.9980453456640244,
+      "lambda_std": 0.1649907991753684
+    },
+    {
+      "cell": "geoflow_plus_geometry",
+      "split": "val",
+      "lambda_mean": 0.9960139108200868,
+      "lambda_std": 0.16641943041856092
+    },
+    {
+      "cell": "geoflow_plus_random",
+      "split": "ood",
+      "lambda_mean": 0.987686977677875,
+      "lambda_std": 0.17104483558734257
+    },
+    {
+      "cell": "geoflow_plus_random",
+      "split": "test",
+      "lambda_mean": 0.9967815917730332,
+      "lambda_std": 0.16547241275840335
+    },
+    {
+      "cell": "geoflow_plus_random",
+      "split": "val",
+      "lambda_mean": 0.9956070095714595,
+      "lambda_std": 0.16832371573481295
+    }
+  ],
+  "calibrated_test_lambda_mean_spread": 0.0020374492539300126,
+  "calibrated_test_lambda_std_spread": 0.0015033959100643757,
+  "G1_product_budget_matched_within_5pct": true,
+  "G2_throttle_mean_std_matched_after_validation_calibration": true,
+  "G3_plus_geometry_beats_base_entropy_random_ID_directional_2of3": false,
+  "G4_plus_geometry_beats_residual_ID_directional_2of3": true,
+  "G5_OOD_noninferior_to_adaptive_controls": true,
+  "GO_TO_10_NEW_SEEDS": false,
+  "claim_boundary": "A GO supports only a preregistered incremental-feature replication under fixed GeoFlow. It does not establish physical collapse, decoherence, or universal geometry superiority."
+}
+Saved to k1_v59_geometric_incremental_feature_screen_results

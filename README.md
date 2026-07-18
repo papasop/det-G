@@ -25,10 +25,22 @@ experiments/k1_throttle_v44_gpt2_screen.py       V4.4 GPT-2 three-seed screen
 experiments/k1_v45_gpt2_failure_diagnostic.py    V4.5 read-only diagnosis
 experiments/k1_v46_gpt2_mask_holdout.py          V4.6 mask/full-Lorentz holdout
 experiments/k1_v47_gpt2_pooled_audit.py          V4.7 pooled GPT-2 audit
+experiments/k1_v56_geometry_specificity_matched_controls.py
+                                                 V5.6 geometry specificity
+                                                 matched-controls screen
+experiments/k1_v57_geoflow_detg_2x2_screen.py    V5.7 GeoFlow/det-G 2x2 screen
+experiments/k1_v58_geoflow_controller_specificity_screen.py
+                                                 V5.8 controller-specificity
+                                                 screen
+experiments/k1_v59_geometric_incremental_feature_screen.py
+                                                 V5.9 incremental-feature
+                                                 screen
 results/audit_v43.json                           Preregistered ten-seed audit
 results/audit_v47_summary.json                   Compact V4.7 evidence summary
+results/raw_v5/                                  Raw V5.7-V5.9 Colab transcripts
 docs/V43_RESULT_BOUNDARIES.md                    Interpretation boundary
 docs/V47_EVIDENCE_AND_CLAIM_BOUNDARY.md          V4.7 claim boundary
+docs/V5_EVIDENCE_BOUNDARY.md                     V5 engineering evidence boundary
 docs/K1_LLM_EVIDENCE.md                          Research status through V4.7
 ```
 
@@ -122,6 +134,25 @@ visible.
 See `docs/K1_LLM_EVIDENCE.md` and
 `docs/V47_EVIDENCE_AND_CLAIM_BOUNDARY.md` for the full evidence boundary.
 
+## K1 LLM evidence through V5.9
+
+V5.6--V5.9 archive engineered low-rank controller screens in frozen language
+models without changing the manuscript's conditional theorem. The tested
+gauge-compatible GeoFlow direction substantially improved the three-seed
+OPT-125M screen relative to the matched-budget factor-Adam path, and
+token-adaptive throttles improved over a constant residual anchor in the tested
+protocol.
+
+The geometry-specificity gates did not pass. Explicit geometric controllers
+beat entropy-only, random-feature, and residual controls in V5.8, but did not
+beat the generic learned scalar gate. In V5.9, an explicit Lorentz-derived
+seventh feature supplied no measurable incremental benefit to a strong shared
+MLP. V5.7, V5.8, and V5.9 all report `GO_TO_10_NEW_SEEDS=false`.
+
+The raw V5.7--V5.9 Colab transcripts are stored under `results/raw_v5/`. No
+compact V5.6 audit JSON is included or inferred from rounded transcript text.
+See `docs/V5_EVIDENCE_BOUNDARY.md` for the V5 claim boundary.
+
 ### Reproducibility entry points
 
 The scripts are standalone Colab/GPU experiments:
@@ -132,6 +163,10 @@ python experiments/k1_throttle_v44_gpt2_screen.py
 python experiments/k1_v45_gpt2_failure_diagnostic.py
 python experiments/k1_v46_gpt2_mask_holdout.py
 python experiments/k1_v47_gpt2_pooled_audit.py
+python experiments/k1_v56_geometry_specificity_matched_controls.py
+python experiments/k1_v57_geoflow_detg_2x2_screen.py
+python experiments/k1_v58_geoflow_controller_specificity_screen.py
+python experiments/k1_v59_geometric_incremental_feature_screen.py
 ```
 
 V4.3 compares frozen DistilGPT-2 with parameter-matched adapter branches under
