@@ -1,21 +1,19 @@
 # Scientific claim boundary
 
-Permitted summary:
+TESC is an operational signed control-cost candidate on the perturbation plane
+`(deltaOmega, deltaDelta)`. The current package supports a bounded numerical
+Law-I-type result and operational covariance/non-fine-tuning diagnostics.
 
-> In a frozen public two-level control model, a predeclared
-> task-minus-centred-exposure functional has a nondegenerate Lorentzian Hessian
-> and a numerically complete two-branch finite zero set within the declared
-> bounded domain.
+It does not establish:
 
-Do not describe this package as establishing any of the following:
+- a unique or necessary derivation of TESC from Principle R;
+- identity between `G_TESC` and the native K=1 cost form;
+- a native Law-II transport;
+- the Law-III critical scale or `G`-null image theorem in the PASQAL proxy;
+- production PASQAL compilation, Cloud EMU or QPU behavior;
+- a physical spacetime metric, light cone, complex wavefunction, Born rule,
+  collapse or calibrated physical time.
 
-- a derivation of Law I from Principle R;
-- a native K=1 realization on PASQAL hardware;
-- Law II or Law III;
-- a physical light cone or spacetime metric;
-- a physical complex wavefunction, Born rule, or collapse;
-- production PASQAL compilation, Cloud EMU, or QPU validation.
-
-The metric is an operational control-cost Hessian on
-`(deltaOmega, deltaDelta)`, not a metric already proved to act on the quantum
-state tangent space.
+The public two-level simulation may differ materially from production and QPU
+dynamics. Positive results are model-internal; negative results are not a
+hardware-level falsification of K=1.
