@@ -1,0 +1,145 @@
+{
+  "title": "PASQAL PUBLIC TWO-LEVEL SIGNED-COST / INFORMATION-TIME DATA GENERATOR",
+  "version": "2.1",
+  "scientific_status": "SIGNED_COST_AND_TRANSPORT_GENERATED_NATIVE_K1_BRIDGE_NOT_ESTABLISHED",
+  "protocol_sha256": "8eac99eded7379da643913df28e39c82877b2bfad776cbdc364ba4c40a0e0c47",
+  "frozen_model": {
+    "segments": [
+      [
+        2.0,
+        0.25,
+        0.0,
+        0.32
+      ],
+      [
+        1.7,
+        -0.35,
+        1.1,
+        0.28
+      ],
+      [
+        2.2,
+        0.15,
+        2.2,
+        0.36
+      ],
+      [
+        1.8,
+        -0.2,
+        -0.7,
+        0.3
+      ]
+    ],
+    "omega_ref": 2.0,
+    "detuning_ref": 1.0,
+    "signed_cost": "endpoint_infidelity-(Rabi_exposure-value-tangent_at_reference)",
+    "information_time": "calibration iteration"
+  },
+  "direct_signed_cost_Hessian": [
+    [
+      -1.4753511828891064,
+      -0.04866380354240363
+    ],
+    [
+      -0.04866380354240363,
+      0.26618815485157654
+    ]
+  ],
+  "direct_signed_cost_eigenvalues": [
+    -1.4767099346081742,
+    0.2675469065706445
+  ],
+  "audits": {
+    "full_gradient": {
+      "G_estimated": [
+        [
+          -1.477463013036702,
+          -0.0482457892757862
+        ],
+        [
+          -0.0482457892757862,
+          0.26465225804795806
+        ]
+      ],
+      "G_eigenvalues": [
+        -1.4787980990478236,
+        0.26598734405907964
+      ],
+      "detG": -0.3933415787653464,
+      "A_estimated": [
+        [
+          -0.4283752760655102,
+          0.04813283468800211
+        ],
+        [
+          0.04808213259417401,
+          -0.26453720038015804
+        ]
+      ],
+      "A_singular_values": [
+        0.4414565483253423,
+        0.2514559299753238
+      ],
+      "rank_ratio": 0.5696051648326828,
+      "heldout_cost_mse": 8.743088301315604e-10,
+      "heldout_transport_mse": 1.0118575418136573e-06,
+      "Lorentzian_cost": true,
+      "rank_one_transport": false
+    },
+    "detuning_only": {
+      "G_estimated": [
+        [
+          -1.477463013036702,
+          -0.0482457892757862
+        ],
+        [
+          -0.0482457892757862,
+          0.26465225804795806
+        ]
+      ],
+      "G_eigenvalues": [
+        -1.4787980990478236,
+        0.26598734405907964
+      ],
+      "detG": -0.3933415787653464,
+      "A_estimated": [
+        [
+          0.0,
+          0.0
+        ],
+        [
+          0.04808213259417401,
+          -0.26453720038015804
+        ]
+      ],
+      "A_singular_values": [
+        0.26887138534953026,
+        1.5179168730717552e-17
+      ],
+      "rank_ratio": 5.645512894942232e-17,
+      "heldout_cost_mse": 8.743088301315604e-10,
+      "heldout_transport_mse": 1.9011955037862287e-07,
+      "Lorentzian_cost": true,
+      "rank_one_transport": true
+    }
+  },
+  "gates": {
+    "signed_cost_Lorentzian": true,
+    "full_gradient_transport_rank_one": false,
+    "detuning_only_policy_rank_one": true,
+    "rank_one_not_attributed_to_physics_when_only_policy_passes": true
+  },
+  "native_K1_PASQAL_bridge_supported": false,
+  "interpretation": "The cost signature is extracted from a frozen task-minus-exposure definition. Full-gradient transport is the non-policy diagnostic. A rank-one result appearing only after suppressing amplitude updates is controller design, not native K=1 dynamics.",
+  "next_required_step": "Feed full_gradient_bridge_data.csv to v2.0. If full-gradient rank one fails, do not use detuning-only success as native evidence; redesign the physical realization map or retain it as a control-policy implementation.",
+  "claim_boundary": "No-account deterministic two-level model and information-time calibration law; no Cloud/QPU, microscopic PASQAL action, Born rule, collapse or physical-wavefunction claim.",
+  "artifacts": {
+    "full_gradient_csv": "/workspace/scratch/b481b397d7c6/k1_pasqal_public_data_v2_1_results/full_gradient_bridge_data.csv",
+    "detuning_only_csv": "/workspace/scratch/b481b397d7c6/k1_pasqal_public_data_v2_1_results/detuning_only_bridge_data.csv"
+  },
+  "elapsed_seconds": 0.19565057754516602,
+  "environment": {
+    "python": "3.12.13",
+    "numpy": "2.3.5"
+  }
+}

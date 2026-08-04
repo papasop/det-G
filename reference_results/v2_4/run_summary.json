@@ -1,0 +1,59 @@
+{
+  "title": "K=1 / PASQAL CANDIDATE-3 ADAPTIVE FINITE ZERO-SET COMPLETENESS AUDIT",
+  "version": "2.4",
+  "scientific_status": "ADAPTIVE_BOUNDED_TWO_BRANCH_ZERO_SET_SUPPORTED",
+  "protocol_sha256": "feb1cda877ed8a3a22fc776e1e37c9933f3da48b23a038bfc9290eec7988762d",
+  "G_local": [
+    [
+      -1.4753511828891064,
+      -0.04866380354240363
+    ],
+    [
+      -0.04866380354240363,
+      0.26618815485157654
+    ]
+  ],
+  "G_eigenvalues": [
+    -1.4767099346081742,
+    0.2675469065706445
+  ],
+  "null_tangent_slopes": [
+    -2.17852440136806,
+    2.544159029772453
+  ],
+  "metrics": {
+    "sections": 64,
+    "initial_missing_sections": 2,
+    "recovered_sections": 2,
+    "still_missing_sections": 0,
+    "extra_branch_sections": 0,
+    "root_count_min": 2,
+    "root_count_max": 2,
+    "maximum_y_used": 0.32000000000000006,
+    "maximum_root_residual": 9.836575998178887e-14,
+    "tangent_slope_error": 0.007902179906199347
+  },
+  "gates": {
+    "Lorentzian_local_Hessian": true,
+    "all_sections_have_two_roots": true,
+    "no_extra_zero_branches_to_maximum_boundary": true,
+    "all_root_residuals_small": true,
+    "branches_tangent_to_Hessian_null_rays": true,
+    "adaptive_expansion_recovers_initial_missing_roots": true
+  },
+  "Law_I_d_finite_extension_supported": true,
+  "Law_I_e_complete_in_frozen_adaptive_domain": true,
+  "Law_I_f_Principle_R_origin_supported": false,
+  "complete_Law_I_candidate_supported": false,
+  "interpretation": "Adaptive expansion distinguishes roots leaving the original rectangle from genuine branch termination. Exhaustive numerical completeness is asserted only inside the frozen maximum rectangle.",
+  "next_required_step": "If I-e passes, derive/certify I-f from Principle R and seek an analytic implicit-function/Morse continuation theorem. If missing roots remain, inspect the listed sections rather than widening post hoc again.",
+  "claim_boundary": "Bounded numerical zero-set enumeration only; no global theorem, native Law-II/III, hardware or wavefunction claim.",
+  "artifacts": {
+    "adaptive_sections": "/workspace/scratch/b481b397d7c6/k1_pasqal_law1_adaptive_v2_4_results/adaptive_sections.json"
+  },
+  "elapsed_seconds": 11.389838457107544,
+  "environment": {
+    "python": "3.12.13",
+    "numpy": "2.3.5"
+  }
+}
