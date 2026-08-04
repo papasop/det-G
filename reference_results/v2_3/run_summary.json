@@ -1,0 +1,67 @@
+{
+  "title": "K=1 / PASQAL CANDIDATE-3 LAW-I FINITE-ZERO-SET / PROVENANCE AUDIT",
+  "version": "2.3",
+  "scientific_status": "FINITE_ZERO_SET_INCOMPLETE_FAIL_CLOSED",
+  "protocol_sha256": "8c40cd49a8e7dbe92b8d3ad18825fb8d24bdad3c6c5a707d4434f159ef586471",
+  "G_local": [
+    [
+      -1.4753511828891064,
+      -0.04866380354240363
+    ],
+    [
+      -0.04866380354240363,
+      0.26618815485157654
+    ]
+  ],
+  "G_eigenvalues": [
+    -1.4767099346081742,
+    0.2675469065706445
+  ],
+  "null_tangent_slopes": [
+    -2.17852440136806,
+    2.544159029772453
+  ],
+  "frozen_domain": {
+    "xmax": 0.08,
+    "ymax": 0.2
+  },
+  "metrics": {
+    "sections_audited": 64,
+    "two_root_section_fraction": 0.96875,
+    "finite_branch_x_extent": 0.08,
+    "minimum_off_origin_branch_separation": 0.09419074052572249,
+    "maximum_zero_residual": 9.836575998178887e-14,
+    "maximum_near_origin_tangent_slope_error": 0.007902179906198459,
+    "root_count_min": 1,
+    "root_count_max": 2
+  },
+  "gates": {
+    "I_d_nontrivial_finite_branches": true,
+    "I_d_zero_cost_residual": true,
+    "I_d_tangent_to_local_null_rays": true,
+    "I_e_exactly_two_roots_each_section": true,
+    "I_e_two_branches_separated_off_origin": true,
+    "I_e_no_extra_branches_in_frozen_box": false,
+    "I_f_task_and_exposure_independently_computable": true,
+    "I_f_dimensionless_normalization_frozen": true,
+    "I_f_coefficient_not_tuned_after_signature": true,
+    "I_f_native_Principle_R_certificate": false
+  },
+  "Law_I_d_finite_extension_supported": true,
+  "Law_I_e_bounded_complete_zero_set_supported": false,
+  "Law_I_f_Principle_R_origin_supported": false,
+  "complete_Law_I_candidate_supported": false,
+  "principle_R_certificate_sha256": null,
+  "certificate_error": null,
+  "interpretation": "I-d/e concern the exact finite zero level set of the frozen candidate cost, not merely its Hessian. I-e is numerical completeness only inside the declared rectangle. I-f remains open without a dependency-closed Principle-R derivation.",
+  "next_required_step": "If I-d/e pass, supply an analytic/provenance certificate deriving task-minus-exposure and its normalization from Principle R; then prove the two-branch zero set beyond the scanned box or state the result locally.",
+  "claim_boundary": "No-account two-level model, bounded numerical root enumeration, and operational provenance audit; no global zero-set theorem, native K=1 dynamics, Cloud/QPU or wavefunction claim.",
+  "artifacts": {
+    "section_roots": "/workspace/scratch/b481b397d7c6/k1_pasqal_law1_def_v2_3_results/section_roots.json"
+  },
+  "elapsed_seconds": 21.552810430526733,
+  "environment": {
+    "python": "3.12.13",
+    "numpy": "2.3.5"
+  }
+}
