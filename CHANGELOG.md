@@ -1,7 +1,11 @@
 # Changelog
 
-## 0.2.0 — 2026-08-05
+## 0.2.0-preflight — 2026-08-05
 
+- imported the checked `r_law1_final_audit_bundle_v0_2_0.zip` as a preflight
+  boundary/no-go/falsification toolkit;
+- recorded source ZIP SHA-256:
+  `db42420631fdc429d4179cc23fa28a56ba7c1d6b3242e0d86d202c96769af5d2`;
 - added the v3.0 bidirectional zero-set binding / falsification audit;
 - added the v3.1 two-channel origin audit;
 - added the v3.2 cross-protocol zero-cone naturality audit;

@@ -36,9 +36,18 @@ selects TESC, `lambda=1`, physical spacetime, or a wavefunction.
 | Does Principle R uniquely select TESC or `lambda=1`? | No |
 | Does this validate Law II/III, spacetime, or a wavefunction? | No |
 
-## v0.2.0 final audit bundle
+## v0.2.0-preflight audit bundle
 
-The v0.2.0 bundle adds three fail-closed route and falsification audits:
+The `r_law1_final_audit_bundle_v0_2_0.zip` archive has been checked and
+imported as `v0.2.0-preflight`.
+
+Source ZIP SHA-256:
+
+```text
+db42420631fdc429d4179cc23fa28a56ba7c1d6b3242e0d86d202c96769af5d2
+```
+
+The bundle adds three fail-closed route and falsification audits:
 
 | Audit | Question | Default result |
 |---|---|---|
@@ -46,8 +55,9 @@ The v0.2.0 bundle adds three fail-closed route and falsification audits:
 | v3.1 two-channel origin | Does scalar Information-Time fail as a single channel, and does an independent two-channel product give `det(G)<0`? | Single-channel obstruction and conditional mechanism certified; native channel provenance open |
 | v3.2 cross-protocol cone naturality | Do independently sourced protocols recover one common unordered zero-cone class under frozen maps? | Calibration only; independent protocol data required |
 
-These audits freeze the next theory boundary. They are not additional
-parameter scans, and they do not replace `python run_r_to_law1.py`.
+These audits freeze the next theory boundary as a no-go and prospective
+falsification toolkit. They are not additional parameter scans, and they do not
+replace `python run_r_to_law1.py`.
 
 ## Single-channel obstruction and two-channel candidate
 
@@ -152,7 +162,7 @@ python run_r_to_law1.py --protocol protocols/frozen_tesc_protocol.json
 python run_r_to_law1.py --outdir reference_results/v0.1.0
 ```
 
-The v0.2.0-preflight route audit is separate from the public v0.1.0 entry:
+The v0.2.0-preflight audits are separate from the public v0.1.0 entry:
 
 ```bash
 python audits/r_law1_bidirectional_zero_set_audit_v3_0.py --outdir reference_results/v0.2.0/v3_0
@@ -207,7 +217,7 @@ The run writes:
 | `VALIDATION_REPORT.md` | numerical result details |
 | `CLAIM_BOUNDARY.md` | unsupported claims and scientific boundary |
 | `docs/TWO_CHANNEL_ORIGIN.md` | v3.1 route decision note |
-| `docs/V0_2_0_FINAL_AUDIT_BUNDLE.md` | v0.2.0 bundle summary and boundary |
+| `docs/V0_2_0_PREFLIGHT_AUDIT_BUNDLE.md` | v0.2.0-preflight bundle summary and boundary |
 | `certificates/native_r_selection.template.json` | template for source-bound provenance certificates |
 | `archive/` | historical one-file audits, not the public interface |
 
