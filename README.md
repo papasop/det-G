@@ -210,6 +210,7 @@ The run writes:
 | `src/r_to_law1/finite_zero_set.py` | finite signed zero-contrast branch tracing |
 | `src/r_to_law1/covariance.py` | covariance, unit-rescaling and lambda sensitivity audits |
 | `src/r_to_law1/provenance.py` | physical zero-set binding and native unique-TESC provenance gates |
+| `audits/README.md` | scope note for prospective fail-closed audit interfaces |
 | `audits/r_law1_bidirectional_zero_set_audit_v3_0.py` | prospective independent \(F\) bidirectional binding audit |
 | `audits/r_law1_two_channel_origin_audit_v3_1.py` | v0.2.0-preflight single-channel obstruction and two-channel mechanism audit |
 | `audits/r_law1_cross_protocol_cone_audit_v3_2.py` | cross-protocol zero-cone naturality audit |
@@ -219,6 +220,7 @@ The run writes:
 | `docs/TWO_CHANNEL_ORIGIN.md` | v3.1 route decision note |
 | `docs/V0_2_0_PREFLIGHT_AUDIT_BUNDLE.md` | v0.2.0-preflight bundle summary and boundary |
 | `certificates/native_r_selection.template.json` | template for source-bound provenance certificates |
+| `tests/` | lightweight regression tests for theorem gates, provenance gates and fail-closed audits |
 | `archive/` | historical one-file audits, not the public interface |
 
 ## Citations and context

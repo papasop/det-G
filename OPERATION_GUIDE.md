@@ -47,3 +47,12 @@ class.
 ## 3. Recommended citation level
 
 Call this release a **conditional theorem and signed zero-set representative package**. Do not describe it as an unconditional derivation of spacetime, quantum mechanics, or physical zero-cost branches.
+
+## 4. Run lightweight regression tests
+
+```bash
+PYTHONPATH=src python -m unittest discover -s tests
+```
+
+These tests check theorem gate semantics, provenance-gate separation and the
+fail-closed status of the prospective two-channel certificate template.

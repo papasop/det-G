@@ -32,21 +32,26 @@ def audit_gl2_covariance(protocol: dict[str, Any]) -> dict[str, Any]:
         transformed_hessian = hessian_2d(lambda y: function(transform @ np.asarray(y)), transformed_fd)
         target = transform.T @ G @ transform
         hessian_residual = float(np.linalg.norm(transformed_hessian - target) / max(np.linalg.norm(target), 1e-15))
-        zero_set_residual = max((abs(function(transform @ np.linalg.solve(transform, point))) for point in points), default=0.0)
+        pullback_identity_residual = max(
+            (abs(function(transform @ np.linalg.solve(transform, point))) for point in points),
+            default=0.0,
+        )
         records.append(
             {
                 "detS": float(np.linalg.det(transform)),
                 "condition": float(np.linalg.cond(transform)),
                 "hessian_residual": hessian_residual,
-                "zero_set_residual": float(zero_set_residual),
+                "zero_set_pullback_identity_residual": float(pullback_identity_residual),
                 "signature_preserved": bool(np.linalg.det(transformed_hessian) < 0),
             }
         )
     maximum_hessian_residual = max(record["hessian_residual"] for record in records)
-    maximum_zero_residual = max(record["zero_set_residual"] for record in records)
+    maximum_pullback_identity_residual = max(
+        record["zero_set_pullback_identity_residual"] for record in records
+    )
     gates = {
         "GL2_Hessian_covariance": maximum_hessian_residual < 2e-5,
-        "GL2_finite_zero_set_covariance": maximum_zero_residual < 1e-10,
+        "GL2_zero_set_pullback_identity": maximum_pullback_identity_residual < 1e-10,
         "signature_preserved_all_GL2_trials": all(record["signature_preserved"] for record in records),
     }
     return {
@@ -57,7 +62,7 @@ def audit_gl2_covariance(protocol: dict[str, Any]) -> dict[str, Any]:
             "signed_zero_contrast_points": len(points),
             "GL2_trials": len(records),
             "maximum_GL2_Hessian_relative_residual": maximum_hessian_residual,
-            "maximum_GL2_signed_zero_set_residual": maximum_zero_residual,
+            "maximum_GL2_zero_set_pullback_identity_residual": maximum_pullback_identity_residual,
         },
     }
 

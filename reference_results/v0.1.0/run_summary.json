@@ -60,7 +60,7 @@
       "finite_two_branch_zero_contrast_set_observed": true,
       "finite_zero_contrast_residual_pass": true,
       "no_extra_zero_contrast_branch_in_frozen_domain": true,
-      "signed_zero_set_GL2_covariance_pass": true,
+      "signed_zero_set_GL2_pullback_identity_pass": true,
       "unit_rescaling_signature_preserved": true,
       "lambda_sensitivity_pass": true,
       "operational_inputs_pass": true
@@ -145,7 +145,7 @@
     "signed_zero_contrast_points": 12,
     "GL2_trials": 256,
     "maximum_GL2_Hessian_relative_residual": 1.4896961083155618e-07,
-    "maximum_GL2_signed_zero_set_residual": 7.793765632868599e-14,
+    "maximum_GL2_zero_set_pullback_identity_residual": 7.793765632868599e-14,
     "Lorentzian_lambda_count": 9,
     "lambda_count": 9
   },

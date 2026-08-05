@@ -30,9 +30,13 @@ not a global analytic theorem and not a physical zero-cost certificate.
 ## Covariance audit
 
 - `GL(2)` Hessian covariance maximum relative residual: approximately `1.49e-7`
-- finite signed-zero-set covariance maximum residual: approximately `7.79e-14`
+- finite signed-zero-set pullback identity maximum residual: approximately `7.79e-14`
 - signature preserved under the declared extreme unit rescalings
 - Lorentzian behavior persists throughout the frozen coefficient scan `lambda in [0.25,4]`; therefore it is not a `lambda=1` knife-edge, but this does not derive the coefficient.
+
+The finite zero-set calculation here is a pullback identity check on already
+found zero-contrast points. It is not an independent root search in transformed
+coordinates.
 
 ## Status
 

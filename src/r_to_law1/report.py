@@ -44,7 +44,9 @@ def emit_report(
         "finite_two_branch_zero_contrast_set_observed": finite_branches["gates"]["all_sections_have_two_roots"],
         "finite_zero_contrast_residual_pass": finite_branches["gates"]["all_root_residuals_small"],
         "no_extra_zero_contrast_branch_in_frozen_domain": finite_branches["gates"]["no_extra_zero_branches_to_maximum_boundary"],
-        "signed_zero_set_GL2_covariance_pass": covariance["gates"]["GL2_finite_zero_set_covariance"],
+        "signed_zero_set_GL2_pullback_identity_pass": covariance["gates"][
+            "GL2_zero_set_pullback_identity"
+        ],
         "unit_rescaling_signature_preserved": units["gates"]["signature_preserved_under_extreme_unit_rescaling"],
         "lambda_sensitivity_pass": sensitivity["gates"]["Lorentzian_not_unique_to_lambda_one"],
         "operational_inputs_pass": operational_inputs["gate"],
