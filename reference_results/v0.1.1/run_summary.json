@@ -54,8 +54,11 @@
   "conditional_theorem_premises_gate": false,
   "principle_R_local_zero_mode_assumed": true,
   "zero_mode_certificate_supplied": false,
+  "zero_mode_path_data_supplied": false,
   "zero_mode_certificate_source_bound": false,
+  "zero_mode_path_data_source_bound": false,
   "zero_mode_certificate_gate": false,
+  "zero_mode_errors": [],
   "signed_TESC_zero_set_representative": {
     "gates": {
       "G_real_symmetric": true,

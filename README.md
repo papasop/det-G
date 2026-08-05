@@ -48,6 +48,7 @@ signed_TESC_zero_set_representative.gate = true
 physical_zero_set_binding_certificate_gate = false
 native_unique_TESC_selection_gate = false
 zero_mode_certificate_gate = false
+zero_mode_path_data_source_bound = false
 R_plus_declared_structure_to_LawI_certified = false
 all_scientific_gates_pass = false
 ```
@@ -168,14 +169,40 @@ predeclared nonnegative F
 -> conditional R-to-Law-I bridge
 ```
 
-It is implemented by `run_realizability_zero_mode.py` and the
-`src/realizability/` package. The interface checks source-bound path and cost
-certificates against `protocols/frozen_realizability_protocol.json`.
+It is implemented by `run_realizability_zero_mode.py`, optional arguments on
+`run_r_to_law1.py`, and the `src/realizability/` package. The interface checks
+source-bound path and cost certificates against
+`protocols/frozen_realizability_protocol.json`.
+
+To test a real upstream witness, the certificate and path data must be supplied
+together:
+
+```bash
+python run_r_to_law1.py \
+  --zero-mode-protocol protocols/frozen_realizability_protocol.json \
+  --zero-mode-certificate path/to/zero_mode_certificate.json \
+  --zero-mode-path-data path/to/path_data.json
+```
+
+The certificate must bind the path-data file by SHA-256. If the certificate is
+missing, the path-data file is missing, a required field is malformed, or the
+path-data hash is stale, all production zero-mode gates fail closed. The
+synthetic self-test is never substituted for production evidence.
 
 This code does not prove Principle R is a universal law of nature. Without
 independent path/cost data and source-bound certificates, it reports only
 pipeline self-tests. The signed-TESC result remains a conditional
 representative; K=1 dynamics is not connected in this interface.
+
+The interface distinguishes five levels:
+
+| Level | Meaning | Current committed reference run |
+|---|---|---|
+| A. upstream audit interface implemented | Software can check a path-level realization witness contract | Yes |
+| B. source-bound upstream witness certified | Independent path/cost data and certificate pass all zero-mode gates | No data in committed reference |
+| C. cross-protocol physical zero-set binding certified | \(Z(F)\cap V = Z(q)\cap V\) is independently certified | No |
+| D. conditional Law-I representation certified | Upstream witness plus certified zero-set binding closes the declared local bridge | No |
+| E. K=1 Law II/III | Downstream theory beyond this repository | Outside scope |
 
 ## RC Zero-Structure Interface
 

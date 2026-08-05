@@ -28,6 +28,32 @@ from realizability.protocol import load_realizability_protocol  # noqa: E402
 from realizability.zero_mode import audit_principle_r_witness  # noqa: E402
 
 
+def load_json_file(path: str | Path) -> dict:
+    source = Path(path)
+    if not source.is_file():
+        raise FileNotFoundError(f"JSON file not found: {path}")
+    data = json.loads(source.read_text())
+    if not isinstance(data, dict):
+        raise ValueError(f"JSON file must contain an object: {path}")
+    return data
+
+
+def fail_closed_zero_mode(
+    error: str,
+    *,
+    certificate_supplied: bool,
+    path_data_supplied: bool,
+) -> dict:
+    return {
+        "certificate_supplied": certificate_supplied,
+        "path_data_supplied": path_data_supplied,
+        "principle_R_witness_source_bound": False,
+        "path_data_source_bound": False,
+        "principle_R_witness_certified": False,
+        "errors": [error],
+    }
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(
         description="Recompute the Principle-R to Lorentzian Law-I evidence package."
@@ -39,7 +65,12 @@ def main() -> int:
         help="Override the provenance certificate path declared by the protocol.",
     )
     parser.add_argument("--outdir", default="reference_results/v0.1.1")
+    parser.add_argument(
+        "--zero-mode-protocol",
+        default="protocols/frozen_realizability_protocol.json",
+    )
     parser.add_argument("--zero-mode-certificate", default="")
+    parser.add_argument("--zero-mode-path-data", default="")
     args, unknown = parser.parse_known_args()
     if unknown:
         print("[notice] ignored notebook/kernel arguments:", unknown)
@@ -48,21 +79,37 @@ def main() -> int:
         protocol = dict(protocol)
         protocol["native_certificate"] = args.certificate
     provenance = audit_provenance(protocol["native_certificate"])
-    if args.zero_mode_certificate:
-        zero_protocol = load_realizability_protocol()
-        zero_certificate = load_zero_mode_certificate(args.zero_mode_certificate)
-        zero_mode = {
-            "certificate_supplied": True,
-            **audit_principle_r_witness(
-                zero_protocol,
-                zero_certificate,
-                certificate_base_dir=Path(args.zero_mode_certificate).parent,
-            ),
-        }
+    if args.zero_mode_certificate or args.zero_mode_path_data:
+        if not args.zero_mode_certificate or not args.zero_mode_path_data:
+            zero_mode = fail_closed_zero_mode(
+                "zero-mode certificate and path data must be supplied together",
+                certificate_supplied=bool(args.zero_mode_certificate),
+                path_data_supplied=bool(args.zero_mode_path_data),
+            )
+        else:
+            try:
+                zero_protocol = load_realizability_protocol(args.zero_mode_protocol)
+                zero_certificate = load_zero_mode_certificate(args.zero_mode_certificate)
+                zero_path_record = load_json_file(args.zero_mode_path_data)
+                zero_mode = audit_principle_r_witness(
+                    zero_protocol,
+                    zero_certificate,
+                    certificate_base_dir=Path(args.zero_mode_certificate).parent,
+                    path_record=zero_path_record,
+                    path_record_source_path=args.zero_mode_path_data,
+                )
+            except (OSError, ValueError, json.JSONDecodeError) as exc:
+                zero_mode = fail_closed_zero_mode(
+                    str(exc),
+                    certificate_supplied=bool(args.zero_mode_certificate),
+                    path_data_supplied=bool(args.zero_mode_path_data),
+                )
     else:
         zero_mode = {
             "certificate_supplied": False,
+            "path_data_supplied": False,
             "principle_R_witness_source_bound": False,
+            "path_data_source_bound": False,
             "principle_R_witness_certified": False,
         }
     physical_binding_gate = provenance["physical_zero_set_binding_provenance"]["gate"]

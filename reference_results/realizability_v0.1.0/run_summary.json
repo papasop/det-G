@@ -2,8 +2,6 @@
   "title": "Realizability zero-mode witness audit",
   "version": "0.1.0",
   "protocol_sha256": "9fe70702d57bf0fa635a55a09df15b32badf9fbce71d7c0d8cc361def3753c02",
-  "certificate_supplied": false,
-  "path_data_supplied": false,
   "gates": {
     "R1_state_admissible_domain_source_bound": false,
     "R2_protocol_and_nonnegative_cost_predeclared": false,
@@ -12,18 +10,38 @@
     "R5_accumulated_cost_zero": false,
     "R6_local_zero_mode_positive_measure": false,
     "R7_same_meter_positive_control_nonzero": false,
-    "R8_witness_independent_of_target_G_TESC": false
+    "R8_witness_independent_of_target_G_TESC": false,
+    "R9_path_data_source_bound": false
   },
   "path_level_R_pipeline_supported": false,
+  "certificate_supplied": false,
+  "path_data_supplied": false,
+  "path_record_validation": {
+    "valid": false,
+    "errors": [
+      "path record missing or not a JSON object"
+    ]
+  },
+  "source_bound_gates": {
+    "cost_source_bound": false,
+    "path_source_bound": false,
+    "admissible_class_source_bound": false,
+    "vacuum_sector_source_bound": false,
+    "path_data_source_bound": false,
+    "path_data_source_matches_argument": false
+  },
   "zero_infimum_certified": false,
   "attained_nonconstant_zero_cost_path": false,
   "local_zero_mode_positive_measure": false,
   "principle_R_witness_source_bound": false,
+  "path_data_source_bound": false,
   "principle_R_witness_certified": false,
   "self_tests": {
     "synthetic_nonconstant_zero_cost_path_pass": true
   },
   "circular_negative_control": false,
+  "all_zero_mode_certificate_gates_pass": false,
+  "universal_Principle_R_proved": false,
   "all_scientific_gates_pass": false,
   "claim_boundary": "This path-level interface does not prove Principle R as a universal law and does not prove physical TESC binding, spacetime, Law-II/III or wavefunction claims."
 }
