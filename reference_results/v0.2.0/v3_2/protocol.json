@@ -1,0 +1,13 @@
+{
+  "title": "PRINCIPLE R -> LAW-I CROSS-PROTOCOL ZERO-CONE NATURALITY AUDIT",
+  "version": "3.2",
+  "criteria": {
+    "F_zero_tol": 1e-08,
+    "q_zero_tol": 0.0002,
+    "minimum_zero_points": 12,
+    "maximum_violation_rate": 0.05,
+    "cone_residual_tol": 0.02,
+    "branch_angle_tol": 0.02
+  },
+  "protocol_sha256": "9d629cff6eab220ba272fcd11eb0c9ad8a8eadc5c06077b980e0141ec0ebb369"
+}

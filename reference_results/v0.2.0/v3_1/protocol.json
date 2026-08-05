@@ -1,0 +1,7 @@
+{
+  "title": "PRINCIPLE R -> LAW-I SINGLE-CHANNEL NO-GO / TWO-CHANNEL ORIGIN AUDIT",
+  "version": "3.1",
+  "tests": "single-channel no-go; two-channel product; circular negative control",
+  "claim_rule": "F=|L_plus L_minus|/H with H>0; channel definitions must predate and not depend on TESC",
+  "protocol_sha256": "30c168dee6c933cef791c52dabfeab9e40159955c7eae833c782d15bb48e82c4"
+}

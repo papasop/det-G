@@ -36,6 +36,19 @@ selects TESC, `lambda=1`, physical spacetime, or a wavefunction.
 | Does Principle R uniquely select TESC or `lambda=1`? | No |
 | Does this validate Law II/III, spacetime, or a wavefunction? | No |
 
+## v0.2.0 final audit bundle
+
+The v0.2.0 bundle adds three fail-closed route and falsification audits:
+
+| Audit | Question | Default result |
+|---|---|---|
+| v3.0 bidirectional zero-set binding | Does an independently defined nonnegative \(F\) satisfy both \(F=0\Rightarrow q=0\) and \(q=0\Rightarrow F=0\)? | Calibration only; independent \(F\) data required |
+| v3.1 two-channel origin | Does scalar Information-Time fail as a single channel, and does an independent two-channel product give `det(G)<0`? | Single-channel obstruction and conditional mechanism certified; native channel provenance open |
+| v3.2 cross-protocol cone naturality | Do independently sourced protocols recover one common unordered zero-cone class under frozen maps? | Calibration only; independent protocol data required |
+
+These audits freeze the next theory boundary. They are not additional
+parameter scans, and they do not replace `python run_r_to_law1.py`.
+
 ## Single-channel obstruction and two-channel candidate
 
 For the scalar Information-Time realization
@@ -142,7 +155,9 @@ python run_r_to_law1.py --outdir reference_results/v0.1.0
 The v0.2.0-preflight route audit is separate from the public v0.1.0 entry:
 
 ```bash
-python audits/r_law1_two_channel_origin_audit_v3_1.py
+python audits/r_law1_bidirectional_zero_set_audit_v3_0.py --outdir reference_results/v0.2.0/v3_0
+python audits/r_law1_two_channel_origin_audit_v3_1.py --outdir reference_results/v0.2.0/v3_1
+python audits/r_law1_cross_protocol_cone_audit_v3_2.py --outdir reference_results/v0.2.0/v3_2
 ```
 
 ## Expected run result
@@ -171,8 +186,9 @@ The run writes:
 | `reference_results/v0.1.0/run_summary.json` | central status, gates, Hessian, rays and metrics |
 | `reference_results/v0.1.0/finite_zero_branches.json` | bounded finite signed zero-contrast branch records |
 | `reference_results/v0.1.0/covariance_records.json` | `GL(2)`, unit-rescaling and sensitivity records |
-| `reference_results/v0.2.0/run_summary.json` | v3.1 scalar obstruction and conditional two-channel mechanism |
-| `reference_results/v0.2.0/protocol.json` | frozen v3.1 audit protocol |
+| `reference_results/v0.2.0/v3_0/run_summary.json` | bidirectional physical zero-set binding calibration |
+| `reference_results/v0.2.0/v3_1/run_summary.json` | scalar obstruction and conditional two-channel mechanism |
+| `reference_results/v0.2.0/v3_2/run_summary.json` | cross-protocol cone naturality calibration |
 
 ## File navigation
 
@@ -184,11 +200,14 @@ The run writes:
 | `src/r_to_law1/finite_zero_set.py` | finite signed zero-contrast branch tracing |
 | `src/r_to_law1/covariance.py` | covariance, unit-rescaling and lambda sensitivity audits |
 | `src/r_to_law1/provenance.py` | physical zero-set binding and native unique-TESC provenance gates |
+| `audits/r_law1_bidirectional_zero_set_audit_v3_0.py` | prospective independent \(F\) bidirectional binding audit |
 | `audits/r_law1_two_channel_origin_audit_v3_1.py` | v0.2.0-preflight single-channel obstruction and two-channel mechanism audit |
+| `audits/r_law1_cross_protocol_cone_audit_v3_2.py` | cross-protocol zero-cone naturality audit |
 | `MATHEMATICAL_STATEMENT.md` | detailed theorem statement and proof boundary |
 | `VALIDATION_REPORT.md` | numerical result details |
 | `CLAIM_BOUNDARY.md` | unsupported claims and scientific boundary |
 | `docs/TWO_CHANNEL_ORIGIN.md` | v3.1 route decision note |
+| `docs/V0_2_0_FINAL_AUDIT_BUNDLE.md` | v0.2.0 bundle summary and boundary |
 | `certificates/native_r_selection.template.json` | template for source-bound provenance certificates |
 | `archive/` | historical one-file audits, not the public interface |
 

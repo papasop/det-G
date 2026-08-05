@@ -1,0 +1,22 @@
+{
+  "title": "PRINCIPLE R -> LAW-I BIDIRECTIONAL ZERO-SET BINDING / FALSIFICATION AUDIT",
+  "version": "3.0",
+  "scientific_status": "PIPELINE_CALIBRATED_INDEPENDENT_PHYSICAL_F_DATA_REQUIRED",
+  "protocol_sha256": "6c23c3adb40cc7dcf6d211ae25eff369dc834f54b2ff1bfa9af4d3c80b0f3d05",
+  "data_supplied": false,
+  "data_sha256": null,
+  "self_tests": {
+    "synthetic_positive_control_pass": true,
+    "synthetic_wrong_zero_set_rejected": true
+  },
+  "empirical_audit": null,
+  "all_scientific_gates_pass": false,
+  "interpretation": "This audit tests Z(F)\u2229V=Z(q_TESC)\u2229V in both directions. Failure falsifies the current F/V/TESC binding, not Principle R, the analytic 2D theorem, or every possible Law-I representative.",
+  "claim_boundary": "No independent F data means calibration only. A pass is local model-bound zero-set evidence, not spacetime, Law-II/III, wavefunction, Born-rule or hardware evidence.",
+  "next_required_step": "Populate the template using an independently defined nonnegative realization cost F, freeze it before inspecting q/TESC agreement, then rerun with --data FILE.",
+  "elapsed_seconds": 0.06871700286865234,
+  "environment": {
+    "python": "3.12.13",
+    "numpy": "2.3.5"
+  }
+}

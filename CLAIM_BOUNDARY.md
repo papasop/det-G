@@ -32,6 +32,8 @@ Do not claim that:
 - `lambda=1` has been derived;
 - scalar Information-Time by itself derives the complete Lorentzian two-ray null cone;
 - the two-channel product mechanism has native \(L_+\), \(L_-\) provenance from Principle R;
+- v3.0 calibration without independent \(F\) data proves physical zero-set binding;
+- v3.2 calibration without independent protocol data proves cross-protocol naturality;
 - finite-domain root searches prove global zero-set completeness;
 - signed TESC zero-contrast branches have been certified as physical zero-cost branches;
 - `F=q` or `D^2F=G_TESC` has been established for the nonnegative realization cost;
