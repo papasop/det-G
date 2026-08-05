@@ -9,7 +9,9 @@ python run_r_to_law1.py
 Expected central fields:
 
 ```text
-exact_conditional_theorem.gate = true
+conditional_theorem_premises_gate = true
+theorem_proof_kind = analytic_linear_algebra
+theorem_numerically_proved = false
 operational_TESC_witness.gate = true
 native_R_selection.gate = false
 conditional_R_to_LawI_supported = true

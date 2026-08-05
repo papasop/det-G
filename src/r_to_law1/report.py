@@ -62,11 +62,14 @@ def emit_report(
             else "R_TO_LAW_I_PREMISES_OR_WITNESS_INCOMPLETE_FAIL_CLOSED"
         ),
         "logical_statement": "Principle R + A_2D,C2,stationary,complete,symmetric,nondegenerate => det(G)<0, signature (1,1), two null rays",
-        "exact_conditional_theorem": {
+        "theorem_proof_kind": "analytic_linear_algebra",
+        "theorem_numerically_proved": False,
+        "conditional_theorem": {
             "premises": theorem["premises"],
             "conclusions": theorem["conclusions"],
-            "gate": theorem["gate"],
+            "premises_gate": theorem["gate"],
         },
+        "conditional_theorem_premises_gate": theorem["gate"],
         "operational_TESC_witness": {
             "gates": tesc_witness_gates,
             "gate": tesc_witness_gate,

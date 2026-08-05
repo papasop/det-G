@@ -3,7 +3,9 @@
   "version": "0.1.0",
   "scientific_status": "CONDITIONAL_R_PLUS_STRUCTURE_IMPLIES_LAW_I_TESC_WITNESS_SUPPORTED_NATIVE_SELECTION_OPEN",
   "logical_statement": "Principle R + A_2D,C2,stationary,complete,symmetric,nondegenerate => det(G)<0, signature (1,1), two null rays",
-  "exact_conditional_theorem": {
+  "theorem_proof_kind": "analytic_linear_algebra",
+  "theorem_numerically_proved": false,
+  "conditional_theorem": {
     "premises": {
       "R_requires_nonzero_zero_cost_direction": true,
       "process_space_is_real_two_dimensional": true,
@@ -19,8 +21,9 @@
       "signature_must_be_1_1": true,
       "null_set_is_two_distinct_real_rays": true
     },
-    "gate": true
+    "premises_gate": true
   },
+  "conditional_theorem_premises_gate": true,
   "operational_TESC_witness": {
     "gates": {
       "G_real_symmetric": true,
