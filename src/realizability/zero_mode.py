@@ -84,6 +84,24 @@ def _as_float_array(value: Any, *, name: str, ndim: int, errors: list[str]) -> n
     return array
 
 
+def _finite_difference_path_derivative(
+    parameter_grid: np.ndarray,
+    path_points: np.ndarray,
+) -> np.ndarray:
+    derivatives = np.zeros_like(path_points, dtype=float)
+    for index in range(len(parameter_grid)):
+        if index == 0:
+            left, right = 0, 1
+        elif index == len(parameter_grid) - 1:
+            left, right = len(parameter_grid) - 2, len(parameter_grid) - 1
+        else:
+            left, right = index - 1, index + 1
+        derivatives[index] = (
+            path_points[right] - path_points[left]
+        ) / (parameter_grid[right] - parameter_grid[left])
+    return derivatives
+
+
 def validate_path_record(path_record: dict[str, Any] | None) -> dict[str, Any]:
     empty_arrays = {
         "parameter_grid": np.asarray([]),
@@ -232,10 +250,16 @@ def audit_principle_r_witness(
         "finite_cost_values": False,
         "cost_nonnegative": False,
         "accumulated_cost": None,
+        "declared_accumulated_cost_matches_raw": False,
         "path_displacement": None,
         "path_nonconstant": False,
+        "frozen_parameter_grid": False,
+        "velocity_derivative_max_error": None,
+        "velocity_derivative_consistent": False,
         "positive_measure_fraction": None,
+        "declared_positive_measure_matches_raw": False,
         "same_meter_positive_control_cost": None,
+        "declared_control_cost_matches_raw": False,
     }
     if path_validation["valid"]:
         parameter_grid = arrays["parameter_grid"]
@@ -243,6 +267,32 @@ def audit_principle_r_witness(
         velocities = arrays["velocities"]
         local_costs = arrays["local_costs"]
         control_costs = arrays["same_meter_positive_control_costs"]
+        expected_grid = np.linspace(
+            float(protocol["parameter_interval"][0]),
+            float(protocol["parameter_interval"][1]),
+            int(protocol["parameter_grid_points"]),
+        )
+        computed["frozen_parameter_grid"] = bool(
+            parameter_grid.shape == expected_grid.shape
+            and np.allclose(
+                parameter_grid,
+                expected_grid,
+                rtol=float(protocol["parameter_grid_relative_tol"]),
+                atol=float(protocol["parameter_grid_absolute_tol"]),
+            )
+        )
+        path_derivatives = _finite_difference_path_derivative(
+            parameter_grid,
+            path_points,
+        )
+        derivative_errors = np.linalg.norm(velocities - path_derivatives, axis=1)
+        derivative_bounds = float(protocol["velocity_derivative_absolute_tol"]) + float(
+            protocol["velocity_derivative_relative_tol"]
+        ) * np.linalg.norm(path_derivatives, axis=1)
+        computed["velocity_derivative_max_error"] = float(np.max(derivative_errors))
+        computed["velocity_derivative_consistent"] = bool(
+            np.all(derivative_errors <= derivative_bounds)
+        )
         velocity_norms = np.linalg.norm(velocities, axis=1)
         zero_local = np.abs(local_costs) <= float(protocol["local_cost_zero_tol"])
         active = (velocity_norms > float(protocol["path_nonconstant_tol"])) & zero_local
@@ -253,6 +303,10 @@ def audit_principle_r_witness(
             np.min(local_costs) >= -float(protocol["local_cost_zero_tol"])
         )
         computed["accumulated_cost"] = float(np.trapezoid(local_costs, parameter_grid))
+        computed["declared_accumulated_cost_matches_raw"] = bool(
+            abs(float(record["accumulated_cost"]) - float(computed["accumulated_cost"]))
+            <= float(protocol["summary_accumulated_cost_absolute_tol"])
+        )
         computed["path_displacement"] = float(
             np.max(np.linalg.norm(path_points - path_points[0], axis=1))
         )
@@ -263,12 +317,28 @@ def audit_principle_r_witness(
             active,
             parameter_grid,
         )
+        computed["declared_positive_measure_matches_raw"] = bool(
+            abs(
+                float(record["positive_measure_fraction"])
+                - float(computed["positive_measure_fraction"])
+            )
+            <= float(protocol["summary_positive_measure_absolute_tol"])
+        )
         computed["same_meter_positive_control_cost"] = float(np.min(control_costs))
+        computed["declared_control_cost_matches_raw"] = bool(
+            abs(
+                float(record["same_meter_positive_control_cost"])
+                - float(computed["same_meter_positive_control_cost"])
+            )
+            <= float(protocol["summary_control_cost_absolute_tol"])
+        )
 
     finite_cost_evidence = (
         path_validation["valid"]
         and bool(record["finite_cost_values"])
         and bool(computed["finite_cost_values"])
+        and bool(computed["frozen_parameter_grid"])
+        and bool(computed["velocity_derivative_consistent"])
     )
     cost_nonnegative = (
         bool(certificate and certificate.cost_nonnegative)
@@ -287,6 +357,7 @@ def audit_principle_r_witness(
         and computed["positive_measure_fraction"] is not None
         and float(computed["positive_measure_fraction"])
         >= float(protocol["minimum_positive_measure_fraction"])
+        and bool(computed["declared_positive_measure_matches_raw"])
     )
     total_zero = bool(certificate.zero_total_cost if certificate else False)
     total_zero = (
@@ -297,6 +368,7 @@ def audit_principle_r_witness(
         and computed["accumulated_cost"] is not None
         and abs(float(computed["accumulated_cost"]))
         <= float(protocol["total_cost_zero_tol"])
+        and bool(computed["declared_accumulated_cost_matches_raw"])
     )
     path_nonconstant = (
         bool(certificate and certificate.path_nonconstant)
@@ -311,7 +383,9 @@ def audit_principle_r_witness(
         and computed["same_meter_positive_control_cost"] is not None
         and float(computed["same_meter_positive_control_cost"])
         >= float(protocol["minimum_positive_control_cost"])
+        and bool(computed["declared_control_cost_matches_raw"])
     )
+    zero_infimum_derived = bool(cost_nonnegative and total_zero)
     gates = {
         "R1_state_admissible_domain_source_bound": all(
             value
@@ -323,15 +397,15 @@ def audit_principle_r_witness(
         )
         and protocol_hash_matches
         and cost_nonnegative,
-        "R3_contraction_family_gives_zero_infimum": bool(
-            certificate
-            and certificate.contraction_family_certified
-            and certificate.zero_infimum_certified
-        ),
+        "R3_zero_infimum_derived": zero_infimum_derived,
+        "R4_path_kinematics_consistent": finite_cost_evidence,
         "R4_attained_path_finite_and_nonconstant": bool(path_nonconstant)
         and finite_cost_evidence,
+        "R5_raw_accumulated_cost_zero": total_zero,
         "R5_accumulated_cost_zero": total_zero,
+        "R6_raw_local_zero_mode_positive_measure": local_positive_measure,
         "R6_local_zero_mode_positive_measure": local_positive_measure,
+        "R7_raw_same_meter_control_positive": bool(positive_control_nonzero),
         "R7_same_meter_positive_control_nonzero": bool(positive_control_nonzero),
         "R8_witness_independent_of_target_G_TESC": bool(
             certificate and certificate.witness_not_constructed_from_target_G
@@ -357,18 +431,27 @@ def audit_principle_r_witness(
             for key in (
                 "R1_state_admissible_domain_source_bound",
                 "R2_protocol_and_nonnegative_cost_predeclared",
-                "R3_contraction_family_gives_zero_infimum",
+                "R3_zero_infimum_derived",
+                "R4_path_kinematics_consistent",
                 "R4_attained_path_finite_and_nonconstant",
-                "R5_accumulated_cost_zero",
+                "R5_raw_accumulated_cost_zero",
                 "R9_path_data_source_bound",
             )
         ),
         "path_level_zero_mode_pipeline_supported": all(gates.values()),
-        "zero_infimum_certified": gates["R3_contraction_family_gives_zero_infimum"],
+        "zero_infimum_certified": gates["R3_zero_infimum_derived"],
+        "zero_infimum_derived_from_nonnegative_attained_zero": gates[
+            "R3_zero_infimum_derived"
+        ],
+        "contraction_family_certificate_evidence": bool(
+            certificate
+            and certificate.contraction_family_certified
+            and certificate.zero_infimum_certified
+        ),
         "attained_nonconstant_zero_cost_path": gates[
             "R4_attained_path_finite_and_nonconstant"
         ]
-        and gates["R5_accumulated_cost_zero"],
+        and gates["R5_raw_accumulated_cost_zero"],
         "local_zero_mode_positive_measure": gates[
             "R6_local_zero_mode_positive_measure"
         ],

@@ -42,6 +42,12 @@ and local costs; summary declarations alone are not evidence. The committed
 reference run does not include independent physical path data, so this upstream
 production gate remains closed by default.
 
+The path-data record must use the frozen protocol grid, and its velocity samples
+must agree with finite-difference derivatives of the path samples. The zero
+infimum is derived only from nonnegative raw costs plus an attained zero-cost
+path; contraction-family declarations are auxiliary certificate evidence rather
+than a standalone core gate.
+
 Even a valid upstream witness does not certify the separate physical zero-set
 binding:
 
