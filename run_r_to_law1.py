@@ -23,6 +23,9 @@ from r_to_law1.report import emit_report  # noqa: E402
 from r_to_law1.tesc import derive_tesc_hessian, load_frozen_protocol  # noqa: E402
 from r_to_law1.theorem import audit_conditional_theorem, construct_null_rays  # noqa: E402
 from r_to_law1.protocol import threshold  # noqa: E402
+from realizability.certificate import load_zero_mode_certificate  # noqa: E402
+from realizability.protocol import load_realizability_protocol  # noqa: E402
+from realizability.zero_mode import audit_principle_r_witness  # noqa: E402
 
 
 def main() -> int:
@@ -36,6 +39,7 @@ def main() -> int:
         help="Override the provenance certificate path declared by the protocol.",
     )
     parser.add_argument("--outdir", default="reference_results/v0.1.1")
+    parser.add_argument("--zero-mode-certificate", default="")
     args, unknown = parser.parse_known_args()
     if unknown:
         print("[notice] ignored notebook/kernel arguments:", unknown)
@@ -44,6 +48,23 @@ def main() -> int:
         protocol = dict(protocol)
         protocol["native_certificate"] = args.certificate
     provenance = audit_provenance(protocol["native_certificate"])
+    if args.zero_mode_certificate:
+        zero_protocol = load_realizability_protocol()
+        zero_certificate = load_zero_mode_certificate(args.zero_mode_certificate)
+        zero_mode = {
+            "certificate_supplied": True,
+            **audit_principle_r_witness(
+                zero_protocol,
+                zero_certificate,
+                certificate_base_dir=Path(args.zero_mode_certificate).parent,
+            ),
+        }
+    else:
+        zero_mode = {
+            "certificate_supplied": False,
+            "principle_R_witness_source_bound": False,
+            "principle_R_witness_certified": False,
+        }
     physical_binding_gate = provenance["physical_zero_set_binding_provenance"]["gate"]
 
     G = derive_tesc_hessian(protocol)
@@ -68,6 +89,7 @@ def main() -> int:
         operational_inputs,
         provenance,
         args.outdir,
+        zero_mode,
     )
     print(json.dumps(report, indent=2))
     return 0

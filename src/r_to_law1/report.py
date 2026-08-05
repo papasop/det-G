@@ -33,6 +33,7 @@ def emit_report(
     operational_inputs: dict[str, Any],
     provenance: dict[str, Any],
     output_dir: str | Path,
+    zero_mode: dict[str, Any] | None = None,
 ) -> dict[str, Any]:
     output = Path(output_dir)
     output.mkdir(parents=True, exist_ok=True)
@@ -55,13 +56,24 @@ def emit_report(
         "operational_inputs_pass": operational_inputs["gate"],
     }
     signed_tesc_gate = all(signed_tesc_gates.values())
+    zero_mode = zero_mode or {
+        "certificate_supplied": False,
+        "principle_R_witness_source_bound": False,
+        "principle_R_witness_certified": False,
+    }
     physical_binding_provenance = provenance["physical_zero_set_binding_provenance"]
     native_unique_selection = provenance["native_unique_TESC_selection"]
     native_unique_gate = bool(native_unique_selection["gate"])
     physical_binding_gate = theorem["physical_zero_set_binding_certificate_gate"]
     conditional_support_gate = theorem["conditional_theorem_premises_gate"] and signed_tesc_gate
-    if conditional_support_gate and native_unique_gate:
-        scientific_status = "UNCONDITIONAL_R_TO_LAW_I_NATIVE_DERIVATION_CERTIFIED"
+    declared_structure_certified = (
+        theorem["conditional_theorem_premises_gate"]
+        and signed_tesc_gate
+        and theorem["declared_structural_premises_gate"]
+        and bool(zero_mode["principle_R_witness_certified"])
+    )
+    if declared_structure_certified and native_unique_gate:
+        scientific_status = "R_PLUS_DECLARED_STRUCTURE_TO_LAW_I_CERTIFIED"
     elif conditional_support_gate:
         scientific_status = "CONDITIONAL_R_TO_LAWI_SUPPORTED_NATIVE_TESC_SELECTION_OPEN"
     elif theorem["analytic_theorem_logic_gate"] and signed_tesc_gate:
@@ -94,6 +106,16 @@ def emit_report(
             "premises_gate": theorem["conditional_theorem_premises_gate"],
         },
         "conditional_theorem_premises_gate": theorem["conditional_theorem_premises_gate"],
+        "principle_R_local_zero_mode_assumed": theorem[
+            "declared_structural_premises"
+        ]["principle_R_local_zero_mode_adopted"],
+        "zero_mode_certificate_supplied": bool(zero_mode["certificate_supplied"]),
+        "zero_mode_certificate_source_bound": bool(
+            zero_mode["principle_R_witness_source_bound"]
+        ),
+        "zero_mode_certificate_gate": bool(
+            zero_mode["principle_R_witness_certified"]
+        ),
         "signed_TESC_zero_set_representative": {
             "gates": signed_tesc_gates,
             "gate": signed_tesc_gate,
@@ -110,8 +132,10 @@ def emit_report(
         },
         "signed_TESC_zero_set_representative_supported": signed_tesc_gate,
         "conditional_R_to_LawI_supported": conditional_support_gate,
-        "unconditional_R_alone_to_LawI_proved": conditional_support_gate and native_unique_gate,
-        "all_scientific_gates_pass": conditional_support_gate and native_unique_gate,
+        "R_plus_declared_structure_to_LawI_certified": declared_structure_certified
+        and native_unique_gate,
+        "unconditional_R_alone_to_LawI_proved": False,
+        "all_scientific_gates_pass": False,
         "interpretation": "The exact result is conditional: R plus a certified zero-set binding between the nonnegative realization cost F and an independently declared signed quadratic representative q forces Lorentzian Law I. TESC supplies a frozen signed zero-set representative. It does not show that F=q, D^2F=G_TESC, or that R alone uniquely selects TESC.",
         "next_required_step": "supply a source-bound certificate for the physical zero-set binding Z(F)∩V = Z(q)∩V, and derive task-minus-centred-exposure, its relative normalization, two-dimensionality and global completeness from Principle R",
         "claim_boundary": "No Law II/III, spacetime metric, (1,3) signature, physical light cone, wavefunction, Born rule, Cloud or QPU claim.",
@@ -122,7 +146,11 @@ def emit_report(
         },
     }
     report = to_jsonable(report)
-    (output / "finite_zero_branches.json").write_text(json.dumps(to_jsonable(finite_branches["records"]), indent=2) + "\n")
-    (output / "covariance_records.json").write_text(json.dumps(to_jsonable(covariance["records"]), indent=2) + "\n")
+    (output / "finite_zero_branches.json").write_text(
+        json.dumps(to_jsonable(finite_branches["records"]), indent=2) + "\n"
+    )
+    (output / "covariance_records.json").write_text(
+        json.dumps(to_jsonable(covariance["records"]), indent=2) + "\n"
+    )
     (output / "run_summary.json").write_text(json.dumps(report, indent=2) + "\n")
     return report

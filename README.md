@@ -47,6 +47,8 @@ A successful reproduction may still report:
 signed_TESC_zero_set_representative.gate = true
 physical_zero_set_binding_certificate_gate = false
 native_unique_TESC_selection_gate = false
+zero_mode_certificate_gate = false
+R_plus_declared_structure_to_LawI_certified = false
 all_scientific_gates_pass = false
 ```
 
@@ -153,6 +155,28 @@ db42420631fdc429d4179cc23fa28a56ba7c1d6b3242e0d86d202c96769af5d2
 hard-coded TESC gold data from v3.1 and moves v3.2 gate thresholds into the
 manifest/protocol input.
 
+## Upstream Principle-R Witness Interface
+
+The upstream realizability interface is path-level:
+
+```text
+predeclared nonnegative F
+-> contraction family
+-> attained nonconstant zero-cost path
+-> positive-measure local zero modes
+-> ZeroModeCertificate
+-> conditional R-to-Law-I bridge
+```
+
+It is implemented by `run_realizability_zero_mode.py` and the
+`src/realizability/` package. The interface checks source-bound path and cost
+certificates against `protocols/frozen_realizability_protocol.json`.
+
+This code does not prove Principle R is a universal law of nature. Without
+independent path/cost data and source-bound certificates, it reports only
+pipeline self-tests. The signed-TESC result remains a conditional
+representative; K=1 dynamics is not connected in this interface.
+
 ## RC Zero-Structure Interface
 
 The RC interface is a small intermediate mathematical language:
@@ -197,6 +221,8 @@ Result files and documentation use these meanings:
 | `src/r_to_law1/zero_structure.py` | protocol-bound RC zero-structure classification |
 | `src/r_to_law1/channel_origin.py` | single-channel no-go and two-channel determinant identity |
 | `src/r_to_law1/zero_set_binding.py` | bidirectional zero-set binding certificate interface |
+| `src/realizability/` | path-level Principle-R zero-mode certificate interface |
+| `run_realizability_zero_mode.py` | advanced upstream zero-mode witness audit |
 | `tests/` | theorem, provenance and fail-closed regression tests |
 | `audits/` | preflight physical-boundary audits |
 | `MATHEMATICAL_STATEMENT.md` | detailed theorem statement and proof boundary |
