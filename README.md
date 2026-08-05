@@ -22,8 +22,8 @@ zero-set binding and cross-protocol origin remain open.
 | Physical | independent protocols recover the same zero cone | OPEN_NO_DATA |
 | Outside scope | Law-II/III, spacetime, wavefunction | OUT_OF_SCOPE |
 
-Current stable computational result: `v0.1.0`.
-Prospective audit bundle: `v0.2.0-preflight`.
+Current stable computational result: `v0.1.1`.
+Prospective audit bundle: `v0.2.1-preflight`.
 
 ## Quick Start
 
@@ -52,6 +52,11 @@ all_scientific_gates_pass = false
 
 The final `false` values do not mean the run failed. They mean the signed-TESC
 candidate reproduced while physical provenance remains uncertified.
+
+The frozen protocol records every threshold that affects a scientific gate in
+`protocols/frozen_tesc_protocol.json`. The loader recomputes
+`protocol_sha256` and fails closed if the file content and declared hash do not
+match.
 
 ## Core Proposition
 
@@ -112,9 +117,9 @@ The stable run writes:
 
 | File | Contents |
 |---|---|
-| `reference_results/v0.1.0/run_summary.json` | central status, gates, Hessian, rays and metrics |
-| `reference_results/v0.1.0/finite_zero_branches.json` | finite signed-TESC zero-contrast branch records |
-| `reference_results/v0.1.0/covariance_records.json` | `GL(2)`, unit-rescaling and sensitivity records |
+| `reference_results/v0.1.1/run_summary.json` | central status, gates, Hessian, rays, protocol hash and metrics |
+| `reference_results/v0.1.1/finite_zero_branches.json` | finite signed-TESC zero-contrast branch records |
+| `reference_results/v0.1.1/covariance_records.json` | `GL(2)`, unit-rescaling and sensitivity records |
 
 ## Advanced Audits
 
@@ -131,16 +136,20 @@ without independent data.
 Run them only when inspecting the preflight boundary:
 
 ```bash
-python audits/r_law1_bidirectional_zero_set_audit_v3_0.py --outdir reference_results/v0.2.0/v3_0
-python audits/r_law1_two_channel_origin_audit_v3_1.py --outdir reference_results/v0.2.0/v3_1
-python audits/r_law1_cross_protocol_cone_audit_v3_2.py --outdir reference_results/v0.2.0/v3_2
+python audits/r_law1_bidirectional_zero_set_audit_v3_0.py --outdir reference_results/v0.2.1/v3_0
+python audits/r_law1_two_channel_origin_audit_v3_1.py --outdir reference_results/v0.2.1/v3_1
+python audits/r_law1_cross_protocol_cone_audit_v3_2.py --outdir reference_results/v0.2.1/v3_2
 ```
 
-The v0.2.0-preflight source ZIP was imported with SHA-256:
+The original v0.2.0-preflight source ZIP was imported with SHA-256:
 
 ```text
 db42420631fdc429d4179cc23fa28a56ba7c1d6b3242e0d86d202c96769af5d2
 ```
+
+`v0.2.1-preflight` keeps the same scientific boundary but removes stale
+hard-coded TESC gold data from v3.1 and moves v3.2 gate thresholds into the
+manifest/protocol input.
 
 ## Status Vocabulary
 

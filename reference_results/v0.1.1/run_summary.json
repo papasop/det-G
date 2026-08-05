@@ -1,0 +1,173 @@
+{
+  "title": "Principle R to Lorentzian Law I",
+  "version": "0.1.1",
+  "protocol_schema": "r-to-law1-frozen-tesc-protocol-v0.1.1",
+  "protocol_sha256": "f01078947ee5e54f2ef11ecf0a403d5ba1b60a747b1dcd3d6a5712c2050abf4b",
+  "derivation_version": "tesc-hessian-finite-difference-v0.1.1",
+  "scientific_status": "SIGNED_TESC_ZERO_SET_REPRESENTATIVE_SUPPORTED_PHYSICAL_ZERO_SET_BINDING_OPEN",
+  "logical_statement": "R plus a certified binding Z(F)\u2229V = Z(q)\u2229V, with q(v)=v^T G v real symmetric nondegenerate on dim(V)=2, implies det(G)<0, signature (1,1), two null rays",
+  "theorem_proof_kind": "analytic_linear_algebra",
+  "theorem_numerically_proved": false,
+  "analytic_theorem_logic_gate": true,
+  "conditional_theorem": {
+    "declared_structural_premises": {
+      "principle_R_local_zero_mode_adopted": true,
+      "process_space_is_real_two_dimensional": true,
+      "signed_representative_is_real_C2": true,
+      "stationary_basepoint_for_signed_representative": true,
+      "quadratic_form_symmetric": true,
+      "quadratic_form_nondegenerate": true
+    },
+    "physical_zero_set_binding": {
+      "gates": {
+        "nonnegative_F_definition_source_bound": false,
+        "nonnegative_F_predeclared": false,
+        "nonnegative_F_nonnegative": false,
+        "nonnegative_zero_mode_attained": false,
+        "signed_q_definition_source_bound": false,
+        "signed_q_real_C2": true,
+        "signed_q_symmetric": true,
+        "signed_q_nondegenerate": true,
+        "physical_zero_set_binding_source_bound": false,
+        "Z_F_equals_Z_q_on_selected_plane": false,
+        "binding_frozen_before_outcomes": false
+      },
+      "gate": false
+    },
+    "protocol_zero_set_binding_declaration": {
+      "nonnegative_realization_cost_predeclared": false,
+      "physical_zero_set_equals_signed_representative_zero_set": false
+    },
+    "conclusions": {
+      "definite_signed_representative_excluded_if_nonzero_null_vector_exists": true,
+      "degenerate_signed_representative_excluded_by_assumption": true,
+      "detG_must_be_negative": true,
+      "signature_must_be_1_1": true,
+      "null_set_is_two_distinct_real_rays": true
+    },
+    "analytic_theorem_logic_gate": true,
+    "declared_structural_premises_gate": true,
+    "physical_zero_set_binding_certificate_gate": false,
+    "protocol_zero_set_binding_declaration_gate": false,
+    "premises_gate": false
+  },
+  "conditional_theorem_premises_gate": false,
+  "signed_TESC_zero_set_representative": {
+    "gates": {
+      "G_real_symmetric": true,
+      "G_nondegenerate": true,
+      "detG_negative": true,
+      "signature_1_1": true,
+      "two_distinct_null_rays_constructed": true,
+      "null_ray_residuals_pass": true,
+      "finite_two_branch_zero_contrast_set_observed": true,
+      "finite_zero_contrast_residual_pass": true,
+      "no_extra_zero_contrast_branch_in_frozen_domain": true,
+      "signed_zero_set_GL2_pullback_identity_pass": true,
+      "unit_rescaling_signature_preserved": true,
+      "lambda_sensitivity_pass": true,
+      "operational_inputs_pass": true
+    },
+    "gate": true
+  },
+  "physical_zero_set_binding_certificate_gate": false,
+  "physical_zero_set_binding_provenance": {
+    "gates": {
+      "nonnegative_F_definition_source_bound": false,
+      "nonnegative_F_predeclared": false,
+      "nonnegative_F_nonnegative": false,
+      "nonnegative_zero_mode_attained": false,
+      "signed_q_definition_source_bound": false,
+      "signed_q_real_C2": true,
+      "signed_q_symmetric": true,
+      "signed_q_nondegenerate": true,
+      "physical_zero_set_binding_source_bound": false,
+      "Z_F_equals_Z_q_on_selected_plane": false,
+      "binding_frozen_before_outcomes": false
+    },
+    "gate": false
+  },
+  "native_unique_TESC_selection": {
+    "gates": {
+      "task_minus_exposure_derived": false,
+      "relative_negative_sign_derived": false,
+      "lambda_physical_normalization_derived": false,
+      "two_dimensional_process_plane_derived": false,
+      "zero_set_completeness_derived": false,
+      "TESC_equivalence_class_unique": false
+    },
+    "gate": false
+  },
+  "native_unique_TESC_selection_gate": false,
+  "metrics": {
+    "G": [
+      [
+        -1.4753511828891064,
+        -0.04866380215462485
+      ],
+      [
+        -0.04866380215462485,
+        0.2661881493004614
+      ]
+    ],
+    "eigenvalues": [
+      -1.476709934535062,
+      0.26754690094641703
+    ],
+    "detG": -0.39508916658164234,
+    "quadratic_discriminant": 1.5803566663265691,
+    "null_rays": [
+      [
+        0.36581365306394076,
+        0.9306881170574892
+      ],
+      [
+        0.4171750943170204,
+        -0.9088261333619237
+      ]
+    ],
+    "null_ray_residuals": [
+      2.2197792243292353e-17,
+      0.0
+    ],
+    "maximum_null_ray_residual": 2.2197792243292353e-17,
+    "sections": 64,
+    "initial_missing_sections": 2,
+    "recovered_sections": 2,
+    "still_missing_sections": 0,
+    "extra_branch_sections": 0,
+    "root_count_min": 2,
+    "root_count_max": 2,
+    "maximum_y_used": 0.32000000000000006,
+    "maximum_root_residual": 9.899026043314052e-14,
+    "tangent_slope_error": 0.007902156941455019,
+    "tangent_sample_sections": 8,
+    "signed_zero_contrast_search_domain": {
+      "abs_x": 0.08,
+      "abs_y": 0.4
+    },
+    "signed_zero_contrast_points": 12,
+    "GL2_trials": 256,
+    "maximum_GL2_Hessian_relative_residual": 1.4896961083155618e-07,
+    "maximum_GL2_zero_set_pullback_identity_residual": 7.793765632868599e-14,
+    "Lorentzian_lambda_count": 9,
+    "lambda_count": 9,
+    "lambda_det_zero_boundaries": [
+      -9054887406932632.0,
+      0.22135390788911108
+    ],
+    "lambda_one_nearest_det_zero_boundary_distance": 0.7786460921108889
+  },
+  "signed_TESC_zero_set_representative_supported": true,
+  "conditional_R_to_LawI_supported": false,
+  "unconditional_R_alone_to_LawI_proved": false,
+  "all_scientific_gates_pass": false,
+  "interpretation": "The exact result is conditional: R plus a certified zero-set binding between the nonnegative realization cost F and an independently declared signed quadratic representative q forces Lorentzian Law I. TESC supplies a frozen signed zero-set representative. It does not show that F=q, D^2F=G_TESC, or that R alone uniquely selects TESC.",
+  "next_required_step": "supply a source-bound certificate for the physical zero-set binding Z(F)\u2229V = Z(q)\u2229V, and derive task-minus-centred-exposure, its relative normalization, two-dimensionality and global completeness from Principle R",
+  "claim_boundary": "No Law II/III, spacetime metric, (1,3) signature, physical light cone, wavefunction, Born rule, Cloud or QPU claim.",
+  "artifacts": {
+    "run_summary": "reference_results/v0.1.1/run_summary.json",
+    "finite_zero_branches": "reference_results/v0.1.1/finite_zero_branches.json",
+    "covariance_records": "reference_results/v0.1.1/covariance_records.json"
+  }
+}

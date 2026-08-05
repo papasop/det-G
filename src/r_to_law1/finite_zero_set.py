@@ -8,6 +8,7 @@ from typing import Any
 import numpy as np
 
 from .tesc import derive_tesc_hessian, signed_cost
+from .protocol import threshold
 
 
 def _bisect(function, left: float, right: float, tolerance: float = 1e-13) -> float:
@@ -51,6 +52,9 @@ def trace_finite_zero_branches(protocol: dict[str, Any]) -> dict[str, Any]:
     growth = float(zero_cfg["growth"])
     sections = int(zero_cfg["sections"])
     scan_step = float(zero_cfg["scan_step"])
+    tangent_sample_sections = int(zero_cfg["tangent_sample_sections"])
+    finite_root_tol = threshold(protocol, "finite_root_residual_tol")
+    tangent_slope_tol = threshold(protocol, "tangent_slope_relative_tol")
     function = lambda z: signed_cost(z, protocol)
     G = derive_tesc_hessian(protocol)
     discriminant = G[0, 1] ** 2 - G[0, 0] * G[1, 1]
@@ -88,7 +92,10 @@ def trace_finite_zero_branches(protocol: dict[str, Any]) -> dict[str, Any]:
     missing = [record for record in records if len(record["global_roots"]) < 2]
     extra = [record for record in records if len(record["global_roots"]) > 2]
     maximum_residual = max((record["max_residual"] for record in records if record["max_residual"] is not None), default=float("inf"))
-    near_origin = sorted([record for record in records if len(record["global_roots"]) == 2], key=lambda record: abs(record["x"]))[:8]
+    near_origin = sorted(
+        [record for record in records if len(record["global_roots"]) == 2],
+        key=lambda record: abs(record["x"]),
+    )[:tangent_sample_sections]
     tangent_error = max(
         (
             min(abs(y / record["x"] - slope) for slope in slopes)
@@ -101,8 +108,8 @@ def trace_finite_zero_branches(protocol: dict[str, Any]) -> dict[str, Any]:
         "Lorentzian_local_Hessian": bool(np.linalg.det(G) < 0),
         "all_sections_have_two_roots": not missing and all(count >= 2 for count in counts),
         "no_extra_zero_branches_to_maximum_boundary": not extra and all(count <= 2 for count in counts),
-        "all_root_residuals_small": maximum_residual < 1e-9,
-        "branches_tangent_to_Hessian_null_rays": tangent_error < 0.15,
+        "all_root_residuals_small": maximum_residual < finite_root_tol,
+        "branches_tangent_to_Hessian_null_rays": tangent_error < tangent_slope_tol,
         "adaptive_expansion_recovers_initial_missing_roots": len(recovered) > 0,
     }
     return {
@@ -120,6 +127,7 @@ def trace_finite_zero_branches(protocol: dict[str, Any]) -> dict[str, Any]:
             "maximum_y_used": max(record["adaptive_ymax"] for record in records),
             "maximum_root_residual": maximum_residual,
             "tangent_slope_error": tangent_error,
+            "tangent_sample_sections": len(near_origin),
             "signed_zero_contrast_search_domain": {"abs_x": x_max, "abs_y": maximum_y_max},
         },
     }

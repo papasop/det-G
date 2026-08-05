@@ -1,0 +1,143 @@
+{
+  "title": "PRINCIPLE R -> LAW-I SINGLE-CHANNEL NO-GO / TWO-CHANNEL ORIGIN AUDIT",
+  "version": "3.1.1",
+  "scientific_status": "STRUCTURAL_MECHANISM_CERTIFIED_INDEPENDENT_CHANNEL_PROVENANCE_REQUIRED",
+  "protocol_sha256": "f01078947ee5e54f2ef11ecf0a403d5ba1b60a747b1dcd3d6a5712c2050abf4b",
+  "audit_protocol_sha256": "d7faf3ad0e76c2510732f4daef61b9afbed29d18f64f057207907976c921ec02",
+  "derivation_version": "tesc-hessian-finite-difference-v0.1.1",
+  "G_TESC": [
+    [
+      -1.4753511828891064,
+      -0.04866380215462485
+    ],
+    [
+      -0.04866380215462485,
+      0.2661881493004614
+    ]
+  ],
+  "single_channel_information_time": {
+    "nonzero_channel": true,
+    "kernel_dimension": 1,
+    "one_unoriented_null_line": true,
+    "cannot_equal_two_distinct_Lorentzian_null_lines": true,
+    "kernel_witness": [
+      -2.0,
+      1.0
+    ]
+  },
+  "two_channel_positive_control": {
+    "channel_matrix": [
+      [
+        1.0,
+        1.0
+      ],
+      [
+        1.0,
+        -1.0
+      ]
+    ],
+    "channel_determinant": -2.0,
+    "channels_independent": true,
+    "channel_angle_radians": 1.5707963267948966,
+    "induced_G": [
+      [
+        1.0,
+        0.0
+      ],
+      [
+        0.0,
+        -1.0
+      ]
+    ],
+    "induced_G_eigenvalues": [
+      -1.0,
+      1.0
+    ],
+    "induced_detG": -1.0,
+    "induced_Lorentzian": true,
+    "null_rays": [
+      [
+        -0.7071067811865475,
+        0.7071067811865475
+      ],
+      [
+        0.7071067811865475,
+        0.7071067811865475
+      ]
+    ],
+    "maximum_null_residual": 0.0,
+    "two_channel_null_residual_gate": true,
+    "TESC_conformal_scale": -0.7732430093800826,
+    "TESC_conformal_relative_residual": 0.5715622826184208,
+    "same_TESC_null_cone": false
+  },
+  "dependent_channel_negative_control": {
+    "channel_matrix": [
+      [
+        1.0,
+        1.0
+      ],
+      [
+        2.0,
+        2.0
+      ]
+    ],
+    "channel_determinant": 0.0,
+    "channels_independent": false,
+    "channel_angle_radians": 2.1073424255447017e-08,
+    "induced_G": [
+      [
+        2.0,
+        2.0
+      ],
+      [
+        2.0,
+        2.0
+      ]
+    ],
+    "induced_G_eigenvalues": [
+      0.0,
+      4.0
+    ],
+    "induced_detG": 0.0,
+    "induced_Lorentzian": false,
+    "null_rays": [
+      [
+        -0.7071067811865475,
+        0.7071067811865475
+      ],
+      [
+        -0.7071067811865475,
+        0.7071067811865475
+      ]
+    ],
+    "maximum_null_residual": 0.0,
+    "two_channel_null_residual_gate": true,
+    "TESC_conformal_scale": -1.1601630051099037,
+    "TESC_conformal_relative_residual": 0.9002956386229763,
+    "same_TESC_null_cone": false
+  },
+  "circular_cost_negative_control": {
+    "F_abs_q_zero_set_equals_q_by_construction": true,
+    "F_q_squared_zero_set_equals_q_by_construction": true,
+    "admissible_as_independent_R_to_LawI_evidence": false
+  },
+  "self_tests": {
+    "single_channel_no_go_pass": true,
+    "independent_two_channel_positive_control": true,
+    "dependent_channel_negative_control_rejected": true,
+    "circular_q_cost_rejected_as_provenance": true
+  },
+  "certificate_supplied": false,
+  "certificate_sha256": null,
+  "native_two_channel_audit": null,
+  "all_scientific_gates_pass": false,
+  "interpretation": "A scalar Information-Time differential has one kernel line in 2D and cannot represent a nondegenerate Lorentzian two-line zero cone. Two independently derived nonparallel channels yield F=|L+L-|/H and an induced Lorentzian quadratic form exactly. Matching TESC additionally requires a noncircular provenance-bound identification.",
+  "next_required_step": "Define and source-bind two measurable realization channels before consulting TESC. If no such channels exist, retain Law-I as an additional representation assumption.",
+  "claim_boundary": "The algebraic two-channel mechanism is not a derivation from Principle R without provenance. F=|q_TESC| or q_TESC^2 is a circular negative control.",
+  "elapsed_seconds": 0.004347085952758789,
+  "environment": {
+    "python": "3.9.6",
+    "numpy": "2.0.2"
+  }
+}

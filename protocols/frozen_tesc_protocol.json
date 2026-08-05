@@ -1,6 +1,8 @@
 {
-  "schema": "r-to-law1-frozen-tesc-protocol-v0.1.0",
-  "version": "0.1.0",
+  "schema": "r-to-law1-frozen-tesc-protocol-v0.1.1",
+  "version": "0.1.1",
+  "derivation_version": "tesc-hessian-finite-difference-v0.1.1",
+  "protocol_sha256": "f01078947ee5e54f2ef11ecf0a403d5ba1b60a747b1dcd3d6a5712c2050abf4b",
   "principle_R": {
     "status": "axiom",
     "statement": "conditional on a physically relevant zero infimum being attained by a nonconstant admissible process, the zero-mode theorem supplies nonzero local zero-cost directions on a positive-measure set",
@@ -18,6 +20,20 @@
   },
   "tesc_lambda": 1.0,
   "finite_difference_step": 0.0002,
+  "decision_thresholds": {
+    "nondegeneracy_tol": 1e-10,
+    "hessian_discriminant_tol": 1e-10,
+    "null_ray_residual_tol": 1e-10,
+    "finite_root_residual_tol": 1e-9,
+    "tangent_slope_relative_tol": 0.15,
+    "gl2_covariance_relative_tol": 2e-5,
+    "gl2_zero_set_tol": 1e-10,
+    "tesc_conformal_residual_tol": 1e-8,
+    "two_channel_independence_tol": 1e-12,
+    "two_channel_null_residual_tol": 1e-12,
+    "centering_value_tol": 1e-14,
+    "centering_gradient_tol": 1e-8
+  },
   "segments": [
     {"omega": 2.0, "detuning": 0.25, "phase": 0.0, "duration": 0.32},
     {"omega": 1.7, "detuning": -0.35, "phase": 1.1, "duration": 0.28},
@@ -30,14 +46,33 @@
     "maximum_abs_y": 0.4,
     "growth": 1.6,
     "sections": 65,
-    "scan_step": 0.001
+    "scan_step": 0.001,
+    "tangent_sample_sections": 8
   },
   "covariance": {
     "transforms": 256,
     "seed": 20260805,
     "finite_zero_x_samples": [-0.07, -0.05, -0.03, 0.03, 0.05, 0.07],
     "unit_rescalings": [[0.01, 100.0], [0.1, 10.0], [0.5, 2.0], [2.0, 0.5], [10.0, 0.1], [100.0, 0.01]],
-    "lambda_grid": [0.25, 0.5, 0.75, 1.0, 1.25, 1.5, 2.0, 3.0, 4.0]
+    "lambda_grid": [0.25, 0.5, 0.75, 1.0, 1.25, 1.5, 2.0, 3.0, 4.0],
+    "lambda_stability": {
+      "require_lorentzian_below_tested": true,
+      "require_lorentzian_above_tested": true,
+      "minimum_distinct_lorentzian_lambda_count": 2,
+      "require_analytic_open_interval_around_one": true
+    }
+  },
+  "prospective_audit_thresholds": {
+    "v3_0_zero_set_binding": {
+      "F_zero_tol": 1e-8,
+      "q_zero_tol": 1e-4,
+      "maximum_violation_rate": 0.05,
+      "minimum_zero_points": 12,
+      "minimum_points_per_radius": 20,
+      "radius_fractions": [1.0, 0.75, 0.5, 0.35, 0.25, 0.18, 0.125],
+      "alternative_advantage_tolerance": 0.05,
+      "thresholds_frozen_before_data": true
+    }
   },
   "native_certificate": "certificates/native_r_selection.template.json"
 }

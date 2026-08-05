@@ -1,0 +1,58 @@
+{
+  "schema": "r-law1-cross-protocol-v3.2.1",
+  "criteria": {
+    "F_zero_tol": 1e-08,
+    "q_zero_tol": 0.0002,
+    "minimum_zero_points": 12,
+    "maximum_violation_rate": 0.05,
+    "cone_residual_tol": 0.02,
+    "branch_angle_tol": 0.02
+  },
+  "protocols": [
+    {
+      "name": "protocol_A",
+      "data_csv": "protocol_A.csv",
+      "data_sha256": "",
+      "cost_definition_source_path": "",
+      "cost_definition_source_sha256": "",
+      "predeclared_before_cross_comparison": false,
+      "mapping_predeclared_before_outcomes": false,
+      "to_canonical_T": [
+        [
+          1,
+          0
+        ],
+        [
+          0,
+          1
+        ]
+      ]
+    },
+    {
+      "name": "protocol_B",
+      "data_csv": "protocol_B.csv",
+      "data_sha256": "",
+      "cost_definition_source_path": "",
+      "cost_definition_source_sha256": "",
+      "predeclared_before_cross_comparison": false,
+      "mapping_predeclared_before_outcomes": false,
+      "to_canonical_T": [
+        [
+          1,
+          0
+        ],
+        [
+          0,
+          1
+        ]
+      ]
+    }
+  ],
+  "provenance": {
+    "costs_independent_of_each_other_and_TESC": false,
+    "comparison_rule_frozen_before_outcomes": false,
+    "no_protocol_selected_after_outcomes": false
+  },
+  "manifest_sha256": null,
+  "locked_protocol_sha256": "53ef27f70c3f272cbb1d02c70bbd5ba89f39335cfbd1afe744864c62eee4a6c5"
+}

@@ -9,6 +9,8 @@ from typing import Any
 
 import numpy as np
 
+from .protocol import require_matching_protocol_sha
+
 SX = np.array([[0, 1], [1, 0]], complex)
 SY = np.array([[0, -1j], [1j, 0]], complex)
 SZ = np.diag([1, -1]).astype(complex)
@@ -17,7 +19,9 @@ INITIAL_STATE = np.array([1, 0], complex)
 
 
 def load_frozen_protocol(path: str | Path = "protocols/frozen_tesc_protocol.json") -> dict[str, Any]:
-    return json.loads(Path(path).read_text())
+    protocol = json.loads(Path(path).read_text())
+    require_matching_protocol_sha(protocol)
+    return protocol
 
 
 def unitary_segment(omega: float, detuning: float, phase: float, duration: float) -> np.ndarray:

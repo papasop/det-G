@@ -8,6 +8,8 @@ from typing import Any
 
 import numpy as np
 
+from .protocol import threshold
+
 
 def to_jsonable(value: Any) -> Any:
     if isinstance(value, dict):
@@ -34,13 +36,14 @@ def emit_report(
 ) -> dict[str, Any]:
     output = Path(output_dir)
     output.mkdir(parents=True, exist_ok=True)
+    null_ray_tol = threshold(protocol, "null_ray_residual_tol")
     signed_tesc_gates = {
         "G_real_symmetric": theorem["declared_structural_premises"]["quadratic_form_symmetric"],
         "G_nondegenerate": theorem["declared_structural_premises"]["quadratic_form_nondegenerate"],
         "detG_negative": theorem["conclusions"]["detG_must_be_negative"],
         "signature_1_1": theorem["conclusions"]["signature_must_be_1_1"],
         "two_distinct_null_rays_constructed": theorem["conclusions"]["null_set_is_two_distinct_real_rays"],
-        "null_ray_residuals_pass": theorem["metrics"]["maximum_null_ray_residual"] < 1e-10,
+        "null_ray_residuals_pass": theorem["metrics"]["maximum_null_ray_residual"] < null_ray_tol,
         "finite_two_branch_zero_contrast_set_observed": finite_branches["gates"]["all_sections_have_two_roots"],
         "finite_zero_contrast_residual_pass": finite_branches["gates"]["all_root_residuals_small"],
         "no_extra_zero_contrast_branch_in_frozen_domain": finite_branches["gates"]["no_extra_zero_branches_to_maximum_boundary"],
@@ -69,6 +72,9 @@ def emit_report(
     report = {
         "title": "Principle R to Lorentzian Law I",
         "version": protocol["version"],
+        "protocol_schema": protocol["schema"],
+        "protocol_sha256": protocol.get("protocol_sha256"),
+        "derivation_version": protocol.get("derivation_version"),
         "scientific_status": scientific_status,
         "logical_statement": "R plus a certified binding Z(F)∩V = Z(q)∩V, with q(v)=v^T G v real symmetric nondegenerate on dim(V)=2, implies det(G)<0, signature (1,1), two null rays",
         "theorem_proof_kind": "analytic_linear_algebra",

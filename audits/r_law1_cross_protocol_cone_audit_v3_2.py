@@ -26,7 +26,27 @@ except ModuleNotFoundError:
 
 
 TITLE = "PRINCIPLE R -> LAW-I CROSS-PROTOCOL ZERO-CONE NATURALITY AUDIT"
-VERSION = "3.2"
+VERSION = "3.2.1"
+ROOT = Path(__file__).resolve().parents[1]
+MANIFEST_TEMPLATE = ROOT / "protocols" / "cross_protocol_manifest.template.json"
+REQUIRED_MANIFEST_CRITERIA = {
+    "F_zero_tol",
+    "q_zero_tol",
+    "minimum_zero_points",
+    "maximum_violation_rate",
+    "cone_residual_tol",
+    "branch_angle_tol",
+}
+
+
+def manifest_criteria(manifest: dict[str, Any]) -> dict[str, float]:
+    criteria = manifest.get("criteria")
+    if not isinstance(criteria, dict):
+        raise ValueError("v3.2 manifest is missing versioned criteria")
+    missing = sorted(REQUIRED_MANIFEST_CRITERIA - set(criteria))
+    if missing:
+        raise ValueError("v3.2 manifest criteria missing: " + ", ".join(missing))
+    return {key: float(criteria[key]) for key in REQUIRED_MANIFEST_CRITERIA}
 
 
 def load_csv(path: Path) -> tuple[np.ndarray, np.ndarray, np.ndarray]:
@@ -329,6 +349,8 @@ def synth(outdir: Path, cfg: dict[str, float]) -> dict[str, bool]:
         )
 
     manifest = {
+        "schema": "r-law1-cross-protocol-v3.2.1-selftest",
+        "criteria": cfg,
         "protocols": items,
         "provenance": {
             "costs_independent_of_each_other_and_TESC": True,
@@ -372,43 +394,19 @@ def synth(outdir: Path, cfg: dict[str, float]) -> dict[str, bool]:
     }
 
 
-def write_template(outdir: Path) -> None:
+def template_manifest() -> dict[str, Any]:
+    return json.loads(MANIFEST_TEMPLATE.read_text())
+
+
+def write_template(outdir: Path) -> dict[str, Any]:
     for name in ("protocol_A.csv", "protocol_B.csv"):
         (outdir / name).write_text("x,y,F,split\n0.0,0.0,nan,train\n")
 
-    manifest = {
-        "schema": "r-law1-cross-protocol-v3.2",
-        "protocols": [
-            {
-                "name": "protocol_A",
-                "data_csv": "protocol_A.csv",
-                "data_sha256": "",
-                "cost_definition_source_path": "",
-                "cost_definition_source_sha256": "",
-                "predeclared_before_cross_comparison": False,
-                "mapping_predeclared_before_outcomes": False,
-                "to_canonical_T": [[1, 0], [0, 1]],
-            },
-            {
-                "name": "protocol_B",
-                "data_csv": "protocol_B.csv",
-                "data_sha256": "",
-                "cost_definition_source_path": "",
-                "cost_definition_source_sha256": "",
-                "predeclared_before_cross_comparison": False,
-                "mapping_predeclared_before_outcomes": False,
-                "to_canonical_T": [[1, 0], [0, 1]],
-            },
-        ],
-        "provenance": {
-            "costs_independent_of_each_other_and_TESC": False,
-            "comparison_rule_frozen_before_outcomes": False,
-            "no_protocol_selected_after_outcomes": False,
-        },
-    }
+    manifest = template_manifest()
     (outdir / "cross_protocol_manifest_template.json").write_text(
         json.dumps(manifest, indent=2) + "\n"
     )
+    return manifest
 
 
 def main() -> int:
@@ -422,44 +420,37 @@ def main() -> int:
     started_at = time.time()
     outdir = Path(args.outdir)
     outdir.mkdir(parents=True, exist_ok=True)
-    cfg = {
-        "F_zero_tol": 1e-8,
-        "q_zero_tol": 2e-4,
-        "minimum_zero_points": 12,
-        "maximum_violation_rate": 0.05,
-        "cone_residual_tol": 0.02,
-        "branch_angle_tol": 0.02,
-    }
 
-    controls = synth(outdir, cfg)
     manifest_path = Path(args.manifest) if args.manifest else None
     if manifest_path and manifest_path.is_file():
         manifest = json.loads(manifest_path.read_text())
-        empirical_audit = audit_manifest(manifest, manifest_path, cfg)
         manifest_sha256 = sha256_file(manifest_path)
+        cfg = manifest_criteria(manifest)
+        controls = synth(outdir, cfg)
+        empirical_audit = audit_manifest(manifest, manifest_path, cfg)
         status = (
             "CROSS_PROTOCOL_UNORIENTED_LAWI_CONE_CLASS_SUPPORTED"
             if empirical_audit["gate"]
             else "CROSS_PROTOCOL_CONE_NATURALITY_NOT_SUPPORTED_FAIL_CLOSED"
         )
+        locked_protocol = manifest
     else:
-        write_template(outdir)
+        locked_protocol = write_template(outdir)
+        cfg = manifest_criteria(locked_protocol)
+        controls = synth(outdir, cfg)
         empirical_audit = None
         manifest_sha256 = None
         status = "PIPELINE_CALIBRATED_INDEPENDENT_PROTOCOL_DATA_REQUIRED"
 
-    protocol = {
-        "title": TITLE,
-        "version": VERSION,
-        "criteria": cfg,
-    }
-    protocol["protocol_sha256"] = canonical_hash(protocol)
+    locked_protocol = dict(locked_protocol)
+    locked_protocol["manifest_sha256"] = manifest_sha256
+    locked_protocol["locked_protocol_sha256"] = canonical_hash(locked_protocol)
 
     report = {
         "title": TITLE,
         "version": VERSION,
         "scientific_status": status,
-        "protocol_sha256": protocol["protocol_sha256"],
+        "protocol_sha256": locked_protocol["locked_protocol_sha256"],
         "manifest_supplied": empirical_audit is not None,
         "manifest_sha256": manifest_sha256,
         "self_tests": controls,
@@ -490,7 +481,7 @@ def main() -> int:
         },
     }
     (outdir / "protocol.json").write_text(
-        json.dumps(jsonable(protocol), indent=2) + "\n"
+        json.dumps(jsonable(locked_protocol), indent=2) + "\n"
     )
     (outdir / "run_summary.json").write_text(
         json.dumps(jsonable(report), indent=2) + "\n"

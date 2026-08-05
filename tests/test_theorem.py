@@ -21,6 +21,20 @@ class ConditionalTheoremTests(unittest.TestCase):
                 "nonnegative_realization_cost_predeclared": False,
                 "physical_zero_set_equals_signed_representative_zero_set": False,
             },
+            "decision_thresholds": {
+                "nondegeneracy_tol": 1e-10,
+                "hessian_discriminant_tol": 1e-10,
+                "null_ray_residual_tol": 1e-10,
+                "finite_root_residual_tol": 1e-9,
+                "tangent_slope_relative_tol": 0.15,
+                "gl2_covariance_relative_tol": 2e-5,
+                "gl2_zero_set_tol": 1e-10,
+                "tesc_conformal_residual_tol": 1e-8,
+                "two_channel_independence_tol": 1e-12,
+                "two_channel_null_residual_tol": 1e-12,
+                "centering_value_tol": 1e-14,
+                "centering_gradient_tol": 1e-8,
+            },
         }
         G = np.array([[1.0, 0.0], [0.0, -1.0]])
 

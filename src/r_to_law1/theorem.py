@@ -7,10 +7,10 @@ from typing import Any
 
 import numpy as np
 
-TOLERANCE = 1e-10
+from .protocol import threshold
 
 
-def construct_null_rays(G: np.ndarray, tolerance: float = TOLERANCE) -> dict[str, Any]:
+def construct_null_rays(G: np.ndarray, tolerance: float) -> dict[str, Any]:
     G = np.asarray(G, dtype=float)
     g00, g01, g11 = float(G[0, 0]), float(G[0, 1]), float(G[1, 1])
     discriminant = (2 * g01) ** 2 - 4 * g11 * g00
@@ -43,9 +43,12 @@ def audit_conditional_theorem(
 ) -> dict[str, Any]:
     assumptions = protocol["structural_assumptions"]
     G = np.asarray(G, dtype=float)
+    nondegeneracy_tol = threshold(protocol, "nondegeneracy_tol")
+    discriminant_tol = threshold(protocol, "hessian_discriminant_tol")
+    null_ray_tol = threshold(protocol, "null_ray_residual_tol")
     eigenvalues = np.linalg.eigvalsh((G + G.T) / 2)
     determinant = float(np.linalg.det(G))
-    rays = construct_null_rays(G)
+    rays = construct_null_rays(G, tolerance=discriminant_tol)
     declared_structural_premises = {
         "principle_R_local_zero_mode_adopted": bool(protocol["principle_R"]["nonzero_zero_cost_direction_required"])
         and bool(assumptions["principle_R_nonzero_direction_attained"]),
@@ -53,7 +56,8 @@ def audit_conditional_theorem(
         "signed_representative_is_real_C2": bool(assumptions["signed_representative_is_real_C2"]),
         "stationary_basepoint_for_signed_representative": bool(assumptions["stationary_basepoint_for_signed_representative"]),
         "quadratic_form_symmetric": bool(assumptions["signed_representative_is_symmetric"]),
-        "quadratic_form_nondegenerate": bool(assumptions["signed_representative_is_nondegenerate"]) and abs(determinant) > TOLERANCE,
+        "quadratic_form_nondegenerate": bool(assumptions["signed_representative_is_nondegenerate"])
+        and abs(determinant) > nondegeneracy_tol,
     }
     physical_zero_set_binding = {
         "nonnegative_realization_cost_predeclared": bool(assumptions["nonnegative_realization_cost_predeclared"]),
@@ -68,7 +72,7 @@ def audit_conditional_theorem(
         "signature_must_be_1_1": bool(eigenvalues[0] < 0 < eigenvalues[1]),
         "null_set_is_two_distinct_real_rays": len(rays["null_rays"]) == 2
         and rays["quadratic_discriminant"] > 0
-        and max(rays["null_ray_residuals"], default=1.0) < TOLERANCE,
+        and max(rays["null_ray_residuals"], default=1.0) < null_ray_tol,
     }
     declared_gate = all(declared_structural_premises.values())
     protocol_binding_gate = all(physical_zero_set_binding.values())

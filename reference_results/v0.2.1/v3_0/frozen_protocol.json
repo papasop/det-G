@@ -1,0 +1,36 @@
+{
+  "title": "PRINCIPLE R -> LAW-I BIDIRECTIONAL ZERO-SET BINDING / FALSIFICATION AUDIT",
+  "version": "3.0.1",
+  "G_TESC": [
+    [
+      -1.4753511828891064,
+      -0.04866380215462485
+    ],
+    [
+      -0.04866380215462485,
+      0.2661881493004614
+    ]
+  ],
+  "criteria": {
+    "F_zero_tol": 1e-08,
+    "q_zero_tol": 0.0001,
+    "maximum_violation_rate": 0.05,
+    "minimum_zero_points": 12,
+    "minimum_points_per_radius": 20,
+    "radius_fractions": [
+      1.0,
+      0.75,
+      0.5,
+      0.35,
+      0.25,
+      0.18,
+      0.125
+    ],
+    "alternative_advantage_tolerance": 0.05,
+    "thresholds_frozen_before_data": true
+  },
+  "frozen_tesc_protocol_sha256": "f01078947ee5e54f2ef11ecf0a403d5ba1b60a747b1dcd3d6a5712c2050abf4b",
+  "derivation_version": "tesc-hessian-finite-difference-v0.1.1",
+  "data_contract": "F is independent, nonnegative, prospective; q/TESC not used to construct F",
+  "protocol_sha256": "1cac636ff699d7c0eb860278895c87011e717d8faea45f9b303d098b36a2fc74"
+}

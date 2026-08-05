@@ -22,6 +22,7 @@ from r_to_law1.provenance import audit_provenance  # noqa: E402
 from r_to_law1.report import emit_report  # noqa: E402
 from r_to_law1.tesc import derive_tesc_hessian, load_frozen_protocol  # noqa: E402
 from r_to_law1.theorem import audit_conditional_theorem, construct_null_rays  # noqa: E402
+from r_to_law1.protocol import threshold  # noqa: E402
 
 
 def main() -> int:
@@ -34,7 +35,7 @@ def main() -> int:
         default=None,
         help="Override the provenance certificate path declared by the protocol.",
     )
-    parser.add_argument("--outdir", default="reference_results/v0.1.0")
+    parser.add_argument("--outdir", default="reference_results/v0.1.1")
     args, unknown = parser.parse_known_args()
     if unknown:
         print("[notice] ignored notebook/kernel arguments:", unknown)
@@ -47,7 +48,9 @@ def main() -> int:
 
     G = derive_tesc_hessian(protocol)
     theorem = audit_conditional_theorem(G, protocol, physical_binding_gate=physical_binding_gate)
-    theorem["metrics"].update(construct_null_rays(G))
+    theorem["metrics"].update(
+        construct_null_rays(G, tolerance=threshold(protocol, "hessian_discriminant_tol"))
+    )
 
     finite_branches = trace_finite_zero_branches(protocol)
     covariance = audit_gl2_covariance(protocol)
