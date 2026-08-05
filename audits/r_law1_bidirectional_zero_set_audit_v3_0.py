@@ -20,8 +20,14 @@ from pathlib import Path
 
 import numpy as np
 
+ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(ROOT / "src"))
+
+from r_to_law1.protocol import protocol_sha256
+from r_to_law1.tesc import derive_tesc_hessian, load_frozen_protocol
+
 TITLE = "PRINCIPLE R -> LAW-I BIDIRECTIONAL ZERO-SET BINDING / FALSIFICATION AUDIT"
-VERSION = "3.0"
+VERSION = "3.0.1"
 
 
 def jsonable(v):
@@ -191,10 +197,8 @@ def audit(xy, F, split, G, cfg):
     }
 
 
-def self_tests(cfg):
+def self_tests(cfg, G: np.ndarray):
     rng = np.random.default_rng(20260805)
-    G = np.array([[-1.4753511828891064, -0.04866380215462485],
-                  [-0.04866380215462485, 0.2661881493004614]])
     rays = ray_angles(G)
     n = 800
     r = rng.uniform(.01, 1, n)
@@ -228,31 +232,22 @@ def main():
     p = argparse.ArgumentParser()
     p.add_argument("--data", default="")
     p.add_argument("--outdir", default="r_law1_bidirectional_audit_v3_0_results")
-    p.add_argument("--F-zero-tol", type=float, default=1e-8)
-    p.add_argument("--q-zero-tol", type=float, default=1e-4)
-    p.add_argument("--maximum-violation-rate", type=float, default=0.05)
-    p.add_argument("--minimum-zero-points", type=int, default=12)
+    p.add_argument("--protocol", default="protocols/frozen_tesc_protocol.json")
     args, unknown = p.parse_known_args()
     if unknown: print("[notice] ignored notebook/kernel arguments:", unknown)
     t0 = time.time()
     out = Path(args.outdir); out.mkdir(parents=True, exist_ok=True)
-    G = np.array([[-1.4753511828891064, -0.04866380215462485],
-                  [-0.04866380215462485, 0.2661881493004614]])
-    cfg = {
-        "F_zero_tol": args.F_zero_tol,
-        "q_zero_tol": args.q_zero_tol,
-        "maximum_violation_rate": args.maximum_violation_rate,
-        "minimum_zero_points": args.minimum_zero_points,
-        "minimum_points_per_radius": 20,
-        "radius_fractions": [1.0, .75, .5, .35, .25, .18, .125],
-        "alternative_advantage_tolerance": .05,
-        "thresholds_frozen_before_data": True,
-    }
-    protocol = {"title": TITLE, "version": VERSION, "G_TESC": G, "criteria": cfg,
+    frozen_protocol = load_frozen_protocol(args.protocol)
+    frozen_protocol_sha = protocol_sha256(frozen_protocol)
+    G = derive_tesc_hessian(frozen_protocol)
+    cfg = frozen_protocol["prospective_audit_thresholds"]["v3_0_zero_set_binding"]
+    audit_protocol = {"title": TITLE, "version": VERSION, "G_TESC": G,
+                "criteria": cfg, "frozen_tesc_protocol_sha256": frozen_protocol_sha,
+                "derivation_version": frozen_protocol["derivation_version"],
                 "data_contract": "F is independent, nonnegative, prospective; q/TESC not used to construct F"}
-    protocol["protocol_sha256"] = canonical_hash(protocol)
-    (out/"frozen_protocol.json").write_text(json.dumps(jsonable(protocol), indent=2)+"\n")
-    controls = self_tests(cfg)
+    audit_protocol["protocol_sha256"] = canonical_hash(audit_protocol)
+    (out/"frozen_protocol.json").write_text(json.dumps(jsonable(audit_protocol), indent=2)+"\n")
+    controls = self_tests(cfg, G)
     data = Path(args.data) if args.data else None
     if data and data.is_file():
         xy, F, split = load_csv(data)
@@ -267,7 +262,9 @@ def main():
         status = "PIPELINE_CALIBRATED_INDEPENDENT_PHYSICAL_F_DATA_REQUIRED"
     report = {
         "title": TITLE, "version": VERSION, "scientific_status": status,
-        "protocol_sha256": protocol["protocol_sha256"],
+        "protocol_sha256": audit_protocol["protocol_sha256"],
+        "frozen_tesc_protocol_sha256": frozen_protocol_sha,
+        "derivation_version": frozen_protocol["derivation_version"],
         "data_supplied": empirical is not None, "data_sha256": data_hash,
         "self_tests": controls, "empirical_audit": empirical,
         "all_scientific_gates_pass": bool(empirical and empirical["gate"] and all(controls.values())),

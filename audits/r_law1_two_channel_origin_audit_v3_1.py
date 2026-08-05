@@ -15,21 +15,20 @@ from typing import Any
 
 import numpy as np
 
+ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(ROOT / "src"))
+
 try:
     from audits.common import canonical_hash, jsonable, source_hash_matches
 except ModuleNotFoundError:
     from common import canonical_hash, jsonable, source_hash_matches
 
+from r_to_law1.protocol import protocol_sha256, threshold
+from r_to_law1.tesc import derive_tesc_hessian, load_frozen_protocol
+
 
 TITLE = "PRINCIPLE R -> LAW-I SINGLE-CHANNEL NO-GO / TWO-CHANNEL ORIGIN AUDIT"
-VERSION = "3.1"
-G_TESC = np.array(
-    [
-        [-1.4753511828891064, -0.04866380215462485],
-        [-0.04866380215462485, 0.2661881493004614],
-    ],
-    dtype=float,
-)
+VERSION = "3.1.1"
 
 
 def quadratic_from_channels(plus: np.ndarray, minus: np.ndarray) -> np.ndarray:
@@ -53,8 +52,21 @@ def unoriented_angle(first: np.ndarray, second: np.ndarray) -> float:
 
 
 def algebra(plus: list[float], minus: list[float]) -> dict[str, Any]:
+    protocol = load_frozen_protocol()
+    return algebra_against_tesc(plus, minus, protocol)
+
+
+def algebra_against_tesc(
+    plus: list[float],
+    minus: list[float],
+    protocol: dict[str, Any],
+) -> dict[str, Any]:
     plus_covector = np.asarray(plus, dtype=float)
     minus_covector = np.asarray(minus, dtype=float)
+    G_TESC = derive_tesc_hessian(protocol)
+    independence_tol = threshold(protocol, "two_channel_independence_tol")
+    null_residual_tol = threshold(protocol, "two_channel_null_residual_tol")
+    conformal_residual_tol = threshold(protocol, "tesc_conformal_residual_tol")
     channel_matrix = np.vstack([plus_covector, minus_covector])
     channel_determinant = float(np.linalg.det(channel_matrix))
 
@@ -75,7 +87,7 @@ def algebra(plus: list[float], minus: list[float]) -> dict[str, Any]:
     return {
         "channel_matrix": channel_matrix,
         "channel_determinant": channel_determinant,
-        "channels_independent": abs(channel_determinant) > 1e-12,
+        "channels_independent": abs(channel_determinant) > independence_tol,
         "channel_angle_radians": unoriented_angle(plus_covector, minus_covector),
         "induced_G": induced_G,
         "induced_G_eigenvalues": eigenvalues,
@@ -86,9 +98,10 @@ def algebra(plus: list[float], minus: list[float]) -> dict[str, Any]:
             minus_ray / np.linalg.norm(minus_ray),
         ],
         "maximum_null_residual": max(residuals),
+        "two_channel_null_residual_gate": max(residuals) < null_residual_tol,
         "TESC_conformal_scale": scale,
         "TESC_conformal_relative_residual": residual,
-        "same_TESC_null_cone": scale > 0 and residual < 1e-8,
+        "same_TESC_null_cone": scale > 0 and residual < conformal_residual_tol,
     }
 
 
@@ -130,12 +143,19 @@ def template() -> dict[str, Any]:
 def audit_cert(
     certificate: dict[str, Any],
     base_dir: str | Path = ".",
+    protocol: dict[str, Any] | None = None,
 ) -> dict[str, Any]:
+    if protocol is None:
+        protocol = load_frozen_protocol()
     channel_plus = certificate["channel_plus"]
     channel_minus = certificate["channel_minus"]
     capacity = certificate["capacity"]
     provenance = certificate["provenance"]
-    algebra_record = algebra(channel_plus["covector"], channel_minus["covector"])
+    algebra_record = algebra_against_tesc(
+        channel_plus["covector"],
+        channel_minus["covector"],
+        protocol,
+    )
 
     gates = {
         "plus_source_bound": source_hash_matches(
@@ -176,7 +196,7 @@ def audit_cert(
         ),
         "channels_linearly_independent": algebra_record["channels_independent"],
         "induced_quadratic_form_Lorentzian": algebra_record["induced_Lorentzian"],
-        "two_null_rays_exact": algebra_record["maximum_null_residual"] < 1e-12,
+        "two_null_rays_exact": algebra_record["two_channel_null_residual_gate"],
     }
     return {
         "gates": gates,
@@ -193,6 +213,7 @@ def write_template(outdir: Path) -> None:
 def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--certificate", default="")
+    parser.add_argument("--protocol", default="protocols/frozen_tesc_protocol.json")
     parser.add_argument("--outdir", default="r_law1_two_channel_origin_v3_1_results")
     args, unknown = parser.parse_known_args()
     if unknown:
@@ -201,6 +222,9 @@ def main() -> int:
     started_at = time.time()
     outdir = Path(args.outdir)
     outdir.mkdir(parents=True, exist_ok=True)
+    frozen_protocol = load_frozen_protocol(args.protocol)
+    frozen_protocol_sha = protocol_sha256(frozen_protocol)
+    G_TESC = derive_tesc_hessian(frozen_protocol)
 
     single_channel = np.array([1.0, 2.0])
     single_kernel = np.array([-2.0, 1.0])
@@ -212,8 +236,8 @@ def main() -> int:
         "kernel_witness": single_kernel,
     }
 
-    positive_control = algebra([1.0, 1.0], [1.0, -1.0])
-    dependent_control = algebra([1.0, 1.0], [2.0, 2.0])
+    positive_control = algebra_against_tesc([1.0, 1.0], [1.0, -1.0], frozen_protocol)
+    dependent_control = algebra_against_tesc([1.0, 1.0], [2.0, 2.0], frozen_protocol)
     circular_control = {
         "F_abs_q_zero_set_equals_q_by_construction": True,
         "F_q_squared_zero_set_equals_q_by_construction": True,
@@ -238,7 +262,11 @@ def main() -> int:
     certificate_path = Path(args.certificate) if args.certificate else None
     if certificate_path and certificate_path.is_file():
         certificate = load_certificate(certificate_path)
-        empirical_audit = audit_cert(certificate, certificate_path.parent)
+        empirical_audit = audit_cert(
+            certificate,
+            certificate_path.parent,
+            frozen_protocol,
+        )
         certificate_sha256 = hashlib.sha256(certificate_path.read_bytes()).hexdigest()
         status = (
             "INDEPENDENT_TWO_CHANNEL_LAWI_ORIGIN_SUPPORTED"
@@ -254,23 +282,28 @@ def main() -> int:
             "INDEPENDENT_CHANNEL_PROVENANCE_REQUIRED"
         )
 
-    protocol = {
+    audit_protocol = {
         "title": TITLE,
         "version": VERSION,
         "tests": "single-channel no-go; two-channel product; circular negative control",
+        "frozen_tesc_protocol_sha256": frozen_protocol_sha,
+        "derivation_version": frozen_protocol["derivation_version"],
         "claim_rule": (
             "F=|L_plus L_minus|/H with H>0; channel definitions must "
             "predate and not depend on TESC"
         ),
     }
-    protocol["protocol_sha256"] = canonical_hash(protocol)
-    (outdir / "protocol.json").write_text(json.dumps(protocol, indent=2) + "\n")
+    audit_protocol["audit_protocol_sha256"] = canonical_hash(audit_protocol)
+    (outdir / "protocol.json").write_text(json.dumps(audit_protocol, indent=2) + "\n")
 
     report = {
         "title": TITLE,
         "version": VERSION,
         "scientific_status": status,
-        "protocol_sha256": protocol["protocol_sha256"],
+        "protocol_sha256": frozen_protocol_sha,
+        "audit_protocol_sha256": audit_protocol["audit_protocol_sha256"],
+        "derivation_version": frozen_protocol["derivation_version"],
+        "G_TESC": G_TESC,
         "single_channel_information_time": single_channel_record,
         "two_channel_positive_control": positive_control,
         "dependent_channel_negative_control": dependent_control,

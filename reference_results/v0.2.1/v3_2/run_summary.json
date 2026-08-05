@@ -1,0 +1,22 @@
+{
+  "title": "PRINCIPLE R -> LAW-I CROSS-PROTOCOL ZERO-CONE NATURALITY AUDIT",
+  "version": "3.2.1",
+  "scientific_status": "PIPELINE_CALIBRATED_INDEPENDENT_PROTOCOL_DATA_REQUIRED",
+  "protocol_sha256": "53ef27f70c3f272cbb1d02c70bbd5ba89f39335cfbd1afe744864c62eee4a6c5",
+  "manifest_supplied": false,
+  "manifest_sha256": null,
+  "self_tests": {
+    "matched_cross_protocol_positive_control_pass": true,
+    "wrong_mapping_negative_control_rejected": true
+  },
+  "empirical_audit": null,
+  "all_scientific_gates_pass": false,
+  "interpretation": "Each protocol must independently recover a held-out two-branch zero cone. Frozen realization maps must carry the unordered branch pair to one common projective conformal class. Zero sets alone determine G only up to nonzero scale; positive coorientation is reported separately.",
+  "next_required_step": "Populate two independently sourced protocol CSVs and freeze their coordinate maps before comparing outcomes; then rerun with --manifest.",
+  "claim_boundary": "A pass supports a local cross-protocol unoriented cone class, not a physical time orientation, metric scale, spacetime, Law-II/III or wavefunction.",
+  "elapsed_seconds": 0.1478867530822754,
+  "environment": {
+    "python": "3.9.6",
+    "numpy": "2.0.2"
+  }
+}

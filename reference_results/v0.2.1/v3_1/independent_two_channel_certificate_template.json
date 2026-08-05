@@ -1,0 +1,34 @@
+{
+  "schema": "r-law1-independent-two-channel-v3.1",
+  "channel_plus": {
+    "covector": [
+      1.0,
+      0.0
+    ],
+    "definition_source_path": "",
+    "definition_source_sha256": "",
+    "physical_meaning": "",
+    "measurable": false
+  },
+  "channel_minus": {
+    "covector": [
+      0.0,
+      1.0
+    ],
+    "definition_source_path": "",
+    "definition_source_sha256": "",
+    "physical_meaning": "",
+    "measurable": false
+  },
+  "capacity": {
+    "definition_source_path": "",
+    "definition_source_sha256": "",
+    "strictly_positive": false
+  },
+  "provenance": {
+    "both_channels_predeclared_before_TESC": false,
+    "definitions_do_not_use_G_TESC_or_its_null_rays": false,
+    "relative_product_rule_derived": false,
+    "selected_2D_plane_derived": false
+  }
+}
