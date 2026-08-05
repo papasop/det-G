@@ -6,7 +6,7 @@ build-backend = "setuptools.build_meta"
 name = "r-to-law1"
 version = "0.1.0"
 description = "Principle R to two-dimensional Lorentzian Law I conditional theorem and audits"
-requires-python = ">=3.9"
+requires-python = ">=3.10"
 dependencies = [
   "numpy>=2.0",
 ]

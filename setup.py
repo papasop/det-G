@@ -6,5 +6,6 @@ setup(
     version="0.1.0",
     package_dir={"r_to_law1": "src/r_to_law1", "audits": "audits"},
     packages=["r_to_law1", "audits"],
+    python_requires=">=3.10",
     install_requires=["numpy>=2.0"],
 )

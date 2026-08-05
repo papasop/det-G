@@ -1,162 +1,509 @@
 #!/usr/bin/env python3
 """Prospective cross-protocol zero-cone naturality audit for R -> Law-I.
 
-Manifest JSON schema is emitted on first run.  Every protocol has its own CSV
-with columns x,y,F,split.  F must be independently defined and nonnegative.
+Manifest JSON schema is emitted on first run. Every protocol has its own CSV
+with columns x,y,F,split. F must be independently defined and nonnegative.
 The frozen map z=T x sends protocol coordinates to canonical coordinates.
 """
+
 from __future__ import annotations
-import argparse, hashlib, json, math, platform, sys, time
+
+import argparse
+import json
+import math
+import platform
+import sys
+import time
 from pathlib import Path
+from typing import Any
+
 import numpy as np
 
 try:
-    from audits.common import source_hash_matches
+    from audits.common import canonical_hash, jsonable, sha256_file, source_hash_matches
 except ModuleNotFoundError:
-    from common import source_hash_matches
+    from common import canonical_hash, jsonable, sha256_file, source_hash_matches
 
-TITLE="PRINCIPLE R -> LAW-I CROSS-PROTOCOL ZERO-CONE NATURALITY AUDIT"
-VERSION="3.2"
 
-def J(x):
-    if isinstance(x,dict): return {str(k):J(v) for k,v in x.items()}
-    if isinstance(x,(list,tuple)): return [J(v) for v in x]
-    if isinstance(x,np.ndarray): return x.tolist()
-    if isinstance(x,np.generic): return x.item()
-    return x
-def sha(b): return hashlib.sha256(b).hexdigest()
-def hfile(p): return sha(Path(p).read_bytes())
-def hobj(o): return sha(json.dumps(J(o),sort_keys=True,separators=(",",":")).encode())
-def load_csv(p):
-    a=np.genfromtxt(p,delimiter=",",names=True,dtype=None,encoding="utf-8")
-    if not a.dtype.names or not {"x","y","F","split"}.issubset(a.dtype.names): raise ValueError(f"{p}: need x,y,F,split")
-    X=np.c_[a["x"].astype(float),a["y"].astype(float)]; F=a["F"].astype(float); S=np.asarray(a["split"],str)
-    if np.any(~np.isfinite(X)) or np.any(~np.isfinite(F)) or np.any(F < -1e-12): raise ValueError(f"{p}: finite nonnegative F required")
-    if not {"train","heldout"}.issubset(set(S)): raise ValueError(f"{p}: train and heldout required")
-    return X,np.maximum(F,0),S
+TITLE = "PRINCIPLE R -> LAW-I CROSS-PROTOCOL ZERO-CONE NATURALITY AUDIT"
+VERSION = "3.2"
 
-def nq(X,G):
-    q=np.einsum("ni,ij,nj->n",X,G,X); r2=np.sum(X*X,axis=1)
-    return np.abs(q)/np.maximum(np.linalg.norm(G)*r2,1e-300)
 
-def fit_G(X,zero):
-    Z=X[zero]
-    if len(Z)<6:return None
-    M=np.c_[Z[:,0]**2,2*Z[:,0]*Z[:,1],Z[:,1]**2]
-    _,_,vh=np.linalg.svd(M,full_matrices=False);g=vh[-1];G=np.array([[g[0],g[1]],[g[1],g[2]]]);n=np.linalg.norm(G)
-    return None if n<1e-15 else G/n
+def load_csv(path: Path) -> tuple[np.ndarray, np.ndarray, np.ndarray]:
+    data = np.genfromtxt(
+        path,
+        delimiter=",",
+        names=True,
+        dtype=None,
+        encoding="utf-8",
+    )
+    required = {"x", "y", "F", "split"}
+    if not data.dtype.names or not required.issubset(data.dtype.names):
+        raise ValueError(f"{path}: need x,y,F,split")
 
-def canon(G,T):
-    Ti=np.linalg.inv(T); C=Ti.T@G@Ti;return C/np.linalg.norm(C)
+    points = np.c_[data["x"].astype(float), data["y"].astype(float)]
+    costs = data["F"].astype(float)
+    splits = np.asarray(data["split"], dtype=str)
 
-def projective_res(A,B):
+    if np.any(~np.isfinite(points)) or np.any(~np.isfinite(costs)):
+        raise ValueError(f"{path}: finite nonnegative F required")
+    if np.any(costs < -1e-12):
+        raise ValueError(f"{path}: finite nonnegative F required")
+    if not {"train", "heldout"}.issubset(set(splits)):
+        raise ValueError(f"{path}: train and heldout required")
+
+    return points, np.maximum(costs, 0.0), splits
+
+
+def normalized_quadratic_residual(points: np.ndarray, G: np.ndarray) -> np.ndarray:
+    quadratic = np.einsum("ni,ij,nj->n", points, G, points)
+    radius_squared = np.sum(points * points, axis=1)
+    scale = np.maximum(np.linalg.norm(G) * radius_squared, 1e-300)
+    return np.abs(quadratic) / scale
+
+
+def fit_G(points: np.ndarray, zero_mask: np.ndarray) -> np.ndarray | None:
+    zero_points = points[zero_mask]
+    if len(zero_points) < 6:
+        return None
+
+    design = np.c_[
+        zero_points[:, 0] ** 2,
+        2.0 * zero_points[:, 0] * zero_points[:, 1],
+        zero_points[:, 1] ** 2,
+    ]
+    _, _, vh = np.linalg.svd(design, full_matrices=False)
+    coefficients = vh[-1]
+    G = np.array(
+        [
+            [coefficients[0], coefficients[1]],
+            [coefficients[1], coefficients[2]],
+        ]
+    )
+    norm = np.linalg.norm(G)
+    if norm < 1e-15:
+        return None
+    return G / norm
+
+
+def canonical_G(G: np.ndarray, transform: np.ndarray) -> np.ndarray:
+    inverse_transform = np.linalg.inv(transform)
+    candidate = inverse_transform.T @ G @ inverse_transform
+    return candidate / np.linalg.norm(candidate)
+
+
+def projective_residual(
+    first: np.ndarray,
+    second: np.ndarray,
+) -> tuple[float, int, float]:
     # Null sets determine G only up to any nonzero scalar: compare both signs.
-    rp=np.linalg.norm(A-B);rm=np.linalg.norm(A+B)
-    return float(min(rp,rm)), (1 if rp<=rm else -1), float(rp)
+    positive_residual = np.linalg.norm(first - second)
+    negative_residual = np.linalg.norm(first + second)
+    if positive_residual <= negative_residual:
+        return float(positive_residual), 1, float(positive_residual)
+    return float(negative_residual), -1, float(positive_residual)
 
-def cone_angles(G):
-    th=np.linspace(0,math.pi,300000,endpoint=False);U=np.c_[np.cos(th),np.sin(th)];v=nq(U,G);chosen=[]
-    for i in np.argsort(v):
-        t=float(th[i])
-        if all(abs(((t-s+math.pi/2)%math.pi)-math.pi/2)>1e-3 for s in chosen):chosen.append(t)
-        if len(chosen)==2:break
+
+def cone_angles(G: np.ndarray) -> np.ndarray:
+    theta = np.linspace(0.0, math.pi, 300000, endpoint=False)
+    unit_circle = np.c_[np.cos(theta), np.sin(theta)]
+    residuals = normalized_quadratic_residual(unit_circle, G)
+    chosen: list[float] = []
+
+    for index in np.argsort(residuals):
+        angle = float(theta[index])
+        separated = all(
+            abs(((angle - existing + math.pi / 2.0) % math.pi) - math.pi / 2.0)
+            > 1e-3
+            for existing in chosen
+        )
+        if separated:
+            chosen.append(angle)
+        if len(chosen) == 2:
+            break
+
     return np.sort(chosen)
 
-def branch_distance(a,b):
-    d=lambda x,y:abs(((x-y+math.pi/2)%math.pi)-math.pi/2)
-    return float(min(max(d(a[0],b[0]),d(a[1],b[1])),max(d(a[0],b[1]),d(a[1],b[0]))))
 
-def one_protocol(item,base,cfg):
-    p=(base/item["data_csv"]).resolve();X,F,S=load_csv(p);tr=S=="train";te=S=="heldout";fz=F<=cfg["F_zero_tol"]
-    G=fit_G(X,tr&fz); T=np.asarray(item["to_canonical_T"],float)
-    if G is None: return {"name":item["name"],"gate":False,"error":"insufficient training F-zero geometry"}
-    qz=nq(X,G)<=cfg["q_zero_tol"];nf=int(np.sum(te&fz));nqz=int(np.sum(te&qz))
-    fbad=int(np.sum(te&fz&~qz));qbad=int(np.sum(te&~fz&qz))
-    ev=np.linalg.eigvalsh(G);det=float(np.linalg.det(G));Cg=canon(G,T)
-    gates={"data_hash_matches":hfile(p)==item["data_sha256"],
-      "cost_definition_source_bound":source_hash_matches(item,path_key="cost_definition_source_path",hash_key="cost_definition_source_sha256",base_dir=base),
-      "protocol_predeclared":bool(item["predeclared_before_cross_comparison"]),"mapping_predeclared":bool(item["mapping_predeclared_before_outcomes"]),
-      "mapping_invertible":abs(float(np.linalg.det(T)))>1e-12,"heldout_Fzero_coverage":nf>=cfg["minimum_zero_points"],
-      "heldout_qzero_coverage":nqz>=cfg["minimum_zero_points"],"Fzero_implies_qzero":fbad/max(1,nf)<=cfg["maximum_violation_rate"],
-      "qzero_implies_Fzero":qbad/max(1,nqz)<=cfg["maximum_violation_rate"],"fitted_G_Lorentzian":ev[0]<0<ev[1]}
-    return {"name":item["name"],"data_sha256":hfile(p),"G_protocol":G,"G_canonical":Cg,"eigenvalues":ev,"detG":det,
-      "canonical_branch_angles":cone_angles(Cg),"heldout":{"Fzero":nf,"qzero":nqz,"Fzero_qnonzero":fbad,"qzero_Fpositive":qbad},
-      "gates":gates,"gate":all(gates.values())}
+def branch_distance(first: np.ndarray, second: np.ndarray) -> float:
+    def unoriented_distance(a: float, b: float) -> float:
+        return abs(((a - b + math.pi / 2.0) % math.pi) - math.pi / 2.0)
 
-def audit_manifest(m,path,cfg):
-    base=path.parent; rec=[one_protocol(x,base,cfg) for x in m["protocols"]];valid=[r for r in rec if "G_canonical" in r]
-    pairs=[]
-    for i in range(len(valid)):
-      for j in range(i+1,len(valid)):
-        r,s=valid[i],valid[j];pr,sgn,pos=projective_res(r["G_canonical"],s["G_canonical"]);bd=branch_distance(r["canonical_branch_angles"],s["canonical_branch_angles"])
-        pairs.append({"pair":[r["name"],s["name"]],"unoriented_projective_residual":pr,"relative_sign":sgn,
-          "positive_conformal_residual":pos,"branch_pair_distance_radians":bd,
-          "unoriented_cone_match":pr<=cfg["cone_residual_tol"] and bd<=cfg["branch_angle_tol"],
-          "positive_coorientation_match":pos<=cfg["cone_residual_tol"]})
-    provenance={"at_least_two_protocols":len(rec)>=2,"all_protocol_costs_independently_defined":bool(m["provenance"]["costs_independent_of_each_other_and_TESC"]),
-      "comparison_rule_frozen":bool(m["provenance"]["comparison_rule_frozen_before_outcomes"]),
-      "no_outcome_based_protocol_selection":bool(m["provenance"]["no_protocol_selected_after_outcomes"])}
-    gates={"provenance":all(provenance.values()),"all_protocols_pass_local_binding":len(rec)>=2 and all(r["gate"] for r in rec),
-      "all_pairs_same_unoriented_cone":bool(pairs) and all(p["unoriented_cone_match"] for p in pairs)}
-    oriented=gates["all_pairs_same_unoriented_cone"] and all(p["positive_coorientation_match"] for p in pairs)
-    return {"protocol_records":rec,"pairwise_naturality":pairs,"provenance_gates":provenance,"gates":gates,
-      "cross_protocol_unoriented_cone_class_supported":all(gates.values()),"positive_coorientation_selected":bool(oriented),
-      "gate":all(gates.values())}
+    direct = max(
+        unoriented_distance(first[0], second[0]),
+        unoriented_distance(first[1], second[1]),
+    )
+    swapped = max(
+        unoriented_distance(first[0], second[1]),
+        unoriented_distance(first[1], second[0]),
+    )
+    return float(min(direct, swapped))
 
-def synth(out,cfg):
-    rng=np.random.default_rng(20260805);G=np.array([[1.,0.],[0.,-1.]])
-    source=out/"selftest_cost_definition.txt";source.write_text("synthetic cost definition for v3.2 self-test\n")
-    source_hash=hfile(source)
-    items=[]
-    for k,T in enumerate((np.eye(2),np.array([[1.4,.3],[-.2,.9]]))):
-      rows=["x,y,F,split"];Ti=np.linalg.inv(T)
-      for i in range(800):
-        z=rng.normal(size=2);z/=np.linalg.norm(z);x=Ti@z;q=float(z@G@z);F=abs(q);sp="train" if i%2==0 else "heldout"
-        rows.append(f"{x[0]:.17g},{x[1]:.17g},{F:.17g},{sp}")
-      p=out/f"selftest_protocol_{k}.csv";p.write_text("\n".join(rows)+"\n")
-      items.append({"name":f"p{k}","data_csv":p.name,"data_sha256":hfile(p),
-        "cost_definition_source_path":source.name,"cost_definition_source_sha256":source_hash,
-        "predeclared_before_cross_comparison":True,"mapping_predeclared_before_outcomes":True,"to_canonical_T":T.tolist()})
-    m={"protocols":items,"provenance":{"costs_independent_of_each_other_and_TESC":True,"comparison_rule_frozen_before_outcomes":True,"no_protocol_selected_after_outcomes":True}}
-    # Self-test needs tolerance-compatible near-zero samples; F tolerance selects q near zero statistically poorly.
-    # Add exact ray points to both files.
-    for k,item in enumerate(items):
-      p=out/item["data_csv"];T=np.asarray(item["to_canonical_T"]);Ti=np.linalg.inv(T);lines=p.read_text().splitlines()
-      for i in range(80):
-        z=np.array([1.,1. if i%2==0 else -1.])*rng.uniform(.1,1);x=Ti@z;lines.append(f"{x[0]:.17g},{x[1]:.17g},0,{'train' if i%4<2 else 'heldout'}")
-      p.write_text("\n".join(lines)+"\n");item["data_sha256"]=hfile(p)
-    good=audit_manifest(m,out/"selftest_manifest.json",cfg)
-    mb=json.loads(json.dumps(m));mb["protocols"][1]["to_canonical_T"]=[[1,0],[0,1]]
-    bad=audit_manifest(mb,out/"selftest_bad_manifest.json",cfg)
-    return {"matched_cross_protocol_positive_control_pass":good["gate"],"wrong_mapping_negative_control_rejected":not bad["gate"]}
 
-def template(out):
-    for name in ("protocol_A.csv","protocol_B.csv"):(out/name).write_text("x,y,F,split\n0.0,0.0,nan,train\n")
-    m={"schema":"r-law1-cross-protocol-v3.2","protocols":[
-      {"name":"protocol_A","data_csv":"protocol_A.csv","data_sha256":"","cost_definition_source_path":"","cost_definition_source_sha256":"","predeclared_before_cross_comparison":False,"mapping_predeclared_before_outcomes":False,"to_canonical_T":[[1,0],[0,1]]},
-      {"name":"protocol_B","data_csv":"protocol_B.csv","data_sha256":"","cost_definition_source_path":"","cost_definition_source_sha256":"","predeclared_before_cross_comparison":False,"mapping_predeclared_before_outcomes":False,"to_canonical_T":[[1,0],[0,1]]}],
-      "provenance":{"costs_independent_of_each_other_and_TESC":False,"comparison_rule_frozen_before_outcomes":False,"no_protocol_selected_after_outcomes":False}}
-    (out/"cross_protocol_manifest_template.json").write_text(json.dumps(m,indent=2)+"\n")
+def one_protocol(
+    item: dict[str, Any],
+    base_dir: Path,
+    cfg: dict[str, float],
+) -> dict[str, Any]:
+    csv_path = (base_dir / item["data_csv"]).resolve()
+    points, costs, splits = load_csv(csv_path)
+    train_mask = splits == "train"
+    heldout_mask = splits == "heldout"
+    F_zero_mask = costs <= cfg["F_zero_tol"]
 
-def main():
-    ap=argparse.ArgumentParser();ap.add_argument("--manifest",default="");ap.add_argument("--outdir",default="r_law1_cross_protocol_v3_2_results")
-    a,u=ap.parse_known_args();
-    if u:print("[notice] ignored notebook/kernel arguments:",u)
-    t=time.time();out=Path(a.outdir);out.mkdir(parents=True,exist_ok=True)
-    cfg={"F_zero_tol":1e-8,"q_zero_tol":2e-4,"minimum_zero_points":12,"maximum_violation_rate":.05,"cone_residual_tol":.02,"branch_angle_tol":.02}
-    controls=synth(out,cfg);mp=Path(a.manifest) if a.manifest else None
-    if mp and mp.is_file():
-      m=json.loads(mp.read_text());emp=audit_manifest(m,mp,cfg);msha=hfile(mp)
-      status="CROSS_PROTOCOL_UNORIENTED_LAWI_CONE_CLASS_SUPPORTED" if emp["gate"] else "CROSS_PROTOCOL_CONE_NATURALITY_NOT_SUPPORTED_FAIL_CLOSED"
-    else:template(out);emp=None;msha=None;status="PIPELINE_CALIBRATED_INDEPENDENT_PROTOCOL_DATA_REQUIRED"
-    protocol={"title":TITLE,"version":VERSION,"criteria":cfg};protocol["protocol_sha256"]=hobj(protocol)
-    report={"title":TITLE,"version":VERSION,"scientific_status":status,"protocol_sha256":protocol["protocol_sha256"],"manifest_supplied":emp is not None,"manifest_sha256":msha,
-      "self_tests":controls,"empirical_audit":emp,"all_scientific_gates_pass":bool(emp and emp["gate"] and all(controls.values())),
-      "interpretation":"Each protocol must independently recover a held-out two-branch zero cone. Frozen realization maps must carry the unordered branch pair to one common projective conformal class. Zero sets alone determine G only up to nonzero scale; positive coorientation is reported separately.",
-      "next_required_step":"Populate two independently sourced protocol CSVs and freeze their coordinate maps before comparing outcomes; then rerun with --manifest.",
-      "claim_boundary":"A pass supports a local cross-protocol unoriented cone class, not a physical time orientation, metric scale, spacetime, Law-II/III or wavefunction.","elapsed_seconds":time.time()-t,"environment":{"python":platform.python_version(),"numpy":np.__version__}}
-    (out/"protocol.json").write_text(json.dumps(J(protocol),indent=2)+"\n");(out/"run_summary.json").write_text(json.dumps(J(report),indent=2)+"\n")
-    print("="*112);print(f"{TITLE} v{VERSION}");print("="*112);print(json.dumps(J(report),indent=2));return 0
-if __name__=="__main__":
-    rc=main()
-    if not any(x in sys.modules for x in ("ipykernel","IPython","google.colab")):raise SystemExit(rc)
+    G = fit_G(points, train_mask & F_zero_mask)
+    transform = np.asarray(item["to_canonical_T"], dtype=float)
+    if G is None:
+        return {
+            "name": item["name"],
+            "gate": False,
+            "error": "insufficient training F-zero geometry",
+        }
+
+    q_zero_mask = normalized_quadratic_residual(points, G) <= cfg["q_zero_tol"]
+    heldout_Fzero_count = int(np.sum(heldout_mask & F_zero_mask))
+    heldout_qzero_count = int(np.sum(heldout_mask & q_zero_mask))
+    Fzero_qnonzero_count = int(
+        np.sum(heldout_mask & F_zero_mask & ~q_zero_mask)
+    )
+    qzero_Fpositive_count = int(
+        np.sum(heldout_mask & ~F_zero_mask & q_zero_mask)
+    )
+
+    eigenvalues = np.linalg.eigvalsh(G)
+    det_G = float(np.linalg.det(G))
+    canonical_candidate = canonical_G(G, transform)
+
+    gates = {
+        "data_hash_matches": sha256_file(csv_path) == item["data_sha256"],
+        "cost_definition_source_bound": source_hash_matches(
+            item,
+            path_key="cost_definition_source_path",
+            hash_key="cost_definition_source_sha256",
+            base_dir=base_dir,
+        ),
+        "protocol_predeclared": bool(item["predeclared_before_cross_comparison"]),
+        "mapping_predeclared": bool(item["mapping_predeclared_before_outcomes"]),
+        "mapping_invertible": abs(float(np.linalg.det(transform))) > 1e-12,
+        "heldout_Fzero_coverage": heldout_Fzero_count >= cfg["minimum_zero_points"],
+        "heldout_qzero_coverage": heldout_qzero_count >= cfg["minimum_zero_points"],
+        "Fzero_implies_qzero": Fzero_qnonzero_count
+        / max(1, heldout_Fzero_count)
+        <= cfg["maximum_violation_rate"],
+        "qzero_implies_Fzero": qzero_Fpositive_count
+        / max(1, heldout_qzero_count)
+        <= cfg["maximum_violation_rate"],
+        "fitted_G_Lorentzian": eigenvalues[0] < 0 < eigenvalues[1],
+    }
+
+    return {
+        "name": item["name"],
+        "data_sha256": sha256_file(csv_path),
+        "G_protocol": G,
+        "G_canonical": canonical_candidate,
+        "eigenvalues": eigenvalues,
+        "detG": det_G,
+        "canonical_branch_angles": cone_angles(canonical_candidate),
+        "heldout": {
+            "Fzero": heldout_Fzero_count,
+            "qzero": heldout_qzero_count,
+            "Fzero_qnonzero": Fzero_qnonzero_count,
+            "qzero_Fpositive": qzero_Fpositive_count,
+        },
+        "gates": gates,
+        "gate": all(gates.values()),
+    }
+
+
+def audit_manifest(
+    manifest: dict[str, Any],
+    manifest_path: Path,
+    cfg: dict[str, float],
+) -> dict[str, Any]:
+    base_dir = manifest_path.parent
+    records = [
+        one_protocol(protocol, base_dir, cfg)
+        for protocol in manifest["protocols"]
+    ]
+    valid_records = [record for record in records if "G_canonical" in record]
+
+    pairs: list[dict[str, Any]] = []
+    for first_index in range(len(valid_records)):
+        for second_index in range(first_index + 1, len(valid_records)):
+            first = valid_records[first_index]
+            second = valid_records[second_index]
+            residual, relative_sign, positive_residual = projective_residual(
+                first["G_canonical"],
+                second["G_canonical"],
+            )
+            branch_residual = branch_distance(
+                first["canonical_branch_angles"],
+                second["canonical_branch_angles"],
+            )
+            pairs.append(
+                {
+                    "pair": [first["name"], second["name"]],
+                    "unoriented_projective_residual": residual,
+                    "relative_sign": relative_sign,
+                    "positive_conformal_residual": positive_residual,
+                    "branch_pair_distance_radians": branch_residual,
+                    "unoriented_cone_match": residual <= cfg["cone_residual_tol"]
+                    and branch_residual <= cfg["branch_angle_tol"],
+                    "positive_coorientation_match": positive_residual
+                    <= cfg["cone_residual_tol"],
+                }
+            )
+
+    provenance = {
+        "at_least_two_protocols": len(records) >= 2,
+        "all_protocol_costs_independently_defined": bool(
+            manifest["provenance"]["costs_independent_of_each_other_and_TESC"]
+        ),
+        "comparison_rule_frozen": bool(
+            manifest["provenance"]["comparison_rule_frozen_before_outcomes"]
+        ),
+        "no_outcome_based_protocol_selection": bool(
+            manifest["provenance"]["no_protocol_selected_after_outcomes"]
+        ),
+    }
+    gates = {
+        "provenance": all(provenance.values()),
+        "all_protocols_pass_local_binding": len(records) >= 2
+        and all(record["gate"] for record in records),
+        "all_pairs_same_unoriented_cone": bool(pairs)
+        and all(pair["unoriented_cone_match"] for pair in pairs),
+    }
+    oriented = gates["all_pairs_same_unoriented_cone"] and all(
+        pair["positive_coorientation_match"] for pair in pairs
+    )
+    return {
+        "protocol_records": records,
+        "pairwise_naturality": pairs,
+        "provenance_gates": provenance,
+        "gates": gates,
+        "cross_protocol_unoriented_cone_class_supported": all(gates.values()),
+        "positive_coorientation_selected": bool(oriented),
+        "gate": all(gates.values()),
+    }
+
+
+def synth(outdir: Path, cfg: dict[str, float]) -> dict[str, bool]:
+    rng = np.random.default_rng(20260805)
+    G = np.array([[1.0, 0.0], [0.0, -1.0]])
+    source_path = outdir / "selftest_cost_definition.txt"
+    source_path.write_text("synthetic cost definition for v3.2 self-test\n")
+    source_hash = sha256_file(source_path)
+
+    items: list[dict[str, Any]] = []
+    transforms = (
+        np.eye(2),
+        np.array([[1.4, 0.3], [-0.2, 0.9]]),
+    )
+    for index, transform in enumerate(transforms):
+        rows = ["x,y,F,split"]
+        inverse_transform = np.linalg.inv(transform)
+        for sample_index in range(800):
+            canonical_point = rng.normal(size=2)
+            canonical_point /= np.linalg.norm(canonical_point)
+            protocol_point = inverse_transform @ canonical_point
+            quadratic = float(canonical_point @ G @ canonical_point)
+            cost = abs(quadratic)
+            split = "train" if sample_index % 2 == 0 else "heldout"
+            rows.append(
+                f"{protocol_point[0]:.17g},{protocol_point[1]:.17g},{cost:.17g},{split}"
+            )
+
+        csv_path = outdir / f"selftest_protocol_{index}.csv"
+        csv_path.write_text("\n".join(rows) + "\n")
+        items.append(
+            {
+                "name": f"p{index}",
+                "data_csv": csv_path.name,
+                "data_sha256": sha256_file(csv_path),
+                "cost_definition_source_path": source_path.name,
+                "cost_definition_source_sha256": source_hash,
+                "predeclared_before_cross_comparison": True,
+                "mapping_predeclared_before_outcomes": True,
+                "to_canonical_T": transform.tolist(),
+            }
+        )
+
+    manifest = {
+        "protocols": items,
+        "provenance": {
+            "costs_independent_of_each_other_and_TESC": True,
+            "comparison_rule_frozen_before_outcomes": True,
+            "no_protocol_selected_after_outcomes": True,
+        },
+    }
+
+    # Add exact ray points. The purely random samples rarely hit F <= tolerance.
+    for item in items:
+        csv_path = outdir / item["data_csv"]
+        transform = np.asarray(item["to_canonical_T"])
+        inverse_transform = np.linalg.inv(transform)
+        lines = csv_path.read_text().splitlines()
+
+        for sample_index in range(80):
+            sign = 1.0 if sample_index % 2 == 0 else -1.0
+            canonical_point = np.array([1.0, sign]) * rng.uniform(0.1, 1.0)
+            protocol_point = inverse_transform @ canonical_point
+            split = "train" if sample_index % 4 < 2 else "heldout"
+            lines.append(
+                f"{protocol_point[0]:.17g},{protocol_point[1]:.17g},0,{split}"
+            )
+
+        csv_path.write_text("\n".join(lines) + "\n")
+        item["data_sha256"] = sha256_file(csv_path)
+
+    positive_control = audit_manifest(manifest, outdir / "selftest_manifest.json", cfg)
+
+    wrong_mapping_manifest = json.loads(json.dumps(manifest))
+    wrong_mapping_manifest["protocols"][1]["to_canonical_T"] = [[1, 0], [0, 1]]
+    negative_control = audit_manifest(
+        wrong_mapping_manifest,
+        outdir / "selftest_bad_manifest.json",
+        cfg,
+    )
+
+    return {
+        "matched_cross_protocol_positive_control_pass": positive_control["gate"],
+        "wrong_mapping_negative_control_rejected": not negative_control["gate"],
+    }
+
+
+def write_template(outdir: Path) -> None:
+    for name in ("protocol_A.csv", "protocol_B.csv"):
+        (outdir / name).write_text("x,y,F,split\n0.0,0.0,nan,train\n")
+
+    manifest = {
+        "schema": "r-law1-cross-protocol-v3.2",
+        "protocols": [
+            {
+                "name": "protocol_A",
+                "data_csv": "protocol_A.csv",
+                "data_sha256": "",
+                "cost_definition_source_path": "",
+                "cost_definition_source_sha256": "",
+                "predeclared_before_cross_comparison": False,
+                "mapping_predeclared_before_outcomes": False,
+                "to_canonical_T": [[1, 0], [0, 1]],
+            },
+            {
+                "name": "protocol_B",
+                "data_csv": "protocol_B.csv",
+                "data_sha256": "",
+                "cost_definition_source_path": "",
+                "cost_definition_source_sha256": "",
+                "predeclared_before_cross_comparison": False,
+                "mapping_predeclared_before_outcomes": False,
+                "to_canonical_T": [[1, 0], [0, 1]],
+            },
+        ],
+        "provenance": {
+            "costs_independent_of_each_other_and_TESC": False,
+            "comparison_rule_frozen_before_outcomes": False,
+            "no_protocol_selected_after_outcomes": False,
+        },
+    }
+    (outdir / "cross_protocol_manifest_template.json").write_text(
+        json.dumps(manifest, indent=2) + "\n"
+    )
+
+
+def main() -> int:
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--manifest", default="")
+    parser.add_argument("--outdir", default="r_law1_cross_protocol_v3_2_results")
+    args, unknown = parser.parse_known_args()
+    if unknown:
+        print("[notice] ignored notebook/kernel arguments:", unknown)
+
+    started_at = time.time()
+    outdir = Path(args.outdir)
+    outdir.mkdir(parents=True, exist_ok=True)
+    cfg = {
+        "F_zero_tol": 1e-8,
+        "q_zero_tol": 2e-4,
+        "minimum_zero_points": 12,
+        "maximum_violation_rate": 0.05,
+        "cone_residual_tol": 0.02,
+        "branch_angle_tol": 0.02,
+    }
+
+    controls = synth(outdir, cfg)
+    manifest_path = Path(args.manifest) if args.manifest else None
+    if manifest_path and manifest_path.is_file():
+        manifest = json.loads(manifest_path.read_text())
+        empirical_audit = audit_manifest(manifest, manifest_path, cfg)
+        manifest_sha256 = sha256_file(manifest_path)
+        status = (
+            "CROSS_PROTOCOL_UNORIENTED_LAWI_CONE_CLASS_SUPPORTED"
+            if empirical_audit["gate"]
+            else "CROSS_PROTOCOL_CONE_NATURALITY_NOT_SUPPORTED_FAIL_CLOSED"
+        )
+    else:
+        write_template(outdir)
+        empirical_audit = None
+        manifest_sha256 = None
+        status = "PIPELINE_CALIBRATED_INDEPENDENT_PROTOCOL_DATA_REQUIRED"
+
+    protocol = {
+        "title": TITLE,
+        "version": VERSION,
+        "criteria": cfg,
+    }
+    protocol["protocol_sha256"] = canonical_hash(protocol)
+
+    report = {
+        "title": TITLE,
+        "version": VERSION,
+        "scientific_status": status,
+        "protocol_sha256": protocol["protocol_sha256"],
+        "manifest_supplied": empirical_audit is not None,
+        "manifest_sha256": manifest_sha256,
+        "self_tests": controls,
+        "empirical_audit": empirical_audit,
+        "all_scientific_gates_pass": bool(
+            empirical_audit and empirical_audit["gate"] and all(controls.values())
+        ),
+        "interpretation": (
+            "Each protocol must independently recover a held-out two-branch zero "
+            "cone. Frozen realization maps must carry the unordered branch pair "
+            "to one common projective conformal class. Zero sets alone determine "
+            "G only up to nonzero scale; positive coorientation is reported "
+            "separately."
+        ),
+        "next_required_step": (
+            "Populate two independently sourced protocol CSVs and freeze their "
+            "coordinate maps before comparing outcomes; then rerun with --manifest."
+        ),
+        "claim_boundary": (
+            "A pass supports a local cross-protocol unoriented cone class, not a "
+            "physical time orientation, metric scale, spacetime, Law-II/III or "
+            "wavefunction."
+        ),
+        "elapsed_seconds": time.time() - started_at,
+        "environment": {
+            "python": platform.python_version(),
+            "numpy": np.__version__,
+        },
+    }
+    (outdir / "protocol.json").write_text(
+        json.dumps(jsonable(protocol), indent=2) + "\n"
+    )
+    (outdir / "run_summary.json").write_text(
+        json.dumps(jsonable(report), indent=2) + "\n"
+    )
+
+    print("=" * 112)
+    print(f"{TITLE} v{VERSION}")
+    print("=" * 112)
+    print(json.dumps(jsonable(report), indent=2))
+    return 0
+
+
+if __name__ == "__main__":
+    return_code = main()
+    if not any(name in sys.modules for name in ("ipykernel", "IPython", "google.colab")):
+        raise SystemExit(return_code)
