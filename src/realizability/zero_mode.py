@@ -8,7 +8,12 @@ from typing import Any
 import numpy as np
 
 from .certificate import ZeroModeCertificate, source_bound_gates
-from .path_cost import accumulated_cost, path_is_nonconstant, positive_measure_fraction
+from .path_cost import (
+    accumulated_cost,
+    path_is_nonconstant,
+    positive_measure_fraction,
+    second_order_path_derivative,
+)
 from .protocol import protocol_sha256
 
 
@@ -82,15 +87,6 @@ def _as_float_array(value: Any, *, name: str, ndim: int, errors: list[str]) -> n
     elif not np.all(np.isfinite(array)):
         errors.append(f"path record field {name!r} must contain finite numbers")
     return array
-
-
-def _finite_difference_path_derivative(
-    parameter_grid: np.ndarray,
-    path_points: np.ndarray,
-) -> np.ndarray:
-    if len(parameter_grid) < 3:
-        raise ValueError("at least three samples are required for second-order derivatives")
-    return np.gradient(path_points, parameter_grid, axis=0, edge_order=2)
 
 
 def validate_path_record(path_record: dict[str, Any] | None) -> dict[str, Any]:
@@ -272,7 +268,7 @@ def audit_principle_r_witness(
                 atol=float(protocol["parameter_grid_absolute_tol"]),
             )
         )
-        path_derivatives = _finite_difference_path_derivative(
+        path_derivatives = second_order_path_derivative(
             parameter_grid,
             path_points,
         )

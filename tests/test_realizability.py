@@ -19,12 +19,14 @@ from realizability.path_cost import (
     accumulated_cost,
     path_is_nonconstant,
     positive_measure_fraction,
+    second_order_path_derivative,
 )
-from realizability.protocol import RealizabilityProtocolError, load_realizability_protocol
-from realizability.zero_mode import (
-    _finite_difference_path_derivative,
-    audit_principle_r_witness,
+from realizability.protocol import (
+    RealizabilityProtocolError,
+    load_realizability_protocol,
+    protocol_sha256,
 )
+from realizability.zero_mode import audit_principle_r_witness
 from r_to_law1.tesc import derive_tesc_hessian, load_frozen_protocol
 from r_to_law1.theorem import audit_conditional_theorem
 
@@ -144,6 +146,14 @@ class RealizabilityTests(unittest.TestCase):
             path_record_source_path=path_data,
         )
 
+    def _write_rehashed_protocol(self, directory: Path, **overrides) -> Path:
+        protocol = dict(self.protocol)
+        protocol.update(overrides)
+        protocol["protocol_sha256"] = protocol_sha256(protocol)
+        path = directory / "protocol.json"
+        path.write_text(json.dumps(protocol, sort_keys=True) + "\n")
+        return path
+
     def test_valid_upstream_zero_mode_certificate_gate_true(self) -> None:
         with tempfile.TemporaryDirectory() as tmpdir:
             directory = Path(tmpdir)
@@ -174,14 +184,14 @@ class RealizabilityTests(unittest.TestCase):
         fine_velocity = np.column_stack((3 * fine_grid**2, np.zeros_like(fine_grid)))
         coarse_error = np.max(
             np.linalg.norm(
-                _finite_difference_path_derivative(coarse_grid, coarse_points)
+                second_order_path_derivative(coarse_grid, coarse_points)
                 - coarse_velocity,
                 axis=1,
             )
         )
         fine_error = np.max(
             np.linalg.norm(
-                _finite_difference_path_derivative(fine_grid, fine_points)
+                second_order_path_derivative(fine_grid, fine_points)
                 - fine_velocity,
                 axis=1,
             )
@@ -200,6 +210,27 @@ class RealizabilityTests(unittest.TestCase):
         )
         self.assertTrue(result["principle_R_witness_certified"])
 
+    def test_accumulated_cost_uses_second_order_fallback_for_nonlinear_path(self) -> None:
+        grid = np.linspace(0.0, 1.0, self.protocol["parameter_grid_points"])
+
+        def path(parameter: float) -> np.ndarray:
+            return np.array([parameter**2, 0.0])
+
+        def cost(_x: np.ndarray, velocity: np.ndarray) -> float:
+            return float(np.linalg.norm(velocity))
+
+        record = accumulated_cost(cost, path, grid, protocol=self.protocol)
+        self.assertLess(np.linalg.norm(record["velocities"][0]), 1e-12)
+        self.assertAlmostEqual(record["velocities"][-1][0], 2.0)
+        self.assertAlmostEqual(record["accumulated_cost"], 1.0, places=12)
+
+    def test_accumulated_cost_rejects_two_point_second_order_grid(self) -> None:
+        grid = np.array([0.0, 1.0])
+        path = lambda parameter: np.array([parameter, 0.0])
+        cost = lambda _x, _v: 0.0
+        with self.assertRaises(ValueError):
+            accumulated_cost(cost, path, grid, protocol=self.protocol)
+
     def test_zero_infimum_is_derived_not_self_certified(self) -> None:
         with tempfile.TemporaryDirectory() as tmpdir:
             directory = Path(tmpdir)
@@ -214,6 +245,58 @@ class RealizabilityTests(unittest.TestCase):
         self.assertTrue(result["gates"]["R3_zero_infimum_derived"])
         self.assertFalse(result["contraction_family_certificate_evidence"])
         self.assertTrue(result["principle_R_witness_certified"])
+
+    def test_rehashed_protocol_with_two_point_grid_is_rejected(self) -> None:
+        with tempfile.TemporaryDirectory() as tmpdir:
+            path = self._write_rehashed_protocol(
+                Path(tmpdir),
+                parameter_grid_points=2,
+            )
+            with self.assertRaises(RealizabilityProtocolError):
+                load_realizability_protocol(path)
+
+    def test_rehashed_protocol_with_negative_tolerance_is_rejected(self) -> None:
+        with tempfile.TemporaryDirectory() as tmpdir:
+            path = self._write_rehashed_protocol(
+                Path(tmpdir),
+                velocity_derivative_absolute_tol=-1e-6,
+            )
+            with self.assertRaises(RealizabilityProtocolError):
+                load_realizability_protocol(path)
+
+    def test_rehashed_protocol_with_nan_tolerance_is_rejected(self) -> None:
+        with tempfile.TemporaryDirectory() as tmpdir:
+            path = self._write_rehashed_protocol(
+                Path(tmpdir),
+                velocity_derivative_absolute_tol=float("nan"),
+            )
+            with self.assertRaises(RealizabilityProtocolError):
+                load_realizability_protocol(path)
+
+    def test_rehashed_protocol_with_unsupported_methods_is_rejected(self) -> None:
+        with tempfile.TemporaryDirectory() as tmpdir:
+            path = self._write_rehashed_protocol(
+                Path(tmpdir),
+                derivative_method="caller_velocity_or_central_difference",
+            )
+            with self.assertRaises(RealizabilityProtocolError):
+                load_realizability_protocol(path)
+        with tempfile.TemporaryDirectory() as tmpdir:
+            path = self._write_rehashed_protocol(
+                Path(tmpdir),
+                integration_method="simpson",
+            )
+            with self.assertRaises(RealizabilityProtocolError):
+                load_realizability_protocol(path)
+
+    def test_rehashed_protocol_with_alias_mismatch_is_rejected(self) -> None:
+        with tempfile.TemporaryDirectory() as tmpdir:
+            path = self._write_rehashed_protocol(
+                Path(tmpdir),
+                path_nonconstant_tol=2e-10,
+            )
+            with self.assertRaises(RealizabilityProtocolError):
+                load_realizability_protocol(path)
 
     def test_certificate_supplied_without_path_data_fails_closed(self) -> None:
         with tempfile.TemporaryDirectory() as tmpdir:
