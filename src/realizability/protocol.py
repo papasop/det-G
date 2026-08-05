@@ -43,6 +43,9 @@ SUPPORTED_DERIVATIVE_METHOD = (
     "second_order_finite_difference_from_path_points_with_velocity_crosscheck"
 )
 SUPPORTED_INTEGRATION_METHOD = "trapezoid"
+SUPPORTED_CONTRACTION_SEQUENCE_ACCEPTANCE_RULE = (
+    "source_bound_predeclared_zero_infimum"
+)
 NONNEGATIVE_NUMERIC_FIELDS = {
     "path_nonconstant_tol",
     "path_displacement_nonconstant_tol",
@@ -83,6 +86,13 @@ def _validate_realizability_protocol(protocol: dict[str, Any]) -> None:
         raise RealizabilityProtocolError("unsupported realizability derivative_method")
     if protocol.get("integration_method") != SUPPORTED_INTEGRATION_METHOD:
         raise RealizabilityProtocolError("unsupported realizability integration_method")
+    if (
+        protocol.get("contraction_sequence_acceptance_rule")
+        != SUPPORTED_CONTRACTION_SEQUENCE_ACCEPTANCE_RULE
+    ):
+        raise RealizabilityProtocolError(
+            "unsupported realizability contraction_sequence_acceptance_rule"
+        )
 
     interval = protocol.get("parameter_interval")
     if (
