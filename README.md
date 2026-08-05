@@ -140,15 +140,15 @@ experiments.
 
 The code performs three separate tasks:
 
-1. `v2.4` numerically follows the two finite nonlinear zero branches of the
-   frozen TESC cost inside a declared bounded domain;
-2. `v2.5` checks coordinate covariance, zero-set covariance, unit rescaling and
-   coefficient sensitivity;
-3. `v2.7` aggregates these results, constructs the local null rays and audits
-   the logical claim boundary.
+1. `r_to_law1.finite_zero_set` numerically follows the two finite nonlinear
+   zero branches of the frozen TESC cost inside a declared bounded domain;
+2. `r_to_law1.covariance` checks coordinate covariance, zero-set covariance,
+   unit rescaling and coefficient sensitivity;
+3. `run_r_to_law1.py` aggregates these results, constructs the local null rays
+   and audits the logical claim boundary.
 
-Therefore, `v2.7` is an evidence aggregator and logical-boundary audit. It is
-not a computer proof of the conditional theorem.
+Therefore, the public run is an evidence aggregator and logical-boundary
+audit. It is not a computer proof of the conditional theorem.
 
 ## Current status
 
@@ -200,14 +200,21 @@ remains open.
 ## Quick start
 
 ```bash
-python src/principle_r_to_law1_strengthened_audit_v2_7.py
+python run_r_to_law1.py
 ```
 
-For the historical component audits:
+The historical one-file audits are preserved under `archive/`. They are not
+the public interface for this release.
 
-```bash
-python src/k1_pasqal_law1_adaptive_zero_set_v2_4.py
-python src/k1_pasqal_law1f_covariance_v2_5.py
+## Repository layout
+
+```text
+run_r_to_law1.py                 public entry point
+src/r_to_law1/                   recomputable theorem and witness modules
+protocols/frozen_tesc_protocol.json
+certificates/native_r_selection.template.json
+reference_results/v0.1.0/        reference report and generated evidence
+archive/                         historical one-file audits
 ```
 
 See `MATHEMATICAL_STATEMENT.md`, `VALIDATION_REPORT.md`, and

@@ -1,0 +1,41 @@
+{
+  "schema": "r-to-law1-frozen-tesc-protocol-v0.1.0",
+  "version": "0.1.0",
+  "principle_R": {
+    "status": "axiom",
+    "statement": "physical law requires at least one attainable nonzero zero-realization-cost direction",
+    "nonzero_zero_cost_direction_required": true
+  },
+  "structural_assumptions": {
+    "selected_process_space_dimension": 2,
+    "cost_is_real_C2_near_basepoint": true,
+    "stationary_basepoint": true,
+    "quadratic_tangent_cost_is_complete": true,
+    "metric_is_symmetric": true,
+    "metric_is_nondegenerate": true
+  },
+  "tesc_lambda": 1.0,
+  "finite_difference_step": 0.0002,
+  "segments": [
+    {"omega": 2.0, "detuning": 0.25, "phase": 0.0, "duration": 0.32},
+    {"omega": 1.7, "detuning": -0.35, "phase": 1.1, "duration": 0.28},
+    {"omega": 2.2, "detuning": 0.15, "phase": 2.2, "duration": 0.36},
+    {"omega": 1.8, "detuning": -0.2, "phase": -0.7, "duration": 0.3}
+  ],
+  "finite_zero_set": {
+    "abs_x": 0.08,
+    "initial_abs_y": 0.2,
+    "maximum_abs_y": 0.4,
+    "growth": 1.6,
+    "sections": 65,
+    "scan_step": 0.001
+  },
+  "covariance": {
+    "transforms": 256,
+    "seed": 20260805,
+    "finite_zero_x_samples": [-0.07, -0.05, -0.03, 0.03, 0.05, 0.07],
+    "unit_rescalings": [[0.01, 100.0], [0.1, 10.0], [0.5, 2.0], [2.0, 0.5], [10.0, 0.1], [100.0, 0.01]],
+    "lambda_grid": [0.25, 0.5, 0.75, 1.0, 1.25, 1.5, 2.0, 3.0, 4.0]
+  },
+  "native_certificate": "certificates/native_r_selection.template.json"
+}
