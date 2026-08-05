@@ -1,14 +1,18 @@
 {
   "title": "Realizability zero-mode witness audit",
   "version": "0.1.0",
-  "protocol_sha256": "9fe70702d57bf0fa635a55a09df15b32badf9fbce71d7c0d8cc361def3753c02",
+  "protocol_sha256": "030e07555270cd6c4517b596a8ca83da8af43f57d53752fe697fff446b610364",
   "gates": {
     "R1_state_admissible_domain_source_bound": false,
     "R2_protocol_and_nonnegative_cost_predeclared": false,
-    "R3_contraction_family_gives_zero_infimum": false,
+    "R3_zero_infimum_derived": false,
+    "R4_path_kinematics_consistent": false,
     "R4_attained_path_finite_and_nonconstant": false,
+    "R5_raw_accumulated_cost_zero": false,
     "R5_accumulated_cost_zero": false,
+    "R6_raw_local_zero_mode_positive_measure": false,
     "R6_local_zero_mode_positive_measure": false,
+    "R7_raw_same_meter_control_positive": false,
     "R7_same_meter_positive_control_nonzero": false,
     "R8_witness_independent_of_target_G_TESC": false,
     "R9_path_data_source_bound": false
@@ -26,10 +30,16 @@
     "finite_cost_values": false,
     "cost_nonnegative": false,
     "accumulated_cost": null,
+    "declared_accumulated_cost_matches_raw": false,
     "path_displacement": null,
     "path_nonconstant": false,
+    "frozen_parameter_grid": false,
+    "velocity_derivative_max_error": null,
+    "velocity_derivative_consistent": false,
     "positive_measure_fraction": null,
-    "same_meter_positive_control_cost": null
+    "declared_positive_measure_matches_raw": false,
+    "same_meter_positive_control_cost": null,
+    "declared_control_cost_matches_raw": false
   },
   "source_bound_gates": {
     "cost_source_bound": false,
@@ -42,6 +52,8 @@
   "attainment_pipeline_supported": false,
   "path_level_zero_mode_pipeline_supported": false,
   "zero_infimum_certified": false,
+  "zero_infimum_derived_from_nonnegative_attained_zero": false,
+  "contraction_family_certificate_evidence": false,
   "attained_nonconstant_zero_cost_path": false,
   "local_zero_mode_positive_measure": false,
   "principle_R_witness_source_bound": false,

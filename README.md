@@ -204,6 +204,14 @@ positive-measure support and same-meter positive-control evidence from those
 raw arrays. Summary fields in the path-data record are treated only as declared
 claims and must agree with the recomputation.
 
+The sampled grid must equal the frozen grid declared in
+`protocols/frozen_realizability_protocol.json`, and recorded velocities must
+match finite-difference derivatives of `path_points` within the protocol's
+absolute and relative tolerances. The zero-infimum gate is derived from
+nonnegativity plus an attained zero-cost path; contraction-family declarations
+are reported separately as certificate evidence, not accepted as a core proof
+gate by themselves.
+
 This code does not prove Principle R is a universal law of nature. Without
 independent path/cost data and source-bound certificates, it reports only
 pipeline self-tests. The signed-TESC result remains a conditional
