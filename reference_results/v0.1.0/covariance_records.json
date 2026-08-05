@@ -1,0 +1,1794 @@
+[
+  {
+    "detS": -2.3177281148598907,
+    "condition": 1.543800508079501,
+    "hessian_residual": 1.4602321276441164e-08,
+    "zero_set_residual": 7.782663402622347e-14,
+    "signature_preserved": true
+  },
+  {
+    "detS": 3.023495824218915,
+    "condition": 2.909326834281376,
+    "hessian_residual": 1.6882685801882662e-08,
+    "zero_set_residual": 7.782663402622347e-14,
+    "signature_preserved": true
+  },
+  {
+    "detS": -1.8991568302515538,
+    "condition": 2.0816616454634107,
+    "hessian_residual": 2.3123934410302304e-08,
+    "zero_set_residual": 7.782663402622347e-14,
+    "signature_preserved": true
+  },
+  {
+    "detS": -0.5127069689375803,
+    "condition": 1.2349388759083029,
+    "hessian_residual": 1.9699581649022826e-08,
+    "zero_set_residual": 7.782663402622347e-14,
+    "signature_preserved": true
+  },
+  {
+    "detS": -0.41707910068425885,
+    "condition": 7.201100547610859,
+    "hessian_residual": 7.9280819637613e-08,
+    "zero_set_residual": 7.779887845060784e-14,
+    "signature_preserved": true
+  },
+  {
+    "detS": -0.8317780591911553,
+    "condition": 8.712939778388405,
+    "hessian_residual": 5.781499194564303e-08,
+    "zero_set_residual": 7.782663402622347e-14,
+    "signature_preserved": true
+  },
+  {
+    "detS": 0.8165429552461566,
+    "condition": 2.1533626895737226,
+    "hessian_residual": 8.780464557136324e-09,
+    "zero_set_residual": 7.782663402622347e-14,
+    "signature_preserved": true
+  },
+  {
+    "detS": 0.5130481413771055,
+    "condition": 4.002201134990378,
+    "hessian_residual": 1.5940516624403702e-08,
+    "zero_set_residual": 7.782663402622347e-14,
+    "signature_preserved": true
+  },
+  {
+    "detS": 1.13544764781479,
+    "condition": 2.491773316654099,
+    "hessian_residual": 4.336576314185226e-08,
+    "zero_set_residual": 7.782663402622347e-14,
+    "signature_preserved": true
+  },
+  {
+    "detS": 2.013885124759182,
+    "condition": 1.5122965876132073,
+    "hessian_residual": 5.739033419487957e-09,
+    "zero_set_residual": 7.793765632868599e-14,
+    "signature_preserved": true
+  },
+  {
+    "detS": -0.40284693068827665,
+    "condition": 2.71840151565519,
+    "hessian_residual": 1.1315883744617822e-08,
+    "zero_set_residual": 7.782663402622347e-14,
+    "signature_preserved": true
+  },
+  {
+    "detS": -0.500754380968556,
+    "condition": 3.8722429647503755,
+    "hessian_residual": 2.680131265785464e-08,
+    "zero_set_residual": 7.782663402622347e-14,
+    "signature_preserved": true
+  },
+  {
+    "detS": -4.382543668545466,
+    "condition": 1.6416529699196978,
+    "hessian_residual": 3.119230894076311e-08,
+    "zero_set_residual": 7.782663402622347e-14,
+    "signature_preserved": true
+  },
+  {
+    "detS": 0.9985054812545421,
+    "condition": 2.900452300430513,
+    "hessian_residual": 2.983334415458555e-08,
+    "zero_set_residual": 7.782663402622347e-14,
+    "signature_preserved": true
+  },
+  {
+    "detS": -1.2005975090561227,
+    "condition": 6.693326393080315,
+    "hessian_residual": 6.117518596092488e-09,
+    "zero_set_residual": 7.782663402622347e-14,
+    "signature_preserved": true
+  },
+  {
+    "detS": 1.0218808270531503,
+    "condition": 2.905972935857957,
+    "hessian_residual": 3.9277222859296144e-08,
+    "zero_set_residual": 7.78543896018391e-14,
+    "signature_preserved": true
+  },
+  {
+    "detS": 0.5715870746751126,
+    "condition": 3.083904138410623,
+    "hessian_residual": 8.003822693228871e-09,
+    "zero_set_residual": 7.782663402622347e-14,
+    "signature_preserved": true
+  },
+  {
+    "detS": -0.29729281384485307,
+    "condition": 4.436239996330658,
+    "hessian_residual": 7.287121485902589e-09,
+    "zero_set_residual": 7.793765632868599e-14,
+    "signature_preserved": true
+  },
+  {
+    "detS": -0.6539481030392091,
+    "condition": 4.440148238623991,
+    "hessian_residual": 5.244609090200444e-08,
+    "zero_set_residual": 7.779887845060784e-14,
+    "signature_preserved": true
+  },
+  {
+    "detS": 0.8811081039588752,
+    "condition": 6.190055417606132,
+    "hessian_residual": 2.4859460656625366e-08,
+    "zero_set_residual": 7.788214517745473e-14,
+    "signature_preserved": true
+  },
+  {
+    "detS": 0.511263636974612,
+    "condition": 3.090230654133585,
+    "hessian_residual": 6.27832053581568e-08,
+    "zero_set_residual": 7.78543896018391e-14,
+    "signature_preserved": true
+  },
+  {
+    "detS": 0.48365738388779983,
+    "condition": 1.440971460854188,
+    "hessian_residual": 4.70811662354037e-09,
+    "zero_set_residual": 7.779887845060784e-14,
+    "signature_preserved": true
+  },
+  {
+    "detS": 2.2296138717798977,
+    "condition": 1.7224988269432369,
+    "hessian_residual": 7.88738553007057e-09,
+    "zero_set_residual": 7.782663402622347e-14,
+    "signature_preserved": true
+  },
+  {
+    "detS": 1.0299921916714125,
+    "condition": 3.936749449708743,
+    "hessian_residual": 3.912052205419339e-08,
+    "zero_set_residual": 7.782663402622347e-14,
+    "signature_preserved": true
+  },
+  {
+    "detS": -2.896946743748904,
+    "condition": 4.051094308731422,
+    "hessian_residual": 8.1992244836751e-09,
+    "zero_set_residual": 7.788214517745473e-14,
+    "signature_preserved": true
+  },
+  {
+    "detS": 0.8149735568072546,
+    "condition": 6.301421336905621,
+    "hessian_residual": 5.344922757124452e-08,
+    "zero_set_residual": 7.782663402622347e-14,
+    "signature_preserved": true
+  },
+  {
+    "detS": 2.691773554927843,
+    "condition": 1.4245279762336311,
+    "hessian_residual": 1.6467333289125103e-08,
+    "zero_set_residual": 7.782663402622347e-14,
+    "signature_preserved": true
+  },
+  {
+    "detS": 2.4432131472100362,
+    "condition": 1.9831548364280156,
+    "hessian_residual": 4.814207895716829e-08,
+    "zero_set_residual": 7.782663402622347e-14,
+    "signature_preserved": true
+  },
+  {
+    "detS": 1.351642412283333,
+    "condition": 4.457187778405746,
+    "hessian_residual": 1.2491685400020748e-07,
+    "zero_set_residual": 7.782663402622347e-14,
+    "signature_preserved": true
+  },
+  {
+    "detS": 2.012140314333801,
+    "condition": 3.3546841010221273,
+    "hessian_residual": 6.658785599938972e-08,
+    "zero_set_residual": 7.782663402622347e-14,
+    "signature_preserved": true
+  },
+  {
+    "detS": 1.0396331326498536,
+    "condition": 3.023239998498061,
+    "hessian_residual": 2.4916865353843945e-08,
+    "zero_set_residual": 7.782663402622347e-14,
+    "signature_preserved": true
+  },
+  {
+    "detS": 1.5827713072524756,
+    "condition": 4.109370946028255,
+    "hessian_residual": 8.042298660744664e-08,
+    "zero_set_residual": 7.779887845060784e-14,
+    "signature_preserved": true
+  },
+  {
+    "detS": -1.1884587460826814,
+    "condition": 4.186916140273518,
+    "hessian_residual": 3.764571830802669e-09,
+    "zero_set_residual": 7.782663402622347e-14,
+    "signature_preserved": true
+  },
+  {
+    "detS": 0.46706974492153575,
+    "condition": 2.7726370782690672,
+    "hessian_residual": 4.771546693842737e-08,
+    "zero_set_residual": 7.782663402622347e-14,
+    "signature_preserved": true
+  },
+  {
+    "detS": 0.863718997426298,
+    "condition": 2.296114602795442,
+    "hessian_residual": 3.2982727469709165e-08,
+    "zero_set_residual": 7.782663402622347e-14,
+    "signature_preserved": true
+  },
+  {
+    "detS": 1.173636663614003,
+    "condition": 2.8893762020295486,
+    "hessian_residual": 3.208322734975488e-08,
+    "zero_set_residual": 7.782663402622347e-14,
+    "signature_preserved": true
+  },
+  {
+    "detS": -0.5935463617643612,
+    "condition": 5.968355679334267,
+    "hessian_residual": 2.5020160588712224e-08,
+    "zero_set_residual": 7.782663402622347e-14,
+    "signature_preserved": true
+  },
+  {
+    "detS": 1.2828570566057522,
+    "condition": 4.61609078391003,
+    "hessian_residual": 1.6881263774596386e-08,
+    "zero_set_residual": 7.782663402622347e-14,
+    "signature_preserved": true
+  },
+  {
+    "detS": -0.4779494829940019,
+    "condition": 11.364871272773422,
+    "hessian_residual": 2.6560605489340948e-08,
+    "zero_set_residual": 7.782663402622347e-14,
+    "signature_preserved": true
+  },
+  {
+    "detS": 0.4339640042061378,
+    "condition": 5.91383913400635,
+    "hessian_residual": 8.219225744007612e-08,
+    "zero_set_residual": 7.782663402622347e-14,
+    "signature_preserved": true
+  },
+  {
+    "detS": -1.3865127906340153,
+    "condition": 8.040500267681017,
+    "hessian_residual": 8.820785853893225e-09,
+    "zero_set_residual": 7.782663402622347e-14,
+    "signature_preserved": true
+  },
+  {
+    "detS": -2.1696803369163535,
+    "condition": 2.926567804415553,
+    "hessian_residual": 5.1280743495003317e-08,
+    "zero_set_residual": 7.78543896018391e-14,
+    "signature_preserved": true
+  },
+  {
+    "detS": 0.994883019534453,
+    "condition": 4.3300343946270825,
+    "hessian_residual": 2.675023930080814e-08,
+    "zero_set_residual": 7.782663402622347e-14,
+    "signature_preserved": true
+  },
+  {
+    "detS": 3.5269782802104412,
+    "condition": 2.907586372193968,
+    "hessian_residual": 1.3091188328740756e-08,
+    "zero_set_residual": 7.78543896018391e-14,
+    "signature_preserved": true
+  },
+  {
+    "detS": -1.0696022024659253,
+    "condition": 5.891639936959517,
+    "hessian_residual": 1.8837662892352315e-08,
+    "zero_set_residual": 7.782663402622347e-14,
+    "signature_preserved": true
+  },
+  {
+    "detS": 4.590693075540318,
+    "condition": 1.4374539229831762,
+    "hessian_residual": 9.266613520377036e-09,
+    "zero_set_residual": 7.782663402622347e-14,
+    "signature_preserved": true
+  },
+  {
+    "detS": 1.1585218789419969,
+    "condition": 1.162247329664389,
+    "hessian_residual": 1.288396672567049e-08,
+    "zero_set_residual": 7.788214517745473e-14,
+    "signature_preserved": true
+  },
+  {
+    "detS": -0.6631332682919234,
+    "condition": 6.28533127839778,
+    "hessian_residual": 8.436177459085011e-08,
+    "zero_set_residual": 7.782663402622347e-14,
+    "signature_preserved": true
+  },
+  {
+    "detS": 0.7703205961498947,
+    "condition": 1.1883538445893387,
+    "hessian_residual": 1.877029639935187e-08,
+    "zero_set_residual": 7.782663402622347e-14,
+    "signature_preserved": true
+  },
+  {
+    "detS": 0.5988707393593494,
+    "condition": 2.333539670467863,
+    "hessian_residual": 1.816204949455963e-08,
+    "zero_set_residual": 7.782663402622347e-14,
+    "signature_preserved": true
+  },
+  {
+    "detS": 1.4406679443976942,
+    "condition": 1.4811711951147983,
+    "hessian_residual": 2.861550911677154e-08,
+    "zero_set_residual": 7.782663402622347e-14,
+    "signature_preserved": true
+  },
+  {
+    "detS": 0.8766614381495141,
+    "condition": 3.292270642982035,
+    "hessian_residual": 1.0627866226061369e-08,
+    "zero_set_residual": 7.779887845060784e-14,
+    "signature_preserved": true
+  },
+  {
+    "detS": 0.270614381268615,
+    "condition": 11.750793243121905,
+    "hessian_residual": 1.0453124098732621e-08,
+    "zero_set_residual": 7.793765632868599e-14,
+    "signature_preserved": true
+  },
+  {
+    "detS": -0.8471030684427975,
+    "condition": 10.037785870158695,
+    "hessian_residual": 1.7779458192407432e-08,
+    "zero_set_residual": 7.774336729937659e-14,
+    "signature_preserved": true
+  },
+  {
+    "detS": -0.9203599286248598,
+    "condition": 4.282691160874388,
+    "hessian_residual": 1.094276968946581e-07,
+    "zero_set_residual": 7.782663402622347e-14,
+    "signature_preserved": true
+  },
+  {
+    "detS": 0.7086448563038794,
+    "condition": 6.974151540150344,
+    "hessian_residual": 4.519755974777497e-08,
+    "zero_set_residual": 7.782663402622347e-14,
+    "signature_preserved": true
+  },
+  {
+    "detS": -0.6720780386102667,
+    "condition": 1.6874144213321483,
+    "hessian_residual": 2.3808633633413247e-08,
+    "zero_set_residual": 7.782663402622347e-14,
+    "signature_preserved": true
+  },
+  {
+    "detS": 0.3055697104994057,
+    "condition": 8.147825124573203,
+    "hessian_residual": 9.133278782847848e-09,
+    "zero_set_residual": 7.793765632868599e-14,
+    "signature_preserved": true
+  },
+  {
+    "detS": 0.48511321585017947,
+    "condition": 7.6421755096362975,
+    "hessian_residual": 2.5150450311504388e-08,
+    "zero_set_residual": 7.782663402622347e-14,
+    "signature_preserved": true
+  },
+  {
+    "detS": 0.29492208300612127,
+    "condition": 5.234662897103291,
+    "hessian_residual": 1.5620440114795452e-08,
+    "zero_set_residual": 7.774336729937659e-14,
+    "signature_preserved": true
+  },
+  {
+    "detS": 0.7868452304502449,
+    "condition": 2.3707558442394316,
+    "hessian_residual": 2.5584642345520054e-09,
+    "zero_set_residual": 7.782663402622347e-14,
+    "signature_preserved": true
+  },
+  {
+    "detS": -2.065619544710378,
+    "condition": 2.205258229053644,
+    "hessian_residual": 1.9363048928967005e-08,
+    "zero_set_residual": 7.779887845060784e-14,
+    "signature_preserved": true
+  },
+  {
+    "detS": -0.7567366910454291,
+    "condition": 3.8577170664525195,
+    "hessian_residual": 2.345668560431278e-08,
+    "zero_set_residual": 7.78543896018391e-14,
+    "signature_preserved": true
+  },
+  {
+    "detS": 1.0786825691519721,
+    "condition": 2.238837210701991,
+    "hessian_residual": 1.8125436518731866e-08,
+    "zero_set_residual": 7.78543896018391e-14,
+    "signature_preserved": true
+  },
+  {
+    "detS": -0.29834065685123856,
+    "condition": 5.994790052745639,
+    "hessian_residual": 8.281121289065215e-09,
+    "zero_set_residual": 7.782663402622347e-14,
+    "signature_preserved": true
+  },
+  {
+    "detS": -0.7580565935650593,
+    "condition": 4.034177840944337,
+    "hessian_residual": 3.0067667494516156e-08,
+    "zero_set_residual": 7.782663402622347e-14,
+    "signature_preserved": true
+  },
+  {
+    "detS": -0.6353748201684356,
+    "condition": 3.1129470029259525,
+    "hessian_residual": 2.2106559864984853e-08,
+    "zero_set_residual": 7.788214517745473e-14,
+    "signature_preserved": true
+  },
+  {
+    "detS": -0.9456092003835573,
+    "condition": 2.314940621515216,
+    "hessian_residual": 3.566968385148552e-08,
+    "zero_set_residual": 7.782663402622347e-14,
+    "signature_preserved": true
+  },
+  {
+    "detS": 3.3219852922374935,
+    "condition": 2.9525157666134927,
+    "hessian_residual": 7.347909368154171e-08,
+    "zero_set_residual": 7.782663402622347e-14,
+    "signature_preserved": true
+  },
+  {
+    "detS": -2.1376363419751843,
+    "condition": 2.6531549753299615,
+    "hessian_residual": 8.003143165761317e-09,
+    "zero_set_residual": 7.782663402622347e-14,
+    "signature_preserved": true
+  },
+  {
+    "detS": 3.4970910939602144,
+    "condition": 1.5213781850924142,
+    "hessian_residual": 1.742304429096339e-08,
+    "zero_set_residual": 7.78543896018391e-14,
+    "signature_preserved": true
+  },
+  {
+    "detS": -0.8964129581721597,
+    "condition": 3.261709429308558,
+    "hessian_residual": 8.126098952502173e-08,
+    "zero_set_residual": 7.782663402622347e-14,
+    "signature_preserved": true
+  },
+  {
+    "detS": -0.3520744846590266,
+    "condition": 6.6611953824051415,
+    "hessian_residual": 8.737968144295514e-08,
+    "zero_set_residual": 7.782663402622347e-14,
+    "signature_preserved": true
+  },
+  {
+    "detS": -0.33088406254743635,
+    "condition": 1.1436002482948366,
+    "hessian_residual": 5.348225515990999e-08,
+    "zero_set_residual": 7.782663402622347e-14,
+    "signature_preserved": true
+  },
+  {
+    "detS": -0.42577146655214504,
+    "condition": 2.416166209103995,
+    "hessian_residual": 4.816101071719639e-08,
+    "zero_set_residual": 7.782663402622347e-14,
+    "signature_preserved": true
+  },
+  {
+    "detS": 1.7343260545734844,
+    "condition": 7.351072371969212,
+    "hessian_residual": 1.6993312472715574e-08,
+    "zero_set_residual": 7.782663402622347e-14,
+    "signature_preserved": true
+  },
+  {
+    "detS": -0.5490044926771668,
+    "condition": 1.4746337056705905,
+    "hessian_residual": 1.7695066080256238e-08,
+    "zero_set_residual": 7.782663402622347e-14,
+    "signature_preserved": true
+  },
+  {
+    "detS": 0.7305027253500636,
+    "condition": 9.212837269693859,
+    "hessian_residual": 3.399232369990147e-08,
+    "zero_set_residual": 7.782663402622347e-14,
+    "signature_preserved": true
+  },
+  {
+    "detS": -0.7254641010186981,
+    "condition": 4.176314918517232,
+    "hessian_residual": 1.2931396651861105e-08,
+    "zero_set_residual": 7.78543896018391e-14,
+    "signature_preserved": true
+  },
+  {
+    "detS": -1.7397923872839676,
+    "condition": 2.6754740019895875,
+    "hessian_residual": 2.5230429123112685e-08,
+    "zero_set_residual": 7.782663402622347e-14,
+    "signature_preserved": true
+  },
+  {
+    "detS": -1.7181224132684134,
+    "condition": 1.3325536434902752,
+    "hessian_residual": 1.4756024512507537e-09,
+    "zero_set_residual": 7.782663402622347e-14,
+    "signature_preserved": true
+  },
+  {
+    "detS": 0.6135129721355386,
+    "condition": 1.8520382376869204,
+    "hessian_residual": 9.4691154622923e-09,
+    "zero_set_residual": 7.782663402622347e-14,
+    "signature_preserved": true
+  },
+  {
+    "detS": -0.848037862402512,
+    "condition": 5.466879202636586,
+    "hessian_residual": 1.2134794127747285e-08,
+    "zero_set_residual": 7.782663402622347e-14,
+    "signature_preserved": true
+  },
+  {
+    "detS": -1.1507651868955049,
+    "condition": 2.273962161815875,
+    "hessian_residual": 1.4365655903965834e-08,
+    "zero_set_residual": 7.782663402622347e-14,
+    "signature_preserved": true
+  },
+  {
+    "detS": 0.3058738726022517,
+    "condition": 6.544742573322137,
+    "hessian_residual": 1.0967187456250934e-07,
+    "zero_set_residual": 7.782663402622347e-14,
+    "signature_preserved": true
+  },
+  {
+    "detS": -3.9602807556141446,
+    "condition": 2.707187388051926,
+    "hessian_residual": 2.1310558536917165e-08,
+    "zero_set_residual": 7.782663402622347e-14,
+    "signature_preserved": true
+  },
+  {
+    "detS": 0.8352359512649129,
+    "condition": 2.592784539594579,
+    "hessian_residual": 1.2084899795460236e-08,
+    "zero_set_residual": 7.782663402622347e-14,
+    "signature_preserved": true
+  },
+  {
+    "detS": 1.9855796712038125,
+    "condition": 1.8772169412613509,
+    "hessian_residual": 1.1617890678328232e-08,
+    "zero_set_residual": 7.782663402622347e-14,
+    "signature_preserved": true
+  },
+  {
+    "detS": 0.6255316236219617,
+    "condition": 5.6952378024113575,
+    "hessian_residual": 1.1632986581031317e-07,
+    "zero_set_residual": 7.782663402622347e-14,
+    "signature_preserved": true
+  },
+  {
+    "detS": 0.3192531323889745,
+    "condition": 8.408951195635218,
+    "hessian_residual": 5.4226465734156196e-08,
+    "zero_set_residual": 7.782663402622347e-14,
+    "signature_preserved": true
+  },
+  {
+    "detS": 1.3745220062864247,
+    "condition": 5.269372910457572,
+    "hessian_residual": 5.343863196283762e-08,
+    "zero_set_residual": 7.777112287499222e-14,
+    "signature_preserved": true
+  },
+  {
+    "detS": -0.9892110355140016,
+    "condition": 4.743501710982042,
+    "hessian_residual": 1.8432139048613124e-08,
+    "zero_set_residual": 7.782663402622347e-14,
+    "signature_preserved": true
+  },
+  {
+    "detS": 3.8310151188002095,
+    "condition": 2.3289023716136246,
+    "hessian_residual": 2.507231758517293e-08,
+    "zero_set_residual": 7.774336729937659e-14,
+    "signature_preserved": true
+  },
+  {
+    "detS": -1.129683864887009,
+    "condition": 5.691922804420357,
+    "hessian_residual": 8.25044557528969e-08,
+    "zero_set_residual": 7.782663402622347e-14,
+    "signature_preserved": true
+  },
+  {
+    "detS": -3.1497726469891743,
+    "condition": 1.4122217777468096,
+    "hessian_residual": 8.601371192831259e-09,
+    "zero_set_residual": 7.782663402622347e-14,
+    "signature_preserved": true
+  },
+  {
+    "detS": -0.9695741334507268,
+    "condition": 2.0763161067583282,
+    "hessian_residual": 7.442881514870127e-09,
+    "zero_set_residual": 7.782663402622347e-14,
+    "signature_preserved": true
+  },
+  {
+    "detS": -1.803500726743036,
+    "condition": 4.0769169925493305,
+    "hessian_residual": 2.4045897908480773e-08,
+    "zero_set_residual": 7.782663402622347e-14,
+    "signature_preserved": true
+  },
+  {
+    "detS": -1.5539712019949887,
+    "condition": 2.1993327219136196,
+    "hessian_residual": 4.444202153802837e-08,
+    "zero_set_residual": 7.782663402622347e-14,
+    "signature_preserved": true
+  },
+  {
+    "detS": 1.4684602602378503,
+    "condition": 4.489229533254383,
+    "hessian_residual": 1.899520999782422e-08,
+    "zero_set_residual": 7.779887845060784e-14,
+    "signature_preserved": true
+  },
+  {
+    "detS": 0.2832716086593041,
+    "condition": 3.3355763313530713,
+    "hessian_residual": 1.5298077181711692e-08,
+    "zero_set_residual": 7.782663402622347e-14,
+    "signature_preserved": true
+  },
+  {
+    "detS": -0.7065110789486168,
+    "condition": 2.0887666588082423,
+    "hessian_residual": 3.740845582932298e-08,
+    "zero_set_residual": 7.782663402622347e-14,
+    "signature_preserved": true
+  },
+  {
+    "detS": -1.1842886842865523,
+    "condition": 2.636224049574024,
+    "hessian_residual": 1.0660155788669544e-08,
+    "zero_set_residual": 7.782663402622347e-14,
+    "signature_preserved": true
+  },
+  {
+    "detS": 1.1279008502702303,
+    "condition": 3.3697740278465567,
+    "hessian_residual": 8.781788132348123e-08,
+    "zero_set_residual": 7.782663402622347e-14,
+    "signature_preserved": true
+  },
+  {
+    "detS": 1.1412683339144738,
+    "condition": 3.0795641182069287,
+    "hessian_residual": 4.42397455340393e-08,
+    "zero_set_residual": 7.782663402622347e-14,
+    "signature_preserved": true
+  },
+  {
+    "detS": -0.40090678799789936,
+    "condition": 1.1846897924833832,
+    "hessian_residual": 3.504612648519238e-08,
+    "zero_set_residual": 7.782663402622347e-14,
+    "signature_preserved": true
+  },
+  {
+    "detS": 0.5287411326340802,
+    "condition": 2.6852146851630656,
+    "hessian_residual": 5.1290571143343437e-08,
+    "zero_set_residual": 7.782663402622347e-14,
+    "signature_preserved": true
+  },
+  {
+    "detS": 1.7861955732422594,
+    "condition": 3.030534167667977,
+    "hessian_residual": 3.3803698911469714e-08,
+    "zero_set_residual": 7.782663402622347e-14,
+    "signature_preserved": true
+  },
+  {
+    "detS": 0.4601872346522382,
+    "condition": 7.045680529975186,
+    "hessian_residual": 1.1707392521478062e-07,
+    "zero_set_residual": 7.782663402622347e-14,
+    "signature_preserved": true
+  },
+  {
+    "detS": 0.5570706743854572,
+    "condition": 1.3749620657953892,
+    "hessian_residual": 1.729035749942391e-08,
+    "zero_set_residual": 7.788214517745473e-14,
+    "signature_preserved": true
+  },
+  {
+    "detS": -1.1556821435467757,
+    "condition": 4.887616425440232,
+    "hessian_residual": 6.570334718636319e-08,
+    "zero_set_residual": 7.782663402622347e-14,
+    "signature_preserved": true
+  },
+  {
+    "detS": 1.0496480415079157,
+    "condition": 4.000552038604209,
+    "hessian_residual": 3.3644705749769454e-08,
+    "zero_set_residual": 7.793765632868599e-14,
+    "signature_preserved": true
+  },
+  {
+    "detS": -0.9012406158739926,
+    "condition": 6.099355747999224,
+    "hessian_residual": 7.610458426294307e-09,
+    "zero_set_residual": 7.782663402622347e-14,
+    "signature_preserved": true
+  },
+  {
+    "detS": -0.8836964614560624,
+    "condition": 4.040317535092336,
+    "hessian_residual": 2.126639243804798e-08,
+    "zero_set_residual": 7.788214517745473e-14,
+    "signature_preserved": true
+  },
+  {
+    "detS": 0.6277683792724967,
+    "condition": 1.957922066981152,
+    "hessian_residual": 1.698335602051531e-08,
+    "zero_set_residual": 7.78543896018391e-14,
+    "signature_preserved": true
+  },
+  {
+    "detS": 0.7030428577200525,
+    "condition": 1.7369781040425356,
+    "hessian_residual": 7.081350490212378e-09,
+    "zero_set_residual": 7.782663402622347e-14,
+    "signature_preserved": true
+  },
+  {
+    "detS": -0.7852129852565572,
+    "condition": 7.755075608730566,
+    "hessian_residual": 2.0133724723585083e-08,
+    "zero_set_residual": 7.782663402622347e-14,
+    "signature_preserved": true
+  },
+  {
+    "detS": 0.2707503523539907,
+    "condition": 2.112664996998108,
+    "hessian_residual": 2.1298110957054072e-08,
+    "zero_set_residual": 7.782663402622347e-14,
+    "signature_preserved": true
+  },
+  {
+    "detS": 1.169158219167564,
+    "condition": 2.865280643706133,
+    "hessian_residual": 2.8151099593246488e-08,
+    "zero_set_residual": 7.782663402622347e-14,
+    "signature_preserved": true
+  },
+  {
+    "detS": 1.6010640543066499,
+    "condition": 3.956435011063033,
+    "hessian_residual": 3.6598260873527137e-08,
+    "zero_set_residual": 7.782663402622347e-14,
+    "signature_preserved": true
+  },
+  {
+    "detS": 0.7136767754906316,
+    "condition": 1.673674153400235,
+    "hessian_residual": 1.1566964118588306e-08,
+    "zero_set_residual": 7.782663402622347e-14,
+    "signature_preserved": true
+  },
+  {
+    "detS": 1.0893657252760398,
+    "condition": 2.9909961892056174,
+    "hessian_residual": 6.058059961745533e-09,
+    "zero_set_residual": 7.790990075307036e-14,
+    "signature_preserved": true
+  },
+  {
+    "detS": 1.3192032616424376,
+    "condition": 2.401611486221683,
+    "hessian_residual": 1.0431337750719401e-08,
+    "zero_set_residual": 7.782663402622347e-14,
+    "signature_preserved": true
+  },
+  {
+    "detS": -0.44111342295083095,
+    "condition": 5.923671711272036,
+    "hessian_residual": 2.005744712744519e-08,
+    "zero_set_residual": 7.793765632868599e-14,
+    "signature_preserved": true
+  },
+  {
+    "detS": -1.6178782666166143,
+    "condition": 5.643562500284443,
+    "hessian_residual": 1.1364433562966206e-07,
+    "zero_set_residual": 7.782663402622347e-14,
+    "signature_preserved": true
+  },
+  {
+    "detS": 1.3297474608295952,
+    "condition": 3.911885075426663,
+    "hessian_residual": 8.46365697290051e-09,
+    "zero_set_residual": 7.782663402622347e-14,
+    "signature_preserved": true
+  },
+  {
+    "detS": 1.3580735272375273,
+    "condition": 3.430753891125357,
+    "hessian_residual": 8.711366944201209e-09,
+    "zero_set_residual": 7.782663402622347e-14,
+    "signature_preserved": true
+  },
+  {
+    "detS": 0.36659940296146376,
+    "condition": 4.983369613214478,
+    "hessian_residual": 9.214507336577448e-08,
+    "zero_set_residual": 7.788214517745473e-14,
+    "signature_preserved": true
+  },
+  {
+    "detS": -1.532061345319964,
+    "condition": 2.1743504095452346,
+    "hessian_residual": 5.0271024223224226e-08,
+    "zero_set_residual": 7.782663402622347e-14,
+    "signature_preserved": true
+  },
+  {
+    "detS": 0.4403331111926939,
+    "condition": 5.873912942310848,
+    "hessian_residual": 4.4497684239065035e-08,
+    "zero_set_residual": 7.782663402622347e-14,
+    "signature_preserved": true
+  },
+  {
+    "detS": 0.7098023178313272,
+    "condition": 3.069814259420863,
+    "hessian_residual": 8.95887126453134e-08,
+    "zero_set_residual": 7.779887845060784e-14,
+    "signature_preserved": true
+  },
+  {
+    "detS": 1.2348780975628695,
+    "condition": 1.7629370702575256,
+    "hessian_residual": 1.683980514166862e-08,
+    "zero_set_residual": 7.782663402622347e-14,
+    "signature_preserved": true
+  },
+  {
+    "detS": 1.3291766062622075,
+    "condition": 1.2800889358286658,
+    "hessian_residual": 3.4722528798251587e-09,
+    "zero_set_residual": 7.788214517745473e-14,
+    "signature_preserved": true
+  },
+  {
+    "detS": 2.6563850156824667,
+    "condition": 2.0304812968089543,
+    "hessian_residual": 1.3636706948365102e-08,
+    "zero_set_residual": 7.782663402622347e-14,
+    "signature_preserved": true
+  },
+  {
+    "detS": -0.5049549063892121,
+    "condition": 2.6278749863229107,
+    "hessian_residual": 2.1886043630157753e-08,
+    "zero_set_residual": 7.779887845060784e-14,
+    "signature_preserved": true
+  },
+  {
+    "detS": -0.41539222925282465,
+    "condition": 2.7456794712767523,
+    "hessian_residual": 1.3668061171880036e-08,
+    "zero_set_residual": 7.782663402622347e-14,
+    "signature_preserved": true
+  },
+  {
+    "detS": 1.4503911471752329,
+    "condition": 2.6870387150724846,
+    "hessian_residual": 1.7693801662450183e-08,
+    "zero_set_residual": 7.782663402622347e-14,
+    "signature_preserved": true
+  },
+  {
+    "detS": 1.3431910370478743,
+    "condition": 1.6690369782205086,
+    "hessian_residual": 1.69116169151882e-08,
+    "zero_set_residual": 7.782663402622347e-14,
+    "signature_preserved": true
+  },
+  {
+    "detS": -1.6061720339298842,
+    "condition": 2.3800689491650653,
+    "hessian_residual": 5.1605833728812184e-08,
+    "zero_set_residual": 7.782663402622347e-14,
+    "signature_preserved": true
+  },
+  {
+    "detS": -0.4540467451505407,
+    "condition": 3.8202664527939367,
+    "hessian_residual": 5.325691771510027e-08,
+    "zero_set_residual": 7.782663402622347e-14,
+    "signature_preserved": true
+  },
+  {
+    "detS": 1.2237912147673817,
+    "condition": 1.9440709631785191,
+    "hessian_residual": 6.249150350557049e-09,
+    "zero_set_residual": 7.782663402622347e-14,
+    "signature_preserved": true
+  },
+  {
+    "detS": -5.697596413081969,
+    "condition": 1.7978660833566522,
+    "hessian_residual": 1.0241714958965863e-08,
+    "zero_set_residual": 7.782663402622347e-14,
+    "signature_preserved": true
+  },
+  {
+    "detS": 1.832051034160317,
+    "condition": 3.9581915093075084,
+    "hessian_residual": 4.3950249187710154e-08,
+    "zero_set_residual": 7.782663402622347e-14,
+    "signature_preserved": true
+  },
+  {
+    "detS": -1.772683828710562,
+    "condition": 2.334089930170064,
+    "hessian_residual": 1.0901706071674348e-08,
+    "zero_set_residual": 7.782663402622347e-14,
+    "signature_preserved": true
+  },
+  {
+    "detS": -0.39810289366688667,
+    "condition": 6.270710701925956,
+    "hessian_residual": 1.6074791108598107e-08,
+    "zero_set_residual": 7.774336729937659e-14,
+    "signature_preserved": true
+  },
+  {
+    "detS": -0.9892212682107914,
+    "condition": 8.08391810674073,
+    "hessian_residual": 4.4916849677815054e-08,
+    "zero_set_residual": 7.782663402622347e-14,
+    "signature_preserved": true
+  },
+  {
+    "detS": 0.4165747113316215,
+    "condition": 4.687926605558823,
+    "hessian_residual": 4.334366039998062e-08,
+    "zero_set_residual": 7.782663402622347e-14,
+    "signature_preserved": true
+  },
+  {
+    "detS": -2.0549573441012474,
+    "condition": 3.402659153658415,
+    "hessian_residual": 3.7152456911562624e-08,
+    "zero_set_residual": 7.782663402622347e-14,
+    "signature_preserved": true
+  },
+  {
+    "detS": -2.304919252498676,
+    "condition": 1.252437645982198,
+    "hessian_residual": 1.8894579000582063e-08,
+    "zero_set_residual": 7.782663402622347e-14,
+    "signature_preserved": true
+  },
+  {
+    "detS": -0.9231626891995998,
+    "condition": 1.86079324479716,
+    "hessian_residual": 8.075819659238736e-09,
+    "zero_set_residual": 7.782663402622347e-14,
+    "signature_preserved": true
+  },
+  {
+    "detS": -0.91997642765363,
+    "condition": 6.7848327197497476,
+    "hessian_residual": 8.79892477584022e-08,
+    "zero_set_residual": 7.782663402622347e-14,
+    "signature_preserved": true
+  },
+  {
+    "detS": -1.8350040888593244,
+    "condition": 1.447515271867058,
+    "hessian_residual": 8.459162361455936e-09,
+    "zero_set_residual": 7.782663402622347e-14,
+    "signature_preserved": true
+  },
+  {
+    "detS": 1.517909712295655,
+    "condition": 2.7948813594218302,
+    "hessian_residual": 3.083819846964203e-08,
+    "zero_set_residual": 7.78543896018391e-14,
+    "signature_preserved": true
+  },
+  {
+    "detS": 1.0832685674459441,
+    "condition": 1.450542731959161,
+    "hessian_residual": 1.4383880459616763e-08,
+    "zero_set_residual": 7.782663402622347e-14,
+    "signature_preserved": true
+  },
+  {
+    "detS": -1.3547885487052957,
+    "condition": 2.20137928929738,
+    "hessian_residual": 2.1012780057435094e-08,
+    "zero_set_residual": 7.782663402622347e-14,
+    "signature_preserved": true
+  },
+  {
+    "detS": 2.0971999197605156,
+    "condition": 3.540674235548504,
+    "hessian_residual": 2.6456641161216996e-08,
+    "zero_set_residual": 7.782663402622347e-14,
+    "signature_preserved": true
+  },
+  {
+    "detS": -1.0244475672307105,
+    "condition": 2.896101194153635,
+    "hessian_residual": 6.637414535591471e-08,
+    "zero_set_residual": 7.782663402622347e-14,
+    "signature_preserved": true
+  },
+  {
+    "detS": -2.1624970516611697,
+    "condition": 1.1224751324892115,
+    "hessian_residual": 8.831775588772799e-09,
+    "zero_set_residual": 7.782663402622347e-14,
+    "signature_preserved": true
+  },
+  {
+    "detS": 0.62866869265466,
+    "condition": 3.6555039623249836,
+    "hessian_residual": 7.015161293478426e-08,
+    "zero_set_residual": 7.782663402622347e-14,
+    "signature_preserved": true
+  },
+  {
+    "detS": 0.28553568016716896,
+    "condition": 7.43369250143181,
+    "hessian_residual": 6.334900148486787e-08,
+    "zero_set_residual": 7.793765632868599e-14,
+    "signature_preserved": true
+  },
+  {
+    "detS": -1.208177655314963,
+    "condition": 2.3996391463021216,
+    "hessian_residual": 1.0162204207340043e-08,
+    "zero_set_residual": 7.782663402622347e-14,
+    "signature_preserved": true
+  },
+  {
+    "detS": -0.27511910127987016,
+    "condition": 2.5533204119920505,
+    "hessian_residual": 2.450191714004274e-08,
+    "zero_set_residual": 7.782663402622347e-14,
+    "signature_preserved": true
+  },
+  {
+    "detS": 3.9226575518334403,
+    "condition": 1.8927150095996432,
+    "hessian_residual": 2.1366042535668127e-08,
+    "zero_set_residual": 7.782663402622347e-14,
+    "signature_preserved": true
+  },
+  {
+    "detS": 1.1883082395802318,
+    "condition": 2.1904205964907137,
+    "hessian_residual": 5.620561039268601e-09,
+    "zero_set_residual": 7.782663402622347e-14,
+    "signature_preserved": true
+  },
+  {
+    "detS": -2.3293542530334808,
+    "condition": 1.805779928730071,
+    "hessian_residual": 2.674852348549156e-08,
+    "zero_set_residual": 7.782663402622347e-14,
+    "signature_preserved": true
+  },
+  {
+    "detS": 0.28644783491978837,
+    "condition": 4.392980586110825,
+    "hessian_residual": 3.6698225108708974e-08,
+    "zero_set_residual": 7.782663402622347e-14,
+    "signature_preserved": true
+  },
+  {
+    "detS": 0.9438657408078508,
+    "condition": 2.8036592258887842,
+    "hessian_residual": 5.635206090836285e-08,
+    "zero_set_residual": 7.782663402622347e-14,
+    "signature_preserved": true
+  },
+  {
+    "detS": 0.5561192666775535,
+    "condition": 3.3303361988299964,
+    "hessian_residual": 1.2931135658091482e-08,
+    "zero_set_residual": 7.782663402622347e-14,
+    "signature_preserved": true
+  },
+  {
+    "detS": -2.1918613332924144,
+    "condition": 2.3196175129264858,
+    "hessian_residual": 1.2689519394557663e-08,
+    "zero_set_residual": 7.782663402622347e-14,
+    "signature_preserved": true
+  },
+  {
+    "detS": -1.1082226977535783,
+    "condition": 3.705672871309323,
+    "hessian_residual": 2.0445975171285353e-08,
+    "zero_set_residual": 7.782663402622347e-14,
+    "signature_preserved": true
+  },
+  {
+    "detS": -0.8596480545772288,
+    "condition": 3.66575217127985,
+    "hessian_residual": 1.4438209217518209e-08,
+    "zero_set_residual": 7.788214517745473e-14,
+    "signature_preserved": true
+  },
+  {
+    "detS": 0.6980524817530904,
+    "condition": 1.649984151339369,
+    "hessian_residual": 2.085958144251495e-08,
+    "zero_set_residual": 7.782663402622347e-14,
+    "signature_preserved": true
+  },
+  {
+    "detS": 0.9066064528268369,
+    "condition": 1.655270590697372,
+    "hessian_residual": 1.2735627389627949e-08,
+    "zero_set_residual": 7.782663402622347e-14,
+    "signature_preserved": true
+  },
+  {
+    "detS": 0.6110097466735263,
+    "condition": 2.8668234047336782,
+    "hessian_residual": 7.955600599947251e-08,
+    "zero_set_residual": 7.782663402622347e-14,
+    "signature_preserved": true
+  },
+  {
+    "detS": 1.1055376412745153,
+    "condition": 3.003712618483612,
+    "hessian_residual": 3.524813711409143e-08,
+    "zero_set_residual": 7.782663402622347e-14,
+    "signature_preserved": true
+  },
+  {
+    "detS": 0.47325147701367015,
+    "condition": 5.3950026310780945,
+    "hessian_residual": 2.6949137273670346e-08,
+    "zero_set_residual": 7.782663402622347e-14,
+    "signature_preserved": true
+  },
+  {
+    "detS": 1.0592915391862046,
+    "condition": 4.847413929104907,
+    "hessian_residual": 8.227764466208786e-09,
+    "zero_set_residual": 7.782663402622347e-14,
+    "signature_preserved": true
+  },
+  {
+    "detS": 1.1420922290460371,
+    "condition": 2.5921524802348466,
+    "hessian_residual": 1.0283471240699071e-08,
+    "zero_set_residual": 7.782663402622347e-14,
+    "signature_preserved": true
+  },
+  {
+    "detS": -0.9852426850786178,
+    "condition": 2.562484466298174,
+    "hessian_residual": 1.7874967930149616e-08,
+    "zero_set_residual": 7.782663402622347e-14,
+    "signature_preserved": true
+  },
+  {
+    "detS": 2.3561392555900356,
+    "condition": 2.179919365491155,
+    "hessian_residual": 2.827757667721308e-08,
+    "zero_set_residual": 7.782663402622347e-14,
+    "signature_preserved": true
+  },
+  {
+    "detS": 1.6659839773548952,
+    "condition": 2.7117632482569993,
+    "hessian_residual": 3.02494383814068e-08,
+    "zero_set_residual": 7.782663402622347e-14,
+    "signature_preserved": true
+  },
+  {
+    "detS": -1.0232793814793255,
+    "condition": 3.337747802543582,
+    "hessian_residual": 1.0400590691658344e-08,
+    "zero_set_residual": 7.782663402622347e-14,
+    "signature_preserved": true
+  },
+  {
+    "detS": -1.0205729493837843,
+    "condition": 3.298257605766556,
+    "hessian_residual": 5.453009884250603e-08,
+    "zero_set_residual": 7.782663402622347e-14,
+    "signature_preserved": true
+  },
+  {
+    "detS": 0.9955213843276811,
+    "condition": 4.910033524132551,
+    "hessian_residual": 1.2064100533903417e-08,
+    "zero_set_residual": 7.788214517745473e-14,
+    "signature_preserved": true
+  },
+  {
+    "detS": 0.8764317582659097,
+    "condition": 2.5345537902194373,
+    "hessian_residual": 3.9934364498651706e-08,
+    "zero_set_residual": 7.782663402622347e-14,
+    "signature_preserved": true
+  },
+  {
+    "detS": -0.28382475858444567,
+    "condition": 1.7952646861873445,
+    "hessian_residual": 3.2535226133507426e-08,
+    "zero_set_residual": 7.782663402622347e-14,
+    "signature_preserved": true
+  },
+  {
+    "detS": 1.4857204586045307,
+    "condition": 3.1411937921808706,
+    "hessian_residual": 2.635418697734778e-08,
+    "zero_set_residual": 7.779887845060784e-14,
+    "signature_preserved": true
+  },
+  {
+    "detS": -0.38653915788884907,
+    "condition": 4.0017056913795965,
+    "hessian_residual": 9.034235168173537e-08,
+    "zero_set_residual": 7.782663402622347e-14,
+    "signature_preserved": true
+  },
+  {
+    "detS": -0.538197458372583,
+    "condition": 4.491594571011985,
+    "hessian_residual": 2.411318716756097e-08,
+    "zero_set_residual": 7.782663402622347e-14,
+    "signature_preserved": true
+  },
+  {
+    "detS": -0.9575787031814137,
+    "condition": 3.2406559137617426,
+    "hessian_residual": 2.6211331161798386e-08,
+    "zero_set_residual": 7.782663402622347e-14,
+    "signature_preserved": true
+  },
+  {
+    "detS": 2.331976322805544,
+    "condition": 1.425797845347957,
+    "hessian_residual": 3.297755760989118e-08,
+    "zero_set_residual": 7.782663402622347e-14,
+    "signature_preserved": true
+  },
+  {
+    "detS": -2.6512036105027503,
+    "condition": 2.342938501583171,
+    "hessian_residual": 3.323774388042143e-08,
+    "zero_set_residual": 7.78543896018391e-14,
+    "signature_preserved": true
+  },
+  {
+    "detS": 0.6220826028399479,
+    "condition": 6.782509706109368,
+    "hessian_residual": 5.179860373913281e-09,
+    "zero_set_residual": 7.78543896018391e-14,
+    "signature_preserved": true
+  },
+  {
+    "detS": 0.5795527306384689,
+    "condition": 4.542643010379205,
+    "hessian_residual": 7.382780326830105e-09,
+    "zero_set_residual": 7.793765632868599e-14,
+    "signature_preserved": true
+  },
+  {
+    "detS": -2.1536137506027657,
+    "condition": 1.852659914311854,
+    "hessian_residual": 1.0742430760209194e-08,
+    "zero_set_residual": 7.782663402622347e-14,
+    "signature_preserved": true
+  },
+  {
+    "detS": -2.434069223542505,
+    "condition": 1.908995269146709,
+    "hessian_residual": 1.3155410106445788e-08,
+    "zero_set_residual": 7.78543896018391e-14,
+    "signature_preserved": true
+  },
+  {
+    "detS": -0.5339459869182159,
+    "condition": 6.844151203041897,
+    "hessian_residual": 8.609279332109138e-08,
+    "zero_set_residual": 7.782663402622347e-14,
+    "signature_preserved": true
+  },
+  {
+    "detS": 0.503417216869798,
+    "condition": 6.922119721749388,
+    "hessian_residual": 3.202130686402106e-08,
+    "zero_set_residual": 7.779887845060784e-14,
+    "signature_preserved": true
+  },
+  {
+    "detS": -0.3800909676982826,
+    "condition": 4.3175096687900885,
+    "hessian_residual": 1.5582560956885388e-08,
+    "zero_set_residual": 7.782663402622347e-14,
+    "signature_preserved": true
+  },
+  {
+    "detS": -0.41005069228894536,
+    "condition": 8.426824775909285,
+    "hessian_residual": 1.726332032212031e-08,
+    "zero_set_residual": 7.782663402622347e-14,
+    "signature_preserved": true
+  },
+  {
+    "detS": -1.5786234212003847,
+    "condition": 2.2582584902847938,
+    "hessian_residual": 1.2213129393661601e-08,
+    "zero_set_residual": 7.782663402622347e-14,
+    "signature_preserved": true
+  },
+  {
+    "detS": 2.6250442601934005,
+    "condition": 2.317391142712516,
+    "hessian_residual": 2.8081028920540108e-08,
+    "zero_set_residual": 7.782663402622347e-14,
+    "signature_preserved": true
+  },
+  {
+    "detS": -0.9681199369664488,
+    "condition": 5.097376572355801,
+    "hessian_residual": 8.374074053908798e-08,
+    "zero_set_residual": 7.782663402622347e-14,
+    "signature_preserved": true
+  },
+  {
+    "detS": 0.8460287644876274,
+    "condition": 2.0758310387448398,
+    "hessian_residual": 4.231074693828124e-08,
+    "zero_set_residual": 7.782663402622347e-14,
+    "signature_preserved": true
+  },
+  {
+    "detS": 0.8317823426795772,
+    "condition": 5.6944131258600414,
+    "hessian_residual": 1.1404031884469519e-07,
+    "zero_set_residual": 7.782663402622347e-14,
+    "signature_preserved": true
+  },
+  {
+    "detS": -1.1484896593978677,
+    "condition": 2.0593638459981127,
+    "hessian_residual": 5.848701512855259e-09,
+    "zero_set_residual": 7.788214517745473e-14,
+    "signature_preserved": true
+  },
+  {
+    "detS": -3.1836552099004694,
+    "condition": 1.423714158098939,
+    "hessian_residual": 3.187597531541402e-08,
+    "zero_set_residual": 7.782663402622347e-14,
+    "signature_preserved": true
+  },
+  {
+    "detS": 0.5917571813947305,
+    "condition": 11.6115105104561,
+    "hessian_residual": 5.152712985947625e-08,
+    "zero_set_residual": 7.782663402622347e-14,
+    "signature_preserved": true
+  },
+  {
+    "detS": -0.3836472938871803,
+    "condition": 8.184048745193941,
+    "hessian_residual": 7.360008333420731e-08,
+    "zero_set_residual": 7.782663402622347e-14,
+    "signature_preserved": true
+  },
+  {
+    "detS": 2.5336384543608457,
+    "condition": 1.926466538226084,
+    "hessian_residual": 3.42094552861064e-08,
+    "zero_set_residual": 7.782663402622347e-14,
+    "signature_preserved": true
+  },
+  {
+    "detS": -1.0094588195498524,
+    "condition": 2.039727930764217,
+    "hessian_residual": 3.057717091238392e-08,
+    "zero_set_residual": 7.78543896018391e-14,
+    "signature_preserved": true
+  },
+  {
+    "detS": -1.1500662552490724,
+    "condition": 2.686475947405065,
+    "hessian_residual": 1.4662485751157926e-08,
+    "zero_set_residual": 7.782663402622347e-14,
+    "signature_preserved": true
+  },
+  {
+    "detS": -1.742396637782803,
+    "condition": 2.3649224868072163,
+    "hessian_residual": 1.7093984833288262e-08,
+    "zero_set_residual": 7.782663402622347e-14,
+    "signature_preserved": true
+  },
+  {
+    "detS": 0.7447658735922803,
+    "condition": 1.3468286444458653,
+    "hessian_residual": 1.1204792563510577e-08,
+    "zero_set_residual": 7.782663402622347e-14,
+    "signature_preserved": true
+  },
+  {
+    "detS": -0.5397785681392675,
+    "condition": 2.8293887145964374,
+    "hessian_residual": 9.739848220367257e-09,
+    "zero_set_residual": 7.782663402622347e-14,
+    "signature_preserved": true
+  },
+  {
+    "detS": 1.3768152186967488,
+    "condition": 1.9487506410807702,
+    "hessian_residual": 2.442582078355893e-08,
+    "zero_set_residual": 7.782663402622347e-14,
+    "signature_preserved": true
+  },
+  {
+    "detS": -0.9653412850520187,
+    "condition": 2.46315701571105,
+    "hessian_residual": 1.3094075037735092e-08,
+    "zero_set_residual": 7.782663402622347e-14,
+    "signature_preserved": true
+  },
+  {
+    "detS": -1.804190366519781,
+    "condition": 1.672434972445181,
+    "hessian_residual": 1.5242920534180915e-08,
+    "zero_set_residual": 7.782663402622347e-14,
+    "signature_preserved": true
+  },
+  {
+    "detS": 0.3884204796051444,
+    "condition": 2.0278568347861676,
+    "hessian_residual": 4.1735242742595685e-08,
+    "zero_set_residual": 7.782663402622347e-14,
+    "signature_preserved": true
+  },
+  {
+    "detS": -0.9830890435022449,
+    "condition": 2.9366320355977624,
+    "hessian_residual": 1.845961837145541e-08,
+    "zero_set_residual": 7.782663402622347e-14,
+    "signature_preserved": true
+  },
+  {
+    "detS": 0.4041244304288975,
+    "condition": 4.419825419413348,
+    "hessian_residual": 7.654346663316505e-08,
+    "zero_set_residual": 7.782663402622347e-14,
+    "signature_preserved": true
+  },
+  {
+    "detS": -0.5403062548871188,
+    "condition": 6.888545110648281,
+    "hessian_residual": 1.4896961083155618e-07,
+    "zero_set_residual": 7.788214517745473e-14,
+    "signature_preserved": true
+  },
+  {
+    "detS": 0.7839805252373719,
+    "condition": 2.9547421553017625,
+    "hessian_residual": 7.081778409796607e-08,
+    "zero_set_residual": 7.782663402622347e-14,
+    "signature_preserved": true
+  },
+  {
+    "detS": -1.3902995671424145,
+    "condition": 1.8428720028360113,
+    "hessian_residual": 2.39262296947985e-08,
+    "zero_set_residual": 7.782663402622347e-14,
+    "signature_preserved": true
+  },
+  {
+    "detS": -1.607159757854296,
+    "condition": 1.0900592580134294,
+    "hessian_residual": 1.279865870481448e-08,
+    "zero_set_residual": 7.782663402622347e-14,
+    "signature_preserved": true
+  },
+  {
+    "detS": 1.084348181120164,
+    "condition": 3.570833130615349,
+    "hessian_residual": 2.009024521877361e-08,
+    "zero_set_residual": 7.782663402622347e-14,
+    "signature_preserved": true
+  },
+  {
+    "detS": 0.7513953690919418,
+    "condition": 2.660632757492343,
+    "hessian_residual": 1.7277623368988847e-08,
+    "zero_set_residual": 7.782663402622347e-14,
+    "signature_preserved": true
+  },
+  {
+    "detS": 0.36528777051635153,
+    "condition": 11.510922764834628,
+    "hessian_residual": 1.0590626802738296e-08,
+    "zero_set_residual": 7.774336729937659e-14,
+    "signature_preserved": true
+  },
+  {
+    "detS": 1.1899950072066272,
+    "condition": 1.117740382987571,
+    "hessian_residual": 8.140931341262465e-09,
+    "zero_set_residual": 7.788214517745473e-14,
+    "signature_preserved": true
+  },
+  {
+    "detS": -1.7183429332044595,
+    "condition": 2.165480734050928,
+    "hessian_residual": 2.957778475901678e-08,
+    "zero_set_residual": 7.78543896018391e-14,
+    "signature_preserved": true
+  },
+  {
+    "detS": -0.4969331294673008,
+    "condition": 4.443458325281002,
+    "hessian_residual": 3.042050876785496e-08,
+    "zero_set_residual": 7.782663402622347e-14,
+    "signature_preserved": true
+  },
+  {
+    "detS": -2.745508971558417,
+    "condition": 4.678293484811093,
+    "hessian_residual": 5.0475641717117525e-08,
+    "zero_set_residual": 7.782663402622347e-14,
+    "signature_preserved": true
+  },
+  {
+    "detS": 0.5283357642464317,
+    "condition": 9.202755996111447,
+    "hessian_residual": 9.911827383298733e-09,
+    "zero_set_residual": 7.774336729937659e-14,
+    "signature_preserved": true
+  },
+  {
+    "detS": 0.4821075001154942,
+    "condition": 5.141101998145877,
+    "hessian_residual": 3.966861178183961e-08,
+    "zero_set_residual": 7.779887845060784e-14,
+    "signature_preserved": true
+  },
+  {
+    "detS": 0.8189722600712381,
+    "condition": 4.611039310971789,
+    "hessian_residual": 4.967208680462732e-08,
+    "zero_set_residual": 7.782663402622347e-14,
+    "signature_preserved": true
+  },
+  {
+    "detS": 0.8871462890091515,
+    "condition": 4.477450154879358,
+    "hessian_residual": 4.627435254623753e-08,
+    "zero_set_residual": 7.78543896018391e-14,
+    "signature_preserved": true
+  },
+  {
+    "detS": 1.2850999895173383,
+    "condition": 4.1042658334468225,
+    "hessian_residual": 1.9208014069821975e-08,
+    "zero_set_residual": 7.78543896018391e-14,
+    "signature_preserved": true
+  },
+  {
+    "detS": -1.1746679561348792,
+    "condition": 4.272663574890052,
+    "hessian_residual": 4.5671612114802715e-09,
+    "zero_set_residual": 7.793765632868599e-14,
+    "signature_preserved": true
+  },
+  {
+    "detS": -1.151076794552052,
+    "condition": 1.9497687898159133,
+    "hessian_residual": 7.977204025507978e-09,
+    "zero_set_residual": 7.782663402622347e-14,
+    "signature_preserved": true
+  },
+  {
+    "detS": 2.2976241123117274,
+    "condition": 1.838335229275243,
+    "hessian_residual": 2.1838921676075162e-08,
+    "zero_set_residual": 7.782663402622347e-14,
+    "signature_preserved": true
+  },
+  {
+    "detS": -1.3379122245340291,
+    "condition": 3.7281063283497033,
+    "hessian_residual": 9.484851590523678e-09,
+    "zero_set_residual": 7.782663402622347e-14,
+    "signature_preserved": true
+  },
+  {
+    "detS": -0.7135636768572203,
+    "condition": 5.953664402796692,
+    "hessian_residual": 9.803221647258003e-09,
+    "zero_set_residual": 7.774336729937659e-14,
+    "signature_preserved": true
+  },
+  {
+    "detS": -1.0861848118989506,
+    "condition": 7.922077177839188,
+    "hessian_residual": 8.013161372384104e-08,
+    "zero_set_residual": 7.782663402622347e-14,
+    "signature_preserved": true
+  },
+  {
+    "detS": -4.341806968557235,
+    "condition": 1.7723743491747774,
+    "hessian_residual": 1.5016210916491453e-08,
+    "zero_set_residual": 7.78543896018391e-14,
+    "signature_preserved": true
+  },
+  {
+    "detS": -0.5068806313067006,
+    "condition": 6.639866183394626,
+    "hessian_residual": 6.739755965699287e-09,
+    "zero_set_residual": 7.78543896018391e-14,
+    "signature_preserved": true
+  },
+  {
+    "detS": -0.6702358517954049,
+    "condition": 2.2081309926122326,
+    "hessian_residual": 2.768919380862822e-08,
+    "zero_set_residual": 7.782663402622347e-14,
+    "signature_preserved": true
+  },
+  {
+    "detS": 1.0535679477178599,
+    "condition": 3.752268581763278,
+    "hessian_residual": 6.526918252399082e-08,
+    "zero_set_residual": 7.782663402622347e-14,
+    "signature_preserved": true
+  },
+  {
+    "detS": 2.334343626122855,
+    "condition": 2.0599025057838958,
+    "hessian_residual": 4.871957612640835e-08,
+    "zero_set_residual": 7.788214517745473e-14,
+    "signature_preserved": true
+  },
+  {
+    "detS": -1.877564107238982,
+    "condition": 1.5595860632943086,
+    "hessian_residual": 1.725623155165568e-08,
+    "zero_set_residual": 7.782663402622347e-14,
+    "signature_preserved": true
+  },
+  {
+    "detS": 1.595916294043251,
+    "condition": 1.9831485381230929,
+    "hessian_residual": 9.58140177296303e-09,
+    "zero_set_residual": 7.782663402622347e-14,
+    "signature_preserved": true
+  },
+  {
+    "detS": -0.9791973339495706,
+    "condition": 2.6115266443724243,
+    "hessian_residual": 1.390231067999759e-08,
+    "zero_set_residual": 7.782663402622347e-14,
+    "signature_preserved": true
+  },
+  {
+    "detS": -1.177206488284264,
+    "condition": 3.5816077499045575,
+    "hessian_residual": 2.2295306962610266e-08,
+    "zero_set_residual": 7.782663402622347e-14,
+    "signature_preserved": true
+  },
+  {
+    "detS": 1.6072325497503355,
+    "condition": 2.514137803202011,
+    "hessian_residual": 1.1172554317146217e-08,
+    "zero_set_residual": 7.782663402622347e-14,
+    "signature_preserved": true
+  },
+  {
+    "detS": 1.6779590090795504,
+    "condition": 1.4679403133182005,
+    "hessian_residual": 1.16468601352049e-08,
+    "zero_set_residual": 7.782663402622347e-14,
+    "signature_preserved": true
+  },
+  {
+    "detS": -0.7828331171259242,
+    "condition": 1.1812400590868948,
+    "hessian_residual": 2.0359778192976767e-08,
+    "zero_set_residual": 7.782663402622347e-14,
+    "signature_preserved": true
+  },
+  {
+    "detS": 0.38642464713065644,
+    "condition": 9.555781647240051,
+    "hessian_residual": 7.68381088087961e-08,
+    "zero_set_residual": 7.782663402622347e-14,
+    "signature_preserved": true
+  },
+  {
+    "detS": 0.5898748992602547,
+    "condition": 5.6258817091878885,
+    "hessian_residual": 1.3335924313297096e-08,
+    "zero_set_residual": 7.774336729937659e-14,
+    "signature_preserved": true
+  }
+]
