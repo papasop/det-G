@@ -1,0 +1,50 @@
+{
+  "schema": "principle-r-law1-v2.7",
+  "principle_R": {
+    "status": "axiom",
+    "statement": "physical law requires at least one attainable nonzero zero-realization-cost direction",
+    "nonzero_zero_cost_direction_required": true
+  },
+  "structural_assumptions": {
+    "selected_process_space_dimension": 2,
+    "cost_is_real_C2_near_basepoint": true,
+    "stationary_basepoint": true,
+    "quadratic_tangent_cost_is_complete": true,
+    "metric_is_symmetric": true,
+    "metric_is_nondegenerate": true
+  },
+  "operational_witness": {
+    "name": "TESC",
+    "definition": "task cost minus centred exposure cost",
+    "G": [
+      [
+        -1.4753511884402215,
+        -0.048663800766846066
+      ],
+      [
+        -0.048663800766846066,
+        0.2661881493004614
+      ]
+    ],
+    "finite_zero_branch_count": 2,
+    "finite_zero_search_domain": {
+      "abs_x": 0.08,
+      "abs_y": 0.4
+    },
+    "maximum_finite_zero_residual": 9.84e-14,
+    "no_additional_branch_found_in_frozen_domain": true,
+    "GL2_covariance_max_relative_residual": 1.6468256954267047e-07,
+    "zero_set_covariance_max_residual": 9.328648964412878e-14,
+    "unit_rescaling_signature_preserved": true
+  },
+  "native_derivation": {
+    "principle_R_source_sha256": "",
+    "cost_definition_source_sha256": "",
+    "relative_coefficient_source_sha256": "",
+    "definitions_frozen_before_outcomes": false,
+    "R_derives_task_minus_exposure": false,
+    "R_derives_relative_coefficient": false,
+    "R_proves_global_zero_set_completeness": false,
+    "R_uniquely_selects_this_cost": false
+  }
+}
