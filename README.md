@@ -16,6 +16,57 @@ intermediate bridge:
 \text{two-dimensional Lorentzian Law I}.
 \]
 
+In the selected two-dimensional setting, the corresponding local chain is
+
+\[
+R+\mathcal A_{\mathrm{Law\,I}}
+\Longrightarrow
+\det G<0
+\Longrightarrow
+\operatorname{sig}(G)=(1,1)
+\Longrightarrow
+\ell_+\cup\ell_-.
+\]
+
+## Scientific context and companion publications
+
+The conceptual and dynamical context is developed in two separate works:
+
+1. **Foundational source of Principle R**
+
+   Y.Y.N. Li,  
+   *A Principle of Physical Realizability: Attainability and Local Zero Modes*,  
+   Zenodo, 2026.  
+   DOI: [10.5281/zenodo.21782618](https://doi.org/10.5281/zenodo.21782618)
+
+   This work supplies the upstream realizability principle: physical
+   admissibility requires attainability and motivates the local
+   zero-realization-cost mode studied here.
+
+2. **Downstream K=1 dynamical framework**
+
+   Y.Y.N. Li,  
+   *K=1 Chronogeometrodynamics*,  
+   Zenodo, 2026.  
+   DOI: [10.5281/zenodo.21770348](https://doi.org/10.5281/zenodo.21770348)
+
+   This work develops the downstream K=1 critical dynamics, including rank
+   reduction and G-null-flow structures.
+
+The present repository does not computationally validate either paper in full.
+Its scope is restricted to the intermediate conditional Law-I bridge and the
+frozen TESC operational witness.
+
+## Evidence hierarchy
+
+| Layer | Source | Status in this repository |
+|---|---|---|
+| Principle R and attainability | *A Principle of Physical Realizability* | Upstream theoretical premise; not proved by code |
+| Conditional Lorentzian Law I | This repository | Analytic conditional theorem plus operational TESC witness |
+| Native selection of TESC from Principle R | Open | Not derived |
+| K=1 critical rank-one/G-null dynamics | *K=1 Chronogeometrodynamics* | Downstream theory; not validated here |
+| Law II/III, spacetime and wavefunction claims | Outside scope | Not established by this repository |
+
 ## Principle R in this repository
 
 Principle R states that a fundamental physical law must possess physically
@@ -192,33 +243,9 @@ gate. It then emits the unified report under `reference_results/v0.1.0/`.
 | TESC operational witness | Passed | The frozen model gives `(1,1)` signature, two null rays and finite two-branch zero structure in the declared domain |
 | Native Principle R selection of TESC | Not proved | The repository has not derived task-minus-exposure, `lambda=1`, two-dimensionality or global completeness from Principle R alone |
 
-## Scientific context and companion publications
+## Theory-chain position
 
-The conceptual and dynamical context is developed in two separate works:
-
-1. **Foundational source of Principle R**
-
-   Y.Y.N. Li,  
-   *A Principle of Physical Realizability: Attainability and Local Zero Modes*,  
-   Zenodo, 2026.  
-   <https://doi.org/10.5281/zenodo.21782618>
-
-   This work supplies the upstream realizability principle: physical
-   admissibility requires attainability and permits nontrivial local
-   zero-realization-cost modes.
-
-2. **Downstream K=1 dynamical framework**
-
-   Y.Y.N. Li,  
-   *K=1 Chronogeometrodynamics*,  
-   Zenodo, 2026.  
-   <https://doi.org/10.5281/zenodo.21770348>
-
-   This work develops the subsequent K=1 critical dynamics, including rank
-   reduction and G-null-flow structures.
-
-The present repository does not computationally validate either paper in full.
-It sits between them:
+The repository sits between the cited works:
 
 ```text
 Principle R paper
@@ -237,16 +264,6 @@ K=1 Chronogeometrodynamics
 v
 Law II / Law III / later quantum extensions
 ```
-
-## Evidence hierarchy
-
-| Layer | Source | Status in this repository |
-|---|---|---|
-| Principle R and attainability | *A Principle of Physical Realizability* | theoretical premise; not proved by code |
-| Conditional Lorentzian Law I | this repository | exact conditional theorem plus operational TESC witness |
-| Native selection of TESC from R | open | not yet derived |
-| K=1 critical rank-one/G-null dynamics | *K=1 Chronogeometrodynamics* | downstream theory; not validated here |
-| Law II/III, spacetime and wavefunction claims | outside scope | not established by this repository |
 
 ## How to read the central status
 
