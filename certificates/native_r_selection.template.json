@@ -1,17 +1,20 @@
 {
   "nonnegative_realization_cost": {
+    "definition_source_path": "",
     "definition_source_sha256": "",
     "predeclared": false,
     "nonnegative": false,
     "nonzero_zero_mode_attained": false
   },
   "signed_zero_set_representative": {
+    "definition_source_path": "",
     "definition_source_sha256": "",
     "real_C2": true,
     "symmetric": true,
     "nondegenerate": true
   },
   "physical_zero_set_binding": {
+    "binding_source_path": "",
     "binding_source_sha256": "",
     "Z_F_equals_Z_q_on_selected_plane": false,
     "frozen_before_outcomes": false

@@ -6,6 +6,8 @@ import json
 from pathlib import Path
 from typing import Any
 
+from .source_binding import source_hash_matches
+
 
 def audit_provenance(certificate_path: str | Path) -> dict[str, Any]:
     path = Path(certificate_path)
@@ -15,24 +17,32 @@ def audit_provenance(certificate_path: str | Path) -> dict[str, Any]:
     zero_set_binding = certificate["physical_zero_set_binding"]
     unique_selection = certificate.get("native_unique_TESC_selection", {})
 
-    def has_sha256(value: Any) -> bool:
-        return isinstance(value, str) and len(value) == 64
+    base_dir = path.parent
 
     physical_binding_gates = {
-        "nonnegative_F_definition_source_bound": has_sha256(
-            nonnegative_cost["definition_source_sha256"]
+        "nonnegative_F_definition_source_bound": source_hash_matches(
+            nonnegative_cost,
+            path_key="definition_source_path",
+            hash_key="definition_source_sha256",
+            base_dir=base_dir,
         ),
         "nonnegative_F_predeclared": bool(nonnegative_cost["predeclared"]),
         "nonnegative_F_nonnegative": bool(nonnegative_cost["nonnegative"]),
         "nonnegative_zero_mode_attained": bool(nonnegative_cost["nonzero_zero_mode_attained"]),
-        "signed_q_definition_source_bound": has_sha256(
-            signed_representative["definition_source_sha256"]
+        "signed_q_definition_source_bound": source_hash_matches(
+            signed_representative,
+            path_key="definition_source_path",
+            hash_key="definition_source_sha256",
+            base_dir=base_dir,
         ),
         "signed_q_real_C2": bool(signed_representative["real_C2"]),
         "signed_q_symmetric": bool(signed_representative["symmetric"]),
         "signed_q_nondegenerate": bool(signed_representative["nondegenerate"]),
-        "physical_zero_set_binding_source_bound": has_sha256(
-            zero_set_binding["binding_source_sha256"]
+        "physical_zero_set_binding_source_bound": source_hash_matches(
+            zero_set_binding,
+            path_key="binding_source_path",
+            hash_key="binding_source_sha256",
+            base_dir=base_dir,
         ),
         "Z_F_equals_Z_q_on_selected_plane": bool(
             zero_set_binding["Z_F_equals_Z_q_on_selected_plane"]

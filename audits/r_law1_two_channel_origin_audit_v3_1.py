@@ -6,6 +6,11 @@ import argparse, hashlib, json, math, platform, sys, time
 from pathlib import Path
 import numpy as np
 
+try:
+    from audits.common import source_hash_matches
+except ModuleNotFoundError:
+    from common import source_hash_matches
+
 TITLE="PRINCIPLE R -> LAW-I SINGLE-CHANNEL NO-GO / TWO-CHANNEL ORIGIN AUDIT"
 VERSION="3.1"
 GT=np.array([[-1.4753511828891064,-0.04866380215462485],
@@ -50,18 +55,19 @@ def load_cert(path):
 
 def template():
     return {"schema":"r-law1-independent-two-channel-v3.1",
-      "channel_plus":{"covector":[1.0,0.0],"definition_source_sha256":"","physical_meaning":"","measurable":False},
-      "channel_minus":{"covector":[0.0,1.0],"definition_source_sha256":"","physical_meaning":"","measurable":False},
-      "capacity":{"definition_source_sha256":"","strictly_positive":False},
+      "channel_plus":{"covector":[1.0,0.0],"definition_source_path":"","definition_source_sha256":"","physical_meaning":"","measurable":False},
+      "channel_minus":{"covector":[0.0,1.0],"definition_source_path":"","definition_source_sha256":"","physical_meaning":"","measurable":False},
+      "capacity":{"definition_source_path":"","definition_source_sha256":"","strictly_positive":False},
       "provenance":{"both_channels_predeclared_before_TESC":False,"definitions_do_not_use_G_TESC_or_its_null_rays":False,
                     "relative_product_rule_derived":False,"selected_2D_plane_derived":False}}
 
-def audit_cert(d):
+def audit_cert(d, base_dir="."):
     cp,cm=d["channel_plus"],d["channel_minus"]; cap=d["capacity"]; p=d["provenance"]
     A=algebra(cp["covector"],cm["covector"])
-    gates={"plus_source_bound":sha_ok(cp["definition_source_sha256"]),"minus_source_bound":sha_ok(cm["definition_source_sha256"]),
+    gates={"plus_source_bound":source_hash_matches(cp,path_key="definition_source_path",hash_key="definition_source_sha256",base_dir=base_dir),
+      "minus_source_bound":source_hash_matches(cm,path_key="definition_source_path",hash_key="definition_source_sha256",base_dir=base_dir),
       "plus_has_physical_meaning":bool(cp["physical_meaning"].strip()),"minus_has_physical_meaning":bool(cm["physical_meaning"].strip()),
-      "both_channels_measurable":bool(cp["measurable"] and cm["measurable"]),"capacity_source_bound":sha_ok(cap["definition_source_sha256"]),
+      "both_channels_measurable":bool(cp["measurable"] and cm["measurable"]),"capacity_source_bound":source_hash_matches(cap,path_key="definition_source_path",hash_key="definition_source_sha256",base_dir=base_dir),
       "capacity_strictly_positive":bool(cap["strictly_positive"]),"channels_predeclared_before_TESC":bool(p["both_channels_predeclared_before_TESC"]),
       "definitions_independent_of_TESC":bool(p["definitions_do_not_use_G_TESC_or_its_null_rays"]),
       "product_rule_derived_not_chosen":bool(p["relative_product_rule_derived"]),"two_dimensional_plane_derived":bool(p["selected_2D_plane_derived"]),
@@ -87,7 +93,7 @@ def main():
            "circular_q_cost_rejected_as_provenance":not circular["admissible_as_independent_R_to_LawI_evidence"]}
     certpath=Path(args.certificate) if args.certificate else None
     if certpath and certpath.is_file():
-        cert=load_cert(certpath); empirical=audit_cert(cert); certsha=hashlib.sha256(certpath.read_bytes()).hexdigest()
+        cert=load_cert(certpath); empirical=audit_cert(cert, certpath.parent); certsha=hashlib.sha256(certpath.read_bytes()).hexdigest()
         status="INDEPENDENT_TWO_CHANNEL_LAWI_ORIGIN_SUPPORTED" if empirical["gate"] else "TWO_CHANNEL_ORIGIN_CERTIFICATE_FAIL_CLOSED"
     else:
         p=out/"independent_two_channel_certificate_template.json";p.write_text(json.dumps(template(),indent=2)+"\n")

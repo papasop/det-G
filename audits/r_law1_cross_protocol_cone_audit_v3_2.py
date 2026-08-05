@@ -10,6 +10,11 @@ import argparse, hashlib, json, math, platform, sys, time
 from pathlib import Path
 import numpy as np
 
+try:
+    from audits.common import source_hash_matches
+except ModuleNotFoundError:
+    from common import source_hash_matches
+
 TITLE="PRINCIPLE R -> LAW-I CROSS-PROTOCOL ZERO-CONE NATURALITY AUDIT"
 VERSION="3.2"
 
@@ -22,8 +27,6 @@ def J(x):
 def sha(b): return hashlib.sha256(b).hexdigest()
 def hfile(p): return sha(Path(p).read_bytes())
 def hobj(o): return sha(json.dumps(J(o),sort_keys=True,separators=(",",":")).encode())
-def shaok(s): return isinstance(s,str) and len(s)==64 and all(c in "0123456789abcdef" for c in s.lower())
-
 def load_csv(p):
     a=np.genfromtxt(p,delimiter=",",names=True,dtype=None,encoding="utf-8")
     if not a.dtype.names or not {"x","y","F","split"}.issubset(a.dtype.names): raise ValueError(f"{p}: need x,y,F,split")
@@ -70,7 +73,8 @@ def one_protocol(item,base,cfg):
     qz=nq(X,G)<=cfg["q_zero_tol"];nf=int(np.sum(te&fz));nqz=int(np.sum(te&qz))
     fbad=int(np.sum(te&fz&~qz));qbad=int(np.sum(te&~fz&qz))
     ev=np.linalg.eigvalsh(G);det=float(np.linalg.det(G));Cg=canon(G,T)
-    gates={"data_hash_matches":hfile(p)==item["data_sha256"],"cost_definition_source_bound":shaok(item["cost_definition_source_sha256"]),
+    gates={"data_hash_matches":hfile(p)==item["data_sha256"],
+      "cost_definition_source_bound":source_hash_matches(item,path_key="cost_definition_source_path",hash_key="cost_definition_source_sha256",base_dir=base),
       "protocol_predeclared":bool(item["predeclared_before_cross_comparison"]),"mapping_predeclared":bool(item["mapping_predeclared_before_outcomes"]),
       "mapping_invertible":abs(float(np.linalg.det(T)))>1e-12,"heldout_Fzero_coverage":nf>=cfg["minimum_zero_points"],
       "heldout_qzero_coverage":nqz>=cfg["minimum_zero_points"],"Fzero_implies_qzero":fbad/max(1,nf)<=cfg["maximum_violation_rate"],
@@ -101,6 +105,8 @@ def audit_manifest(m,path,cfg):
 
 def synth(out,cfg):
     rng=np.random.default_rng(20260805);G=np.array([[1.,0.],[0.,-1.]])
+    source=out/"selftest_cost_definition.txt";source.write_text("synthetic cost definition for v3.2 self-test\n")
+    source_hash=hfile(source)
     items=[]
     for k,T in enumerate((np.eye(2),np.array([[1.4,.3],[-.2,.9]]))):
       rows=["x,y,F,split"];Ti=np.linalg.inv(T)
@@ -108,7 +114,8 @@ def synth(out,cfg):
         z=rng.normal(size=2);z/=np.linalg.norm(z);x=Ti@z;q=float(z@G@z);F=abs(q);sp="train" if i%2==0 else "heldout"
         rows.append(f"{x[0]:.17g},{x[1]:.17g},{F:.17g},{sp}")
       p=out/f"selftest_protocol_{k}.csv";p.write_text("\n".join(rows)+"\n")
-      items.append({"name":f"p{k}","data_csv":p.name,"data_sha256":hfile(p),"cost_definition_source_sha256":"0"*64,
+      items.append({"name":f"p{k}","data_csv":p.name,"data_sha256":hfile(p),
+        "cost_definition_source_path":source.name,"cost_definition_source_sha256":source_hash,
         "predeclared_before_cross_comparison":True,"mapping_predeclared_before_outcomes":True,"to_canonical_T":T.tolist()})
     m={"protocols":items,"provenance":{"costs_independent_of_each_other_and_TESC":True,"comparison_rule_frozen_before_outcomes":True,"no_protocol_selected_after_outcomes":True}}
     # Self-test needs tolerance-compatible near-zero samples; F tolerance selects q near zero statistically poorly.
@@ -126,8 +133,8 @@ def synth(out,cfg):
 def template(out):
     for name in ("protocol_A.csv","protocol_B.csv"):(out/name).write_text("x,y,F,split\n0.0,0.0,nan,train\n")
     m={"schema":"r-law1-cross-protocol-v3.2","protocols":[
-      {"name":"protocol_A","data_csv":"protocol_A.csv","data_sha256":"","cost_definition_source_sha256":"","predeclared_before_cross_comparison":False,"mapping_predeclared_before_outcomes":False,"to_canonical_T":[[1,0],[0,1]]},
-      {"name":"protocol_B","data_csv":"protocol_B.csv","data_sha256":"","cost_definition_source_sha256":"","predeclared_before_cross_comparison":False,"mapping_predeclared_before_outcomes":False,"to_canonical_T":[[1,0],[0,1]]}],
+      {"name":"protocol_A","data_csv":"protocol_A.csv","data_sha256":"","cost_definition_source_path":"","cost_definition_source_sha256":"","predeclared_before_cross_comparison":False,"mapping_predeclared_before_outcomes":False,"to_canonical_T":[[1,0],[0,1]]},
+      {"name":"protocol_B","data_csv":"protocol_B.csv","data_sha256":"","cost_definition_source_path":"","cost_definition_source_sha256":"","predeclared_before_cross_comparison":False,"mapping_predeclared_before_outcomes":False,"to_canonical_T":[[1,0],[0,1]]}],
       "provenance":{"costs_independent_of_each_other_and_TESC":False,"comparison_rule_frozen_before_outcomes":False,"no_protocol_selected_after_outcomes":False}}
     (out/"cross_protocol_manifest_template.json").write_text(json.dumps(m,indent=2)+"\n")
 

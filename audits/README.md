@@ -3,6 +3,10 @@
 These scripts are prospective falsification interfaces. Their calibrated
 self-tests are not empirical evidence for Principle R or Law I.
 
+When a certificate or manifest claims source binding, it must provide both a
+source path and a SHA-256 digest. The audit recomputes the digest from the file;
+a filled 64-character hash string alone is not accepted as source-bound.
+
 The public reproduction entry point remains:
 
 ```bash

@@ -2,6 +2,7 @@ __pycache__/
 **/__pycache__/
 *.py[cod]
 .venv/
+*.egg-info/
 .ipynb_checkpoints/
 *_results/
 .DS_Store

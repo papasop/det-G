@@ -5,6 +5,7 @@
       1.0,
       0.0
     ],
+    "definition_source_path": "",
     "definition_source_sha256": "",
     "physical_meaning": "",
     "measurable": false
@@ -14,11 +15,13 @@
       0.0,
       1.0
     ],
+    "definition_source_path": "",
     "definition_source_sha256": "",
     "physical_meaning": "",
     "measurable": false
   },
   "capacity": {
+    "definition_source_path": "",
     "definition_source_sha256": "",
     "strictly_positive": false
   },

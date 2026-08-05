@@ -26,6 +26,9 @@ It supplies a conditional analytic theorem and a reproducible signed-TESC
 zero-set representative. It does not prove that Principle R alone uniquely
 selects TESC, `lambda=1`, physical spacetime, or a wavefunction.
 
+Current stable computational result: `v0.1.0`.
+Prospective audit bundle: `v0.2.0-preflight`.
+
 ## Result at a glance
 
 | Question | Status |
@@ -146,6 +149,7 @@ or by numerical experiments. The full statement is in
 
 ```bash
 python -m pip install -r requirements.txt
+python -m pip install -e .
 python run_r_to_law1.py
 ```
 
@@ -222,6 +226,18 @@ The run writes:
 | `certificates/native_r_selection.template.json` | template for source-bound provenance certificates |
 | `tests/` | lightweight regression tests for theorem gates, provenance gates and fail-closed audits |
 | `archive/` | historical one-file audits, not the public interface |
+
+Run the lightweight regression suite with:
+
+```bash
+python -m unittest discover -s tests -v
+```
+
+If editable installation is unavailable in a restricted system Python, use:
+
+```bash
+PYTHONPATH=src python -m unittest discover -s tests -v
+```
 
 ## Citations and context
 

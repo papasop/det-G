@@ -3,6 +3,7 @@
 ## 1. Reproduce the central audit
 
 ```bash
+python -m pip install -e .
 python run_r_to_law1.py
 ```
 
@@ -51,8 +52,14 @@ Call this release a **conditional theorem and signed zero-set representative pac
 ## 4. Run lightweight regression tests
 
 ```bash
-PYTHONPATH=src python -m unittest discover -s tests
+python -m unittest discover -s tests -v
 ```
 
 These tests check theorem gate semantics, provenance-gate separation and the
 fail-closed status of the prospective two-channel certificate template.
+
+If editable installation is unavailable in a restricted system Python, use:
+
+```bash
+PYTHONPATH=src python -m unittest discover -s tests -v
+```
