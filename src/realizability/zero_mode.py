@@ -38,7 +38,7 @@ def synthetic_self_test(protocol: dict[str, Any]) -> dict[str, bool]:
         velocity=velocity,
     )
     nonzero_velocity = np.linalg.norm(record["velocities"], axis=1) > float(
-        protocol["path_nonconstant_tol"]
+        protocol["velocity_nonzero_tol"]
     )
     zero_local = np.abs(record["local_costs"]) <= float(protocol["local_cost_zero_tol"])
     fraction = positive_measure_fraction(nonzero_velocity & zero_local, grid)
@@ -46,7 +46,7 @@ def synthetic_self_test(protocol: dict[str, Any]) -> dict[str, bool]:
         "synthetic_nonconstant_zero_cost_path_pass": path_is_nonconstant(
             path,
             grid,
-            float(protocol["path_nonconstant_tol"]),
+            float(protocol["path_displacement_nonconstant_tol"]),
         )
         and abs(record["accumulated_cost"]) <= float(protocol["total_cost_zero_tol"])
         and fraction >= float(protocol["minimum_positive_measure_fraction"])
@@ -88,18 +88,9 @@ def _finite_difference_path_derivative(
     parameter_grid: np.ndarray,
     path_points: np.ndarray,
 ) -> np.ndarray:
-    derivatives = np.zeros_like(path_points, dtype=float)
-    for index in range(len(parameter_grid)):
-        if index == 0:
-            left, right = 0, 1
-        elif index == len(parameter_grid) - 1:
-            left, right = len(parameter_grid) - 2, len(parameter_grid) - 1
-        else:
-            left, right = index - 1, index + 1
-        derivatives[index] = (
-            path_points[right] - path_points[left]
-        ) / (parameter_grid[right] - parameter_grid[left])
-    return derivatives
+    if len(parameter_grid) < 3:
+        raise ValueError("at least three samples are required for second-order derivatives")
+    return np.gradient(path_points, parameter_grid, axis=0, edge_order=2)
 
 
 def validate_path_record(path_record: dict[str, Any] | None) -> dict[str, Any]:
@@ -170,8 +161,8 @@ def validate_path_record(path_record: dict[str, Any] | None) -> dict[str, Any]:
         errors=errors,
     )
     if parameter_grid.ndim == 1:
-        if len(parameter_grid) < 2:
-            errors.append("path record parameter_grid must contain at least two samples")
+        if len(parameter_grid) < 3:
+            errors.append("path record parameter_grid must contain at least three samples")
         elif not np.all(np.diff(parameter_grid) > 0):
             errors.append("path record parameter_grid must be strictly increasing")
     sample_count = len(parameter_grid) if parameter_grid.ndim == 1 else -1
@@ -295,7 +286,7 @@ def audit_principle_r_witness(
         )
         velocity_norms = np.linalg.norm(velocities, axis=1)
         zero_local = np.abs(local_costs) <= float(protocol["local_cost_zero_tol"])
-        active = (velocity_norms > float(protocol["path_nonconstant_tol"])) & zero_local
+        active = (velocity_norms > float(protocol["velocity_nonzero_tol"])) & zero_local
         computed["finite_cost_values"] = bool(
             np.all(np.isfinite(local_costs)) and np.all(np.isfinite(control_costs))
         )
@@ -311,7 +302,8 @@ def audit_principle_r_witness(
             np.max(np.linalg.norm(path_points - path_points[0], axis=1))
         )
         computed["path_nonconstant"] = bool(
-            computed["path_displacement"] > float(protocol["path_nonconstant_tol"])
+            computed["path_displacement"]
+            > float(protocol["path_displacement_nonconstant_tol"])
         )
         computed["positive_measure_fraction"] = positive_measure_fraction(
             active,
