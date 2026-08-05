@@ -1,0 +1,101 @@
+{
+  "title": "PRINCIPLE R -> LAW-I STRENGTHENED CONDITIONAL-THEOREM AUDIT",
+  "version": "2.7",
+  "scientific_status": "CONDITIONAL_R_PLUS_STRUCTURE_IMPLIES_LAW_I_TESC_WITNESS_SUPPORTED_NATIVE_SELECTION_OPEN",
+  "logical_statement": "Principle R + A_2D,C2,stationary,complete,symmetric,nondegenerate => det(G)<0, signature (1,1), two null rays",
+  "exact_conditional_theorem": {
+    "premises": {
+      "R_requires_nonzero_zero_cost_direction": true,
+      "process_space_is_real_two_dimensional": true,
+      "C2_stationary_cost_has_Hessian_tangent_form": true,
+      "quadratic_tangent_cost_complete_for_zero_directions": true,
+      "quadratic_form_symmetric": true,
+      "quadratic_form_nondegenerate": true
+    },
+    "conclusions": {
+      "definite_signatures_excluded": true,
+      "degenerate_signature_excluded": true,
+      "detG_must_be_negative": true,
+      "signature_must_be_1_1": true,
+      "null_set_is_two_distinct_real_rays": true
+    },
+    "gate": true
+  },
+  "operational_TESC_witness": {
+    "gates": {
+      "G_real_symmetric": true,
+      "G_nondegenerate": true,
+      "detG_negative": true,
+      "signature_1_1": true,
+      "two_distinct_null_rays_constructed": true,
+      "null_ray_residuals_pass": true,
+      "finite_two_branch_zero_set_observed": true,
+      "finite_zero_residual_pass": true,
+      "no_extra_branch_in_frozen_domain": true,
+      "zero_set_GL2_covariance_pass": true,
+      "unit_rescaling_signature_preserved": true
+    },
+    "gate": true
+  },
+  "native_R_selection": {
+    "gates": {
+      "three_source_hashes_bound": false,
+      "definitions_frozen_before_outcomes": false,
+      "R_derives_task_minus_exposure": false,
+      "R_derives_relative_coefficient": false,
+      "R_proves_global_zero_set_completeness": false,
+      "R_uniquely_selects_this_cost": false
+    },
+    "gate": false
+  },
+  "metrics": {
+    "G": [
+      [
+        -1.4753511884402215,
+        -0.048663800766846066
+      ],
+      [
+        -0.048663800766846066,
+        0.2661881493004614
+      ]
+    ],
+    "eigenvalues": [
+      -1.4767099400044166,
+      0.26754690086465627
+    ],
+    "detG": -0.39508916792421417,
+    "quadratic_discriminant": 1.5803566716968567,
+    "null_rays": [
+      [
+        0.36581365321357207,
+        0.9306881169986756
+      ],
+      [
+        0.4171750928578259,
+        -0.9088261340317324
+      ]
+    ],
+    "maximum_null_ray_residual": 2.6895065371140802e-17,
+    "finite_zero_search_domain": {
+      "abs_x": 0.08,
+      "abs_y": 0.4
+    }
+  },
+  "certificate_supplied": false,
+  "certificate_sha256": null,
+  "conditional_R_to_LawI_supported": true,
+  "unconditional_R_alone_to_LawI_proved": false,
+  "all_scientific_gates_pass": false,
+  "errors": [],
+  "interpretation": "The exact result is conditional: R plus the declared 2D quadratic-completeness assumptions forces Lorentzian Law I. TESC supplies a frozen operational existence witness. It does not show that R alone uniquely selects TESC or proves global completeness.",
+  "next_required_step": "derive task-minus-centred-exposure, its relative normalization, and global zero-set completeness from a source-bound Principle-R construction",
+  "claim_boundary": "No Law II/III, spacetime metric, (1,3) signature, physical light cone, wavefunction, Born rule, Cloud or QPU claim.",
+  "artifacts": {
+    "certificate_template": "/workspace/scratch/b481b397d7c6/principle_r_law1_strengthened_v2_7_results/r_law1_native_derivation_certificate.json"
+  },
+  "elapsed_seconds": 0.0014595985412597656,
+  "environment": {
+    "python": "3.12.13",
+    "numpy": "2.3.5"
+  }
+}
