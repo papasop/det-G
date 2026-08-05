@@ -120,6 +120,6 @@ def trace_finite_zero_branches(protocol: dict[str, Any]) -> dict[str, Any]:
             "maximum_y_used": max(record["adaptive_ymax"] for record in records),
             "maximum_root_residual": maximum_residual,
             "tangent_slope_error": tangent_error,
-            "finite_zero_search_domain": {"abs_x": x_max, "abs_y": maximum_y_max},
+            "signed_zero_contrast_search_domain": {"abs_x": x_max, "abs_y": maximum_y_max},
         },
     }

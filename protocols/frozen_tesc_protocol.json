@@ -8,11 +8,13 @@
   },
   "structural_assumptions": {
     "selected_process_space_dimension": 2,
-    "cost_is_real_C2_near_basepoint": true,
-    "stationary_basepoint": true,
-    "quadratic_tangent_cost_is_complete": true,
-    "metric_is_symmetric": true,
-    "metric_is_nondegenerate": true
+    "nonnegative_realization_cost_predeclared": false,
+    "principle_R_nonzero_direction_attained": true,
+    "signed_representative_is_real_C2": true,
+    "stationary_basepoint_for_signed_representative": true,
+    "physical_zero_set_equals_signed_representative_zero_set": false,
+    "signed_representative_is_symmetric": true,
+    "signed_representative_is_nondegenerate": true
   },
   "tesc_lambda": 1.0,
   "finite_difference_step": 0.0002,

@@ -2,7 +2,7 @@
 
 ## Supported wording
 
-> Principle R together with the declared two-dimensional, smooth, stationary, complete, symmetric, and nondegenerate local-cost assumptions forces a Lorentzian `(1,1)` quadratic form. TESC is a frozen operational witness with two local null rays and two finite zero branches in the audited domain.
+> Principle R together with the declared two-dimensional complete-zero-set representation assumptions forces the independently representing quadratic form to have Lorentzian `(1,1)` signature. TESC is a frozen signed zero-set representative with two local null rays and two finite zero-contrast branches in the audited domain.
 
 ## Relationship to the cited works
 
@@ -19,7 +19,9 @@ R+\mathcal A_{\mathrm{Law\,I}}
 \operatorname{sig}(G)=(1,1),
 \]
 
-together with the bounded operational TESC witness.
+together with the bounded signed-TESC zero-contrast representative. TESC
+supplies a signed quadratic zero-set candidate. Its physical zero-set binding
+to the nonnegative Principle-R realization cost remains open.
 
 ## Unsupported wording
 
@@ -29,6 +31,8 @@ Do not claim that:
 - Principle R uniquely selects TESC;
 - `lambda=1` has been derived;
 - finite-domain root searches prove global zero-set completeness;
+- signed TESC zero-contrast branches have been certified as physical zero-cost branches;
+- `F=q` or `D^2F=G_TESC` has been established for the nonnegative realization cost;
 - the TESC cost metric is a physical spacetime metric;
 - the null branches are physical light rays;
 - four-dimensional `(1,3)` spacetime has been derived;

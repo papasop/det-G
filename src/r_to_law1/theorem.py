@@ -42,28 +42,41 @@ def audit_conditional_theorem(G: np.ndarray, protocol: dict[str, Any]) -> dict[s
     eigenvalues = np.linalg.eigvalsh((G + G.T) / 2)
     determinant = float(np.linalg.det(G))
     rays = construct_null_rays(G)
-    premises = {
-        "R_requires_nonzero_zero_cost_direction": bool(protocol["principle_R"]["nonzero_zero_cost_direction_required"]),
+    declared_structural_premises = {
+        "principle_R_local_zero_mode_adopted": bool(protocol["principle_R"]["nonzero_zero_cost_direction_required"])
+        and bool(assumptions["principle_R_nonzero_direction_attained"]),
         "process_space_is_real_two_dimensional": int(assumptions["selected_process_space_dimension"]) == 2,
-        "C2_stationary_cost_has_Hessian_tangent_form": bool(assumptions["cost_is_real_C2_near_basepoint"])
-        and bool(assumptions["stationary_basepoint"]),
-        "quadratic_tangent_cost_complete_for_zero_directions": bool(assumptions["quadratic_tangent_cost_is_complete"]),
-        "quadratic_form_symmetric": bool(assumptions["metric_is_symmetric"]),
-        "quadratic_form_nondegenerate": bool(assumptions["metric_is_nondegenerate"]) and abs(determinant) > TOLERANCE,
+        "signed_representative_is_real_C2": bool(assumptions["signed_representative_is_real_C2"]),
+        "stationary_basepoint_for_signed_representative": bool(assumptions["stationary_basepoint_for_signed_representative"]),
+        "quadratic_form_symmetric": bool(assumptions["signed_representative_is_symmetric"]),
+        "quadratic_form_nondegenerate": bool(assumptions["signed_representative_is_nondegenerate"]) and abs(determinant) > TOLERANCE,
+    }
+    physical_zero_set_binding = {
+        "nonnegative_realization_cost_predeclared": bool(assumptions["nonnegative_realization_cost_predeclared"]),
+        "physical_zero_set_equals_signed_representative_zero_set": bool(
+            assumptions["physical_zero_set_equals_signed_representative_zero_set"]
+        ),
     }
     conclusions = {
-        "definite_signatures_excluded": True,
-        "degenerate_signature_excluded": True,
+        "definite_signed_representative_excluded_if_nonzero_null_vector_exists": True,
+        "degenerate_signed_representative_excluded_by_assumption": True,
         "detG_must_be_negative": determinant < 0,
         "signature_must_be_1_1": bool(eigenvalues[0] < 0 < eigenvalues[1]),
         "null_set_is_two_distinct_real_rays": len(rays["null_rays"]) == 2
         and rays["quadratic_discriminant"] > 0
         and max(rays["null_ray_residuals"], default=1.0) < TOLERANCE,
     }
+    declared_gate = all(declared_structural_premises.values())
+    binding_gate = all(physical_zero_set_binding.values())
+    analytic_gate = declared_gate and all(conclusions.values())
     return {
-        "premises": premises,
+        "declared_structural_premises": declared_structural_premises,
+        "physical_zero_set_binding": physical_zero_set_binding,
         "conclusions": conclusions,
-        "gate": all(premises.values()) and all(conclusions.values()),
+        "analytic_theorem_logic_gate": analytic_gate,
+        "declared_structural_premises_gate": declared_gate,
+        "physical_zero_set_binding_certificate_gate": binding_gate,
+        "conditional_theorem_premises_gate": analytic_gate and binding_gate,
         "metrics": {
             "G": G,
             "eigenvalues": eigenvalues,
