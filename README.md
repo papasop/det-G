@@ -36,12 +36,44 @@ selects TESC, `lambda=1`, physical spacetime, or a wavefunction.
 | Does Principle R uniquely select TESC or `lambda=1`? | No |
 | Does this validate Law II/III, spacetime, or a wavefunction? | No |
 
+## Single-channel obstruction and two-channel candidate
+
+For the scalar Information-Time realization
+
+\[
+F_{\rm IT}(x,v)=\frac{|D\Phi_x(v)|}{H(x)},
+\]
+
+the local zero set on a two-dimensional process plane is the single linear
+subspace \(\ker D\Phi_x\). It therefore cannot equal the union of two distinct
+null lines of a nondegenerate Lorentzian quadratic form.
+
+A complete two-line zero set can instead arise conditionally from two
+independently defined nonparallel realization channels:
+
+\[
+F_\times(x,v)=\frac{|L_+(v)L_-(v)|}{H(x)}.
+\]
+
+Then
+
+\[
+Z(F_\times)=\ker L_+\cup\ker L_-,
+\]
+
+and the induced quadratic form has negative determinant. The repository has
+certified this algebraic mechanism, but has not derived the two channels or
+their product law from Principle R. Defining the channels from the already
+computed TESC null rays would be circular.
+
 ## Evidence status
 
 | Layer | Current status | Meaning |
 |---|---|---|
 | Conditional mathematical theorem | Proved | \(R+\mathcal A_{\mathrm{Law\,I}}\Rightarrow\det G<0\), conditional on zero-set binding |
 | Signed TESC zero-set representative | Passed | The frozen signed contrast gives `(1,1)` signature, two null rays and finite two-branch zero-contrast structure in the declared domain |
+| Scalar Information-Time origin | Obstructed | A single scalar channel supplies only one kernel line on a two-dimensional plane |
+| Two-channel product mechanism | Conditional | Independent \(L_+,L_-\) channels would give two zero lines and `det(G)<0`, but native provenance is not supplied |
 | Physical zero-set binding | Open | \(Z(F)\cap V=Z(q)\cap V\) has not been certified |
 | Native Principle-R selection of TESC | Not proved | The repository has not derived task-minus-exposure, `lambda=1`, two-dimensionality or global completeness from Principle R alone |
 
@@ -107,6 +139,12 @@ python run_r_to_law1.py --protocol protocols/frozen_tesc_protocol.json
 python run_r_to_law1.py --outdir reference_results/v0.1.0
 ```
 
+The v0.2.0-preflight route audit is separate from the public v0.1.0 entry:
+
+```bash
+python audits/r_law1_two_channel_origin_audit_v3_1.py
+```
+
 ## Expected run result
 
 A successful reproduction may still report:
@@ -133,6 +171,8 @@ The run writes:
 | `reference_results/v0.1.0/run_summary.json` | central status, gates, Hessian, rays and metrics |
 | `reference_results/v0.1.0/finite_zero_branches.json` | bounded finite signed zero-contrast branch records |
 | `reference_results/v0.1.0/covariance_records.json` | `GL(2)`, unit-rescaling and sensitivity records |
+| `reference_results/v0.2.0/run_summary.json` | v3.1 scalar obstruction and conditional two-channel mechanism |
+| `reference_results/v0.2.0/protocol.json` | frozen v3.1 audit protocol |
 
 ## File navigation
 
@@ -144,9 +184,11 @@ The run writes:
 | `src/r_to_law1/finite_zero_set.py` | finite signed zero-contrast branch tracing |
 | `src/r_to_law1/covariance.py` | covariance, unit-rescaling and lambda sensitivity audits |
 | `src/r_to_law1/provenance.py` | physical zero-set binding and native unique-TESC provenance gates |
+| `audits/r_law1_two_channel_origin_audit_v3_1.py` | v0.2.0-preflight single-channel obstruction and two-channel mechanism audit |
 | `MATHEMATICAL_STATEMENT.md` | detailed theorem statement and proof boundary |
 | `VALIDATION_REPORT.md` | numerical result details |
 | `CLAIM_BOUNDARY.md` | unsupported claims and scientific boundary |
+| `docs/TWO_CHANNEL_ORIGIN.md` | v3.1 route decision note |
 | `certificates/native_r_selection.template.json` | template for source-bound provenance certificates |
 | `archive/` | historical one-file audits, not the public interface |
 

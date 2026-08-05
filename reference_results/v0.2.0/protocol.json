@@ -1,0 +1,28 @@
+{
+  "schema": "r-law1-two-channel-origin-audit-v3.1",
+  "version": "0.2.0-preflight",
+  "plane_dimension": 2,
+  "scalar_information_time": {
+    "formula": "F_IT(x,v)=abs(DPhi_x(v))/H(x)",
+    "H_positive": true,
+    "Dphi": [
+      1.0,
+      -0.5
+    ]
+  },
+  "two_channel_candidate": {
+    "formula": "F_cross(x,v)=abs(L_plus(v) L_minus(v))/H(x)",
+    "H_positive": true,
+    "L_plus": [
+      1.0,
+      -1.0
+    ],
+    "L_minus": [
+      1.0,
+      1.0
+    ],
+    "channels_defined_before_TESC_null_rays": false,
+    "native_channel_provenance_supplied": false,
+    "product_law_provenance_supplied": false
+  }
+}
