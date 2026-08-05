@@ -1,0 +1,15 @@
+{
+  "schema": "realizability-zero-mode-protocol-v0.1.0",
+  "version": "0.1.0",
+  "parameter_interval": [0.0, 1.0],
+  "parameter_grid_points": 101,
+  "derivative_method": "caller_velocity_or_central_difference",
+  "integration_method": "trapezoid",
+  "path_nonconstant_tol": 1e-10,
+  "local_cost_zero_tol": 1e-10,
+  "total_cost_zero_tol": 1e-10,
+  "minimum_positive_measure_fraction": 0.5,
+  "minimum_positive_control_cost": 1e-9,
+  "contraction_sequence_acceptance_rule": "source_bound_predeclared_zero_infimum",
+  "protocol_sha256": "9fe70702d57bf0fa635a55a09df15b32badf9fbce71d7c0d8cc361def3753c02"
+}

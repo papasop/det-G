@@ -25,6 +25,7 @@ physical_zero_set_binding_certificate_gate = false
 physical_zero_set_binding_provenance.gate = false
 native_unique_TESC_selection_gate = false
 conditional_R_to_LawI_supported = false
+R_plus_declared_structure_to_LawI_certified = false
 unconditional_R_alone_to_LawI_proved = false
 ```
 

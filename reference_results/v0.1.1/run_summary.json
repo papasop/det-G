@@ -52,6 +52,10 @@
     "premises_gate": false
   },
   "conditional_theorem_premises_gate": false,
+  "principle_R_local_zero_mode_assumed": true,
+  "zero_mode_certificate_supplied": false,
+  "zero_mode_certificate_source_bound": false,
+  "zero_mode_certificate_gate": false,
   "signed_TESC_zero_set_representative": {
     "gates": {
       "G_real_symmetric": true,
@@ -160,6 +164,7 @@
   },
   "signed_TESC_zero_set_representative_supported": true,
   "conditional_R_to_LawI_supported": false,
+  "R_plus_declared_structure_to_LawI_certified": false,
   "unconditional_R_alone_to_LawI_proved": false,
   "all_scientific_gates_pass": false,
   "interpretation": "The exact result is conditional: R plus a certified zero-set binding between the nonnegative realization cost F and an independently declared signed quadratic representative q forces Lorentzian Law I. TESC supplies a frozen signed zero-set representative. It does not show that F=q, D^2F=G_TESC, or that R alone uniquely selects TESC.",
