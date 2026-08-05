@@ -48,6 +48,8 @@ def fail_closed_audit(
         "certificate_supplied": certificate_supplied,
         "path_data_supplied": path_data_supplied,
         "path_level_R_pipeline_supported": False,
+        "attainment_pipeline_supported": False,
+        "path_level_zero_mode_pipeline_supported": False,
         "zero_infimum_certified": False,
         "attained_nonconstant_zero_cost_path": False,
         "local_zero_mode_positive_measure": False,

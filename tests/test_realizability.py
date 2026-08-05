@@ -39,12 +39,18 @@ class RealizabilityTests(unittest.TestCase):
         self.grid = np.linspace(0.0, 1.0, 11)
 
     def _write_path_data(self, directory: Path, **overrides) -> Path:
+        parameter_grid = [0.0, 0.5, 1.0]
         data = {
             "finite_cost_values": True,
             "cost_nonnegative": True,
             "accumulated_cost": 0.0,
             "positive_measure_fraction": 1.0,
             "same_meter_positive_control_cost": 1.0,
+            "parameter_grid": parameter_grid,
+            "path_points": [[0.0, 0.0], [0.5, 0.0], [1.0, 0.0]],
+            "velocities": [[1.0, 0.0], [1.0, 0.0], [1.0, 0.0]],
+            "local_costs": [0.0, 0.0, 0.0],
+            "same_meter_positive_control_costs": [1.0, 1.0, 1.0],
         }
         data.update(overrides)
         path = directory / "path_data.json"
@@ -275,6 +281,19 @@ class RealizabilityTests(unittest.TestCase):
             result = self._audit_with(directory, cert, path_data)
         self.assertFalse(result["gates"]["R5_accumulated_cost_zero"])
 
+    def test_zero_summary_with_nonzero_raw_local_cost_fails_zero_gate(self) -> None:
+        with tempfile.TemporaryDirectory() as tmpdir:
+            directory = Path(tmpdir)
+            path_data = self._write_path_data(
+                directory,
+                accumulated_cost=0.0,
+                local_costs=[1.0, 1.0, 1.0],
+            )
+            cert = self._source_bound_certificate(directory, path_data)
+            result = self._audit_with(directory, cert, path_data)
+        self.assertGreater(result["computed_path_evidence"]["accumulated_cost"], 0.0)
+        self.assertFalse(result["gates"]["R5_accumulated_cost_zero"])
+
     def test_constant_path_declaration_fails_closed(self) -> None:
         path = lambda _t: np.array([1.0, 0.0])
         self.assertFalse(path_is_nonconstant(path, self.grid, 1e-10))
@@ -289,6 +308,23 @@ class RealizabilityTests(unittest.TestCase):
             result = self._audit_with(directory, cert, path_data)
         self.assertFalse(result["gates"]["R4_attained_path_finite_and_nonconstant"])
 
+    def test_constant_raw_path_with_true_declaration_fails_closed(self) -> None:
+        with tempfile.TemporaryDirectory() as tmpdir:
+            directory = Path(tmpdir)
+            path_data = self._write_path_data(
+                directory,
+                path_points=[[1.0, 0.0], [1.0, 0.0], [1.0, 0.0]],
+            )
+            cert = self._source_bound_certificate(
+                directory,
+                path_data,
+                path_nonconstant=True,
+            )
+            result = self._audit_with(directory, cert, path_data)
+        self.assertFalse(result["computed_path_evidence"]["path_nonconstant"])
+        self.assertFalse(result["gates"]["R4_attained_path_finite_and_nonconstant"])
+        self.assertFalse(result["principle_R_witness_certified"])
+
     def test_positive_measure_fraction_below_threshold_fails_closed(self) -> None:
         with tempfile.TemporaryDirectory() as tmpdir:
             directory = Path(tmpdir)
@@ -296,6 +332,21 @@ class RealizabilityTests(unittest.TestCase):
             cert = self._source_bound_certificate(directory, path_data)
             result = self._audit_with(directory, cert, path_data)
         self.assertFalse(result["gates"]["R6_local_zero_mode_positive_measure"])
+
+    def test_positive_measure_summary_without_raw_support_fails_closed(self) -> None:
+        with tempfile.TemporaryDirectory() as tmpdir:
+            directory = Path(tmpdir)
+            path_data = self._write_path_data(
+                directory,
+                positive_measure_fraction=1.0,
+                velocities=[[0.0, 0.0], [0.0, 0.0], [0.0, 0.0]],
+            )
+            cert = self._source_bound_certificate(directory, path_data)
+            result = self._audit_with(directory, cert, path_data)
+        self.assertEqual(result["computed_path_evidence"]["positive_measure_fraction"], 0.0)
+        self.assertFalse(result["gates"]["R6_local_zero_mode_positive_measure"])
+        self.assertFalse(result["path_level_R_pipeline_supported"])
+        self.assertFalse(result["path_level_zero_mode_pipeline_supported"])
 
     def test_zero_same_meter_positive_control_fails_R7(self) -> None:
         with tempfile.TemporaryDirectory() as tmpdir:
@@ -306,6 +357,22 @@ class RealizabilityTests(unittest.TestCase):
             )
             cert = self._source_bound_certificate(directory, path_data)
             result = self._audit_with(directory, cert, path_data)
+        self.assertFalse(result["gates"]["R7_same_meter_positive_control_nonzero"])
+
+    def test_positive_control_summary_with_zero_raw_control_fails_R7(self) -> None:
+        with tempfile.TemporaryDirectory() as tmpdir:
+            directory = Path(tmpdir)
+            path_data = self._write_path_data(
+                directory,
+                same_meter_positive_control_cost=1.0,
+                same_meter_positive_control_costs=[0.0, 0.0, 0.0],
+            )
+            cert = self._source_bound_certificate(directory, path_data)
+            result = self._audit_with(directory, cert, path_data)
+        self.assertEqual(
+            result["computed_path_evidence"]["same_meter_positive_control_cost"],
+            0.0,
+        )
         self.assertFalse(result["gates"]["R7_same_meter_positive_control_nonzero"])
 
     def test_target_G_constructed_witness_is_circular_negative_control(self) -> None:

@@ -189,6 +189,21 @@ missing, the path-data file is missing, a required field is malformed, or the
 path-data hash is stale, all production zero-mode gates fail closed. The
 synthetic self-test is never substituted for production evidence.
 
+The path-data file must contain raw samples, not only summary claims:
+
+```text
+parameter_grid
+path_points
+velocities
+local_costs
+same_meter_positive_control_costs
+```
+
+The audit recomputes path nonconstancy, accumulated cost, local zero-mode
+positive-measure support and same-meter positive-control evidence from those
+raw arrays. Summary fields in the path-data record are treated only as declared
+claims and must agree with the recomputation.
+
 This code does not prove Principle R is a universal law of nature. Without
 independent path/cost data and source-bound certificates, it reports only
 pipeline self-tests. The signed-TESC result remains a conditional
@@ -203,6 +218,12 @@ The interface distinguishes five levels:
 | C. cross-protocol physical zero-set binding certified | \(Z(F)\cap V = Z(q)\cap V\) is independently certified | No |
 | D. conditional Law-I representation certified | Upstream witness plus certified zero-set binding closes the declared local bridge | No |
 | E. K=1 Law II/III | Downstream theory beyond this repository | Outside scope |
+
+`R_plus_declared_structure_to_LawI_certified` is separate from
+`native_unique_TESC_selection_certified`: the former concerns the conditional
+Law-I bridge once the zero-set binding and declared local structure are
+certified, while the latter asks the stronger provenance question of whether
+Principle R uniquely selects TESC.
 
 ## RC Zero-Structure Interface
 

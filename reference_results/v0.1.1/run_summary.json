@@ -106,6 +106,7 @@
     "gate": false
   },
   "native_unique_TESC_selection_gate": false,
+  "native_unique_TESC_selection_certified": false,
   "metrics": {
     "G": [
       [

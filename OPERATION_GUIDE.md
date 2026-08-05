@@ -24,6 +24,7 @@ signed_TESC_zero_set_representative.gate = true
 physical_zero_set_binding_certificate_gate = false
 physical_zero_set_binding_provenance.gate = false
 native_unique_TESC_selection_gate = false
+native_unique_TESC_selection_certified = false
 zero_mode_path_data_source_bound = false
 conditional_R_to_LawI_supported = false
 R_plus_declared_structure_to_LawI_certified = false
