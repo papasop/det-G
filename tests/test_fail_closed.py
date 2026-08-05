@@ -68,6 +68,17 @@ class FailClosedAuditTests(unittest.TestCase):
             with self.assertRaises(ProtocolError):
                 load_frozen_protocol(path)
 
+    def test_missing_protocol_sha_fails_closed(self) -> None:
+        with tempfile.TemporaryDirectory() as tmpdir:
+            source = Path("protocols/frozen_tesc_protocol.json")
+            protocol = json.loads(source.read_text())
+            protocol.pop("protocol_sha256")
+            path = Path(tmpdir, "missing_sha_protocol.json")
+            path.write_text(json.dumps(protocol) + "\n")
+
+            with self.assertRaises(ProtocolError):
+                load_frozen_protocol(path)
+
     def test_missing_gate_threshold_fails_closed(self) -> None:
         protocol = json.loads(Path("protocols/frozen_tesc_protocol.json").read_text())
         protocol.pop("protocol_sha256", None)
