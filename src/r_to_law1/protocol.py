@@ -79,8 +79,10 @@ def protocol_sha256(protocol: dict[str, Any]) -> str:
 
 def require_matching_protocol_sha(protocol: dict[str, Any]) -> str:
     declared = protocol.get("protocol_sha256")
+    if not isinstance(declared, str) or not declared:
+        raise ProtocolError("frozen protocol is missing protocol_sha256")
     computed = protocol_sha256(protocol)
-    if declared is not None and declared != computed:
+    if declared != computed:
         raise ProtocolError(
             f"protocol_sha256 mismatch: declared {declared}, computed {computed}"
         )
