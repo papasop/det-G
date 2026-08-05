@@ -6,14 +6,16 @@
     1.0
   ],
   "parameter_grid_points": 101,
-  "derivative_method": "caller_velocity_or_central_difference",
+  "derivative_method": "second_order_finite_difference_from_path_points_with_velocity_crosscheck",
   "integration_method": "trapezoid",
   "path_nonconstant_tol": 1e-10,
+  "path_displacement_nonconstant_tol": 1e-10,
+  "velocity_nonzero_tol": 1e-10,
   "local_cost_zero_tol": 1e-10,
   "total_cost_zero_tol": 1e-10,
   "parameter_grid_absolute_tol": 1e-12,
   "parameter_grid_relative_tol": 1e-12,
-  "velocity_derivative_absolute_tol": 1e-08,
+  "velocity_derivative_absolute_tol": 0.00021,
   "velocity_derivative_relative_tol": 1e-06,
   "summary_accumulated_cost_absolute_tol": 1e-12,
   "summary_positive_measure_absolute_tol": 1e-12,
@@ -21,5 +23,5 @@
   "minimum_positive_measure_fraction": 0.5,
   "minimum_positive_control_cost": 1e-09,
   "contraction_sequence_acceptance_rule": "source_bound_predeclared_zero_infimum",
-  "protocol_sha256": "030e07555270cd6c4517b596a8ca83da8af43f57d53752fe697fff446b610364"
+  "protocol_sha256": "52b7d379c3d72c8978998e404f01f4c8a32314366dc2ac5166fbf34df6d9e61e"
 }

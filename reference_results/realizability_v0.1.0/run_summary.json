@@ -1,7 +1,7 @@
 {
   "title": "Realizability zero-mode witness audit",
   "version": "0.1.0",
-  "protocol_sha256": "030e07555270cd6c4517b596a8ca83da8af43f57d53752fe697fff446b610364",
+  "protocol_sha256": "52b7d379c3d72c8978998e404f01f4c8a32314366dc2ac5166fbf34df6d9e61e",
   "gates": {
     "R1_state_admissible_domain_source_bound": false,
     "R2_protocol_and_nonnegative_cost_predeclared": false,

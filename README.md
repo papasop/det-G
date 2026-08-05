@@ -206,8 +206,8 @@ claims and must agree with the recomputation.
 
 The sampled grid must equal the frozen grid declared in
 `protocols/frozen_realizability_protocol.json`, and recorded velocities must
-match finite-difference derivatives of `path_points` within the protocol's
-absolute and relative tolerances. The zero-infimum gate is derived from
+match second-order finite-difference derivatives of `path_points` within the
+protocol's absolute and relative tolerances. The zero-infimum gate is derived from
 nonnegativity plus an attained zero-cost path; contraction-family declarations
 are reported separately as certificate evidence, not accepted as a core proof
 gate by themselves.

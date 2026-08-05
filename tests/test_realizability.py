@@ -21,7 +21,10 @@ from realizability.path_cost import (
     positive_measure_fraction,
 )
 from realizability.protocol import RealizabilityProtocolError, load_realizability_protocol
-from realizability.zero_mode import audit_principle_r_witness
+from realizability.zero_mode import (
+    _finite_difference_path_derivative,
+    audit_principle_r_witness,
+)
 from r_to_law1.tesc import derive_tesc_hessian, load_frozen_protocol
 from r_to_law1.theorem import audit_conditional_theorem
 
@@ -64,6 +67,26 @@ class RealizabilityTests(unittest.TestCase):
         path = directory / "path_data.json"
         path.write_text(json.dumps(data, sort_keys=True) + "\n")
         return path
+
+    def _write_polynomial_path_data(self, directory: Path, power: int) -> Path:
+        parameter_grid = np.linspace(
+            self.protocol["parameter_interval"][0],
+            self.protocol["parameter_interval"][1],
+            self.protocol["parameter_grid_points"],
+        )
+        path_points = [[float(t**power), 0.0] for t in parameter_grid]
+        velocities = [[float(power * t ** (power - 1)), 0.0] for t in parameter_grid]
+        active = parameter_grid > 0.0
+        positive_measure_fraction = float(
+            np.sum(np.diff(parameter_grid)[active[:-1] & active[1:]])
+            / (parameter_grid[-1] - parameter_grid[0])
+        )
+        return self._write_path_data(
+            directory,
+            positive_measure_fraction=positive_measure_fraction,
+            path_points=path_points,
+            velocities=velocities,
+        )
 
     def _source_bound_certificate_data(
         self,
@@ -129,6 +152,53 @@ class RealizabilityTests(unittest.TestCase):
             result = self._audit_with(directory, cert, path_data)
         self.assertTrue(result["principle_R_witness_certified"])
         self.assertTrue(result["path_data_source_bound"])
+
+    def test_quadratic_path_with_analytic_velocity_passes_endpoint_check(self) -> None:
+        with tempfile.TemporaryDirectory() as tmpdir:
+            directory = Path(tmpdir)
+            path_data = self._write_polynomial_path_data(directory, power=2)
+            cert = self._source_bound_certificate(directory, path_data)
+            result = self._audit_with(directory, cert, path_data)
+        self.assertTrue(
+            result["computed_path_evidence"]["velocity_derivative_consistent"]
+        )
+        self.assertTrue(result["gates"]["R4_path_kinematics_consistent"])
+        self.assertTrue(result["principle_R_witness_certified"])
+
+    def test_cubic_path_derivative_error_has_second_order_scaling(self) -> None:
+        coarse_grid = np.linspace(0.0, 1.0, 101)
+        fine_grid = np.linspace(0.0, 1.0, 201)
+        coarse_points = np.column_stack((coarse_grid**3, np.zeros_like(coarse_grid)))
+        fine_points = np.column_stack((fine_grid**3, np.zeros_like(fine_grid)))
+        coarse_velocity = np.column_stack((3 * coarse_grid**2, np.zeros_like(coarse_grid)))
+        fine_velocity = np.column_stack((3 * fine_grid**2, np.zeros_like(fine_grid)))
+        coarse_error = np.max(
+            np.linalg.norm(
+                _finite_difference_path_derivative(coarse_grid, coarse_points)
+                - coarse_velocity,
+                axis=1,
+            )
+        )
+        fine_error = np.max(
+            np.linalg.norm(
+                _finite_difference_path_derivative(fine_grid, fine_points)
+                - fine_velocity,
+                axis=1,
+            )
+        )
+        self.assertLess(coarse_error, self.protocol["velocity_derivative_absolute_tol"])
+        self.assertLess(fine_error, coarse_error / 3.5)
+
+    def test_nonlinear_endpoint_does_not_cause_correct_path_failure(self) -> None:
+        with tempfile.TemporaryDirectory() as tmpdir:
+            directory = Path(tmpdir)
+            path_data = self._write_polynomial_path_data(directory, power=3)
+            cert = self._source_bound_certificate(directory, path_data)
+            result = self._audit_with(directory, cert, path_data)
+        self.assertTrue(
+            result["computed_path_evidence"]["velocity_derivative_consistent"]
+        )
+        self.assertTrue(result["principle_R_witness_certified"])
 
     def test_zero_infimum_is_derived_not_self_certified(self) -> None:
         with tempfile.TemporaryDirectory() as tmpdir:
@@ -558,7 +628,7 @@ class RealizabilityTests(unittest.TestCase):
             velocity=velocity,
         )
         mask = np.linalg.norm(record["velocities"], axis=1) > self.protocol[
-            "path_nonconstant_tol"
+            "velocity_nonzero_tol"
         ]
         fraction = positive_measure_fraction(mask, self.grid)
         self.assertGreaterEqual(fraction, self.protocol["minimum_positive_measure_fraction"])
