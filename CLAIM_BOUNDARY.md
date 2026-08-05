@@ -69,6 +69,25 @@ Conditional Law-I certification and native TESC uniqueness are separate. A
 certified local Law-I representation does not by itself prove that TESC is the
 unique representative selected by Principle R.
 
+## Downstream K=1 auxiliary audit boundary
+
+The v3.8 downstream audit certifies the native K=1 auxiliary two-line theorem:
+
+\[
+N(G)=\ker B_c\cup\operatorname{Im}B_c,\qquad B_c=JG-d_cI.
+\]
+
+It does not certify that the Principle-R realization-cost zero set equals these
+two lines:
+
+\[
+Z(F_\Pi)=\ker B_c\cup\operatorname{Im}B_c.
+\]
+
+It also does not derive the Law-III critical selection. The archived v3.6 file
+is only a synthetic control, and the archived v3.7 file is a superseded
+transitional audit.
+
 ## Unsupported wording
 
 Do not claim that:

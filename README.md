@@ -137,6 +137,25 @@ without independent data.
 | Audit C: Do different protocols recover the same zero cone? | `audits/r_law1_cross_protocol_cone_audit_v3_2.py` | OPEN_NO_DATA |
 | RC interface: Does an abstract zero-structure chain close all five gates? | `audits/rc_zero_structure_to_law1_audit_v0_1.py` | OPEN_NO_DATA |
 
+Downstream K=1 audit classification:
+
+| Audit | Status | Use |
+|---|---|---|
+| v3.6 | SYNTHETIC_CONTROL | Checks that an audit can recognize a model-internal double cone |
+| v3.7 | SUPERSEDED | Records the correction from response-composed branches to the kernel/image object |
+| v3.8 | CURRENT_DOWNSTREAM_K1_AUDIT | Checks the paper-consistent native auxiliary two-line theorem |
+
+The current downstream K=1 auxiliary object is
+
+\[
+N(G)=\ker B_c\cup\operatorname{Im}B_c,\qquad B_c=JG-d_cI.
+\]
+
+The v3.8 audit certifies this kernel/image algebraic theorem for a supplied
+Lorentzian \(G\). It does not certify that the Principle-R realization-cost
+zero set equals these two lines, and it does not derive the Law-III critical
+selection.
+
 Run them only when inspecting the preflight boundary:
 
 ```bash
@@ -144,6 +163,7 @@ python audits/r_law1_bidirectional_zero_set_audit_v3_0.py --outdir reference_res
 python audits/r_law1_two_channel_origin_audit_v3_1.py --outdir reference_results/v0.2.1/v3_1
 python audits/r_law1_cross_protocol_cone_audit_v3_2.py --outdir reference_results/v0.2.1/v3_2
 python audits/rc_zero_structure_to_law1_audit_v0_1.py --outdir reference_results/v0.2.1/rc_zero_structure
+python audits/downstream_k1/k1_self_contained_nullflow_theorem_audit_v3_8.py
 ```
 
 The original v0.2.0-preflight source ZIP was imported with SHA-256:
@@ -281,6 +301,7 @@ Result files and documentation use these meanings:
 | `run_realizability_zero_mode.py` | advanced upstream zero-mode witness audit |
 | `tests/` | theorem, provenance and fail-closed regression tests |
 | `audits/` | preflight physical-boundary audits |
+| `audits/downstream_k1/` | downstream K=1 auxiliary theorem audits, separate from the stable R-to-Law-I entry |
 | `MATHEMATICAL_STATEMENT.md` | detailed theorem statement and proof boundary |
 | `VALIDATION_REPORT.md` | numerical result details |
 | `CLAIM_BOUNDARY.md` | unsupported claims and scientific boundary |
