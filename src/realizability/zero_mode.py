@@ -59,6 +59,11 @@ REQUIRED_PATH_RECORD_FIELDS = {
     "accumulated_cost",
     "positive_measure_fraction",
     "same_meter_positive_control_cost",
+    "parameter_grid",
+    "path_points",
+    "velocities",
+    "local_costs",
+    "same_meter_positive_control_costs",
 }
 
 
@@ -66,12 +71,33 @@ def _is_finite_number(value: Any) -> bool:
     return type(value) in (int, float) and bool(np.isfinite(float(value)))
 
 
+def _as_float_array(value: Any, *, name: str, ndim: int, errors: list[str]) -> np.ndarray:
+    try:
+        array = np.asarray(value, dtype=float)
+    except (TypeError, ValueError):
+        errors.append(f"path record field {name!r} must be numeric")
+        return np.asarray([])
+    if array.ndim != ndim:
+        errors.append(f"path record field {name!r} must have dimension {ndim}")
+    elif not np.all(np.isfinite(array)):
+        errors.append(f"path record field {name!r} must contain finite numbers")
+    return array
+
+
 def validate_path_record(path_record: dict[str, Any] | None) -> dict[str, Any]:
+    empty_arrays = {
+        "parameter_grid": np.asarray([]),
+        "path_points": np.asarray([]),
+        "velocities": np.asarray([]),
+        "local_costs": np.asarray([]),
+        "same_meter_positive_control_costs": np.asarray([]),
+    }
     if not isinstance(path_record, dict):
         return {
             "valid": False,
             "errors": ["path record missing or not a JSON object"],
             "record": {},
+            "arrays": empty_arrays,
         }
 
     errors = []
@@ -95,10 +121,69 @@ def validate_path_record(path_record: dict[str, Any] | None) -> dict[str, Any]:
     if _is_finite_number(fraction) and not 0.0 <= float(fraction) <= 1.0:
         errors.append("path record positive_measure_fraction must lie in [0, 1]")
 
+    parameter_grid = _as_float_array(
+        path_record.get("parameter_grid"),
+        name="parameter_grid",
+        ndim=1,
+        errors=errors,
+    )
+    path_points = _as_float_array(
+        path_record.get("path_points"),
+        name="path_points",
+        ndim=2,
+        errors=errors,
+    )
+    velocities = _as_float_array(
+        path_record.get("velocities"),
+        name="velocities",
+        ndim=2,
+        errors=errors,
+    )
+    local_costs = _as_float_array(
+        path_record.get("local_costs"),
+        name="local_costs",
+        ndim=1,
+        errors=errors,
+    )
+    control_costs = _as_float_array(
+        path_record.get("same_meter_positive_control_costs"),
+        name="same_meter_positive_control_costs",
+        ndim=1,
+        errors=errors,
+    )
+    if parameter_grid.ndim == 1:
+        if len(parameter_grid) < 2:
+            errors.append("path record parameter_grid must contain at least two samples")
+        elif not np.all(np.diff(parameter_grid) > 0):
+            errors.append("path record parameter_grid must be strictly increasing")
+    sample_count = len(parameter_grid) if parameter_grid.ndim == 1 else -1
+    for name, array in (
+        ("path_points", path_points),
+        ("velocities", velocities),
+        ("local_costs", local_costs),
+    ):
+        if sample_count >= 0 and array.ndim > 0 and len(array) != sample_count:
+            errors.append(f"path record field {name!r} length must match parameter_grid")
+    if (
+        path_points.ndim == 2
+        and velocities.ndim == 2
+        and path_points.shape != velocities.shape
+    ):
+        errors.append("path_points and velocities must have the same shape")
+    if control_costs.ndim == 1 and len(control_costs) < 1:
+        errors.append("same_meter_positive_control_costs must contain at least one value")
+
     return {
         "valid": not errors,
         "errors": errors,
         "record": dict(path_record),
+        "arrays": {
+            "parameter_grid": parameter_grid,
+            "path_points": path_points,
+            "velocities": velocities,
+            "local_costs": local_costs,
+            "same_meter_positive_control_costs": control_costs,
+        },
     }
 
 
@@ -133,6 +218,7 @@ def audit_principle_r_witness(
     )
     path_validation = validate_path_record(path_record)
     record = path_validation["record"]
+    arrays = path_validation["arrays"]
     path_data_source_matches_argument = False
     if certificate is not None and path_record_source_path is not None:
         path_data_source_matches_argument = (
@@ -142,6 +228,54 @@ def audit_principle_r_witness(
     path_data_source_bound = (
         source_gates["path_data_source_bound"] and path_data_source_matches_argument
     )
+    computed = {
+        "finite_cost_values": False,
+        "cost_nonnegative": False,
+        "accumulated_cost": None,
+        "path_displacement": None,
+        "path_nonconstant": False,
+        "positive_measure_fraction": None,
+        "same_meter_positive_control_cost": None,
+    }
+    if path_validation["valid"]:
+        parameter_grid = arrays["parameter_grid"]
+        path_points = arrays["path_points"]
+        velocities = arrays["velocities"]
+        local_costs = arrays["local_costs"]
+        control_costs = arrays["same_meter_positive_control_costs"]
+        velocity_norms = np.linalg.norm(velocities, axis=1)
+        zero_local = np.abs(local_costs) <= float(protocol["local_cost_zero_tol"])
+        active = (velocity_norms > float(protocol["path_nonconstant_tol"])) & zero_local
+        computed["finite_cost_values"] = bool(
+            np.all(np.isfinite(local_costs)) and np.all(np.isfinite(control_costs))
+        )
+        computed["cost_nonnegative"] = bool(
+            np.min(local_costs) >= -float(protocol["local_cost_zero_tol"])
+        )
+        computed["accumulated_cost"] = float(np.trapezoid(local_costs, parameter_grid))
+        computed["path_displacement"] = float(
+            np.max(np.linalg.norm(path_points - path_points[0], axis=1))
+        )
+        computed["path_nonconstant"] = bool(
+            computed["path_displacement"] > float(protocol["path_nonconstant_tol"])
+        )
+        computed["positive_measure_fraction"] = positive_measure_fraction(
+            active,
+            parameter_grid,
+        )
+        computed["same_meter_positive_control_cost"] = float(np.min(control_costs))
+
+    finite_cost_evidence = (
+        path_validation["valid"]
+        and bool(record["finite_cost_values"])
+        and bool(computed["finite_cost_values"])
+    )
+    cost_nonnegative = (
+        bool(certificate and certificate.cost_nonnegative)
+        and path_validation["valid"]
+        and bool(record["cost_nonnegative"])
+        and bool(computed["cost_nonnegative"])
+    )
     local_positive_measure = bool(
         certificate.local_zero_mode_positive_measure if certificate else False
     )
@@ -150,6 +284,9 @@ def audit_principle_r_witness(
         and path_validation["valid"]
         and float(record["positive_measure_fraction"])
         >= float(protocol["minimum_positive_measure_fraction"])
+        and computed["positive_measure_fraction"] is not None
+        and float(computed["positive_measure_fraction"])
+        >= float(protocol["minimum_positive_measure_fraction"])
     )
     total_zero = bool(certificate.zero_total_cost if certificate else False)
     total_zero = (
@@ -157,24 +294,29 @@ def audit_principle_r_witness(
         and path_validation["valid"]
         and abs(float(record["accumulated_cost"]))
         <= float(protocol["total_cost_zero_tol"])
+        and computed["accumulated_cost"] is not None
+        and abs(float(computed["accumulated_cost"]))
+        <= float(protocol["total_cost_zero_tol"])
     )
-    cost_nonnegative = (
-        bool(certificate and certificate.cost_nonnegative)
+    path_nonconstant = (
+        bool(certificate and certificate.path_nonconstant)
         and path_validation["valid"]
-        and bool(record["cost_nonnegative"])
-    )
-    finite_cost_evidence = (
-        path_validation["valid"] and bool(record["finite_cost_values"])
+        and bool(computed["path_nonconstant"])
     )
     positive_control_nonzero = (
         bool(certificate and certificate.same_meter_positive_control)
         and path_validation["valid"]
         and float(record["same_meter_positive_control_cost"])
         >= float(protocol["minimum_positive_control_cost"])
+        and computed["same_meter_positive_control_cost"] is not None
+        and float(computed["same_meter_positive_control_cost"])
+        >= float(protocol["minimum_positive_control_cost"])
     )
     gates = {
         "R1_state_admissible_domain_source_bound": all(
-            value for key, value in source_gates.items() if key != "path_data_source_bound"
+            value
+            for key, value in source_gates.items()
+            if key != "path_data_source_bound"
         ),
         "R2_protocol_and_nonnegative_cost_predeclared": bool(
             certificate and certificate.protocol_predeclared
@@ -186,15 +328,11 @@ def audit_principle_r_witness(
             and certificate.contraction_family_certified
             and certificate.zero_infimum_certified
         ),
-        "R4_attained_path_finite_and_nonconstant": bool(
-            certificate and certificate.path_nonconstant
-        )
+        "R4_attained_path_finite_and_nonconstant": bool(path_nonconstant)
         and finite_cost_evidence,
         "R5_accumulated_cost_zero": total_zero,
         "R6_local_zero_mode_positive_measure": local_positive_measure,
-        "R7_same_meter_positive_control_nonzero": bool(
-            positive_control_nonzero
-        ),
+        "R7_same_meter_positive_control_nonzero": bool(positive_control_nonzero),
         "R8_witness_independent_of_target_G_TESC": bool(
             certificate and certificate.witness_not_constructed_from_target_G
         ),
@@ -202,7 +340,19 @@ def audit_principle_r_witness(
     }
     return {
         "gates": gates,
-        "path_level_R_pipeline_supported": all(
+        "path_level_R_pipeline_supported": all(gates.values()),
+        "certificate_supplied": certificate is not None,
+        "path_data_supplied": path_record is not None,
+        "path_record_validation": {
+            "valid": path_validation["valid"],
+            "errors": path_validation["errors"],
+        },
+        "computed_path_evidence": computed,
+        "source_bound_gates": {
+            **source_gates,
+            "path_data_source_matches_argument": path_data_source_matches_argument,
+        },
+        "attainment_pipeline_supported": all(
             gates[key]
             for key in (
                 "R1_state_admissible_domain_source_bound",
@@ -213,16 +363,7 @@ def audit_principle_r_witness(
                 "R9_path_data_source_bound",
             )
         ),
-        "certificate_supplied": certificate is not None,
-        "path_data_supplied": path_record is not None,
-        "path_record_validation": {
-            "valid": path_validation["valid"],
-            "errors": path_validation["errors"],
-        },
-        "source_bound_gates": {
-            **source_gates,
-            "path_data_source_matches_argument": path_data_source_matches_argument,
-        },
+        "path_level_zero_mode_pipeline_supported": all(gates.values()),
         "zero_infimum_certified": gates["R3_contraction_family_gives_zero_infimum"],
         "attained_nonconstant_zero_cost_path": gates[
             "R4_attained_path_finite_and_nonconstant"

@@ -74,7 +74,7 @@ def emit_report(
         and theorem["declared_structural_premises_gate"]
         and bool(zero_mode["principle_R_witness_certified"])
     )
-    if declared_structure_certified and native_unique_gate:
+    if declared_structure_certified:
         scientific_status = "R_PLUS_DECLARED_STRUCTURE_TO_LAW_I_CERTIFIED"
     elif conditional_support_gate:
         scientific_status = "CONDITIONAL_R_TO_LAWI_SUPPORTED_NATIVE_TESC_SELECTION_OPEN"
@@ -131,6 +131,7 @@ def emit_report(
         "physical_zero_set_binding_provenance": physical_binding_provenance,
         "native_unique_TESC_selection": native_unique_selection,
         "native_unique_TESC_selection_gate": native_unique_gate,
+        "native_unique_TESC_selection_certified": native_unique_gate,
         "metrics": {
             **theorem["metrics"],
             **finite_branches["metrics"],
@@ -139,8 +140,7 @@ def emit_report(
         },
         "signed_TESC_zero_set_representative_supported": signed_tesc_gate,
         "conditional_R_to_LawI_supported": conditional_support_gate,
-        "R_plus_declared_structure_to_LawI_certified": declared_structure_certified
-        and native_unique_gate,
+        "R_plus_declared_structure_to_LawI_certified": declared_structure_certified,
         "unconditional_R_alone_to_LawI_proved": False,
         "all_scientific_gates_pass": False,
         "interpretation": "The exact result is conditional: R plus a certified zero-set binding between the nonnegative realization cost F and an independently declared signed quadratic representative q forces Lorentzian Law I. TESC supplies a frozen signed zero-set representative. It does not show that F=q, D^2F=G_TESC, or that R alone uniquely selects TESC.",

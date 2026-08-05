@@ -36,9 +36,11 @@ path-level realization witness
 
 This interface can certify that a supplied upstream witness is source-bound,
 nonnegative, attained, nonconstant, zero-cost and positive-measure according to
-the frozen realizability protocol. The committed reference run does not include
-independent physical path data, so this upstream production gate remains closed
-by default.
+the frozen realizability protocol. Path nonconstancy, total cost, positive
+measure and same-meter controls are recomputed from raw path points, velocities
+and local costs; summary declarations alone are not evidence. The committed
+reference run does not include independent physical path data, so this upstream
+production gate remains closed by default.
 
 Even a valid upstream witness does not certify the separate physical zero-set
 binding:
@@ -56,6 +58,10 @@ The evidence levels remain distinct:
 | C. cross-protocol physical zero-set binding certified | still open |
 | D. conditional Law-I representation certified | requires C plus declared local structure |
 | E. K=1 Law II/III | outside current scope |
+
+Conditional Law-I certification and native TESC uniqueness are separate. A
+certified local Law-I representation does not by itself prove that TESC is the
+unique representative selected by Principle R.
 
 ## Unsupported wording
 
