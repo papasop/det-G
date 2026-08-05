@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import hashlib
 import json
+from dataclasses import asdict, is_dataclass
 from typing import Any
 
 import numpy as np
@@ -26,10 +27,18 @@ REQUIRED_DECISION_THRESHOLDS = {
     "two_channel_null_residual_tol",
     "centering_value_tol",
     "centering_gradient_tol",
+    "ray_equivalence_tol",
+    "scale_closure_tol",
+    "channel_independence_tol",
+    "zero_set_forward_violation_tol",
+    "zero_set_reverse_violation_tol",
+    "minimum_branch_separation",
 }
 
 
 def jsonable(value: Any) -> Any:
+    if is_dataclass(value):
+        return jsonable(asdict(value))
     if isinstance(value, dict):
         return {str(key): jsonable(item) for key, item in value.items()}
     if isinstance(value, (list, tuple)):

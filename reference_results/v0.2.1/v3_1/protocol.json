@@ -2,8 +2,8 @@
   "title": "PRINCIPLE R -> LAW-I SINGLE-CHANNEL NO-GO / TWO-CHANNEL ORIGIN AUDIT",
   "version": "3.1.1",
   "tests": "single-channel no-go; two-channel product; circular negative control",
-  "frozen_tesc_protocol_sha256": "f01078947ee5e54f2ef11ecf0a403d5ba1b60a747b1dcd3d6a5712c2050abf4b",
+  "frozen_tesc_protocol_sha256": "fd1bdabe8a6cacffa532d5598270dd6dbbf5c0caf90bc470d3b90289b63531f8",
   "derivation_version": "tesc-hessian-finite-difference-v0.1.1",
   "claim_rule": "F=|L_plus L_minus|/H with H>0; channel definitions must predate and not depend on TESC",
-  "audit_protocol_sha256": "d7faf3ad0e76c2510732f4daef61b9afbed29d18f64f057207907976c921ec02"
+  "audit_protocol_sha256": "98b28ed5ea53f9f69dea071f594f088ee78aaaae9505503261689ed2ec469fe0"
 }

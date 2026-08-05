@@ -132,6 +132,7 @@ without independent data.
 | Audit A: Does the physical zero set equal the TESC zero set? | `audits/r_law1_bidirectional_zero_set_audit_v3_0.py` | OPEN_NO_DATA |
 | Audit B: Why is one scalar channel insufficient, and how can two channels produce a cone? | `audits/r_law1_two_channel_origin_audit_v3_1.py` | SUPPORTED_CONDITIONALLY |
 | Audit C: Do different protocols recover the same zero cone? | `audits/r_law1_cross_protocol_cone_audit_v3_2.py` | OPEN_NO_DATA |
+| RC interface: Does an abstract zero-structure chain close all five gates? | `audits/rc_zero_structure_to_law1_audit_v0_1.py` | OPEN_NO_DATA |
 
 Run them only when inspecting the preflight boundary:
 
@@ -139,6 +140,7 @@ Run them only when inspecting the preflight boundary:
 python audits/r_law1_bidirectional_zero_set_audit_v3_0.py --outdir reference_results/v0.2.1/v3_0
 python audits/r_law1_two_channel_origin_audit_v3_1.py --outdir reference_results/v0.2.1/v3_1
 python audits/r_law1_cross_protocol_cone_audit_v3_2.py --outdir reference_results/v0.2.1/v3_2
+python audits/rc_zero_structure_to_law1_audit_v0_1.py --outdir reference_results/v0.2.1/rc_zero_structure
 ```
 
 The original v0.2.0-preflight source ZIP was imported with SHA-256:
@@ -150,6 +152,29 @@ db42420631fdc429d4179cc23fa28a56ba7c1d6b3242e0d86d202c96769af5d2
 `v0.2.1-preflight` keeps the same scientific boundary but removes stale
 hard-coded TESC gold data from v3.1 and moves v3.2 gate thresholds into the
 manifest/protocol input.
+
+## RC Zero-Structure Interface
+
+The RC interface is a small intermediate mathematical language:
+
+```text
+R witness
+-> nonnegative F
+-> Z(F)
+-> zero-structure classification
+-> bidirectional zero-set binding
+-> signed quadratic representative G
+-> conditional Law-I
+```
+
+It records whether a local zero set is empty, trivial, a single line, a linear
+subspace, a two-branch cone, or a general conic set. It also separates the two
+directions of the binding claim \(Z(F)\cap V = Z(q_G)\cap V\).
+
+This interface does not prove that physical double channels exist, does not
+derive TESC uniquely, and does not add Law-II/III, spacetime or wavefunction
+claims. The public reproduction entry remains `python run_r_to_law1.py`; the
+RC audit is advanced/preflight only.
 
 ## Status Vocabulary
 
@@ -169,6 +194,9 @@ Result files and documentation use these meanings:
 |---|---|
 | `run_r_to_law1.py` | only public reproduction entry point |
 | `src/r_to_law1/` | stable theorem, TESC, covariance, provenance and report code |
+| `src/r_to_law1/zero_structure.py` | protocol-bound RC zero-structure classification |
+| `src/r_to_law1/channel_origin.py` | single-channel no-go and two-channel determinant identity |
+| `src/r_to_law1/zero_set_binding.py` | bidirectional zero-set binding certificate interface |
 | `tests/` | theorem, provenance and fail-closed regression tests |
 | `audits/` | preflight physical-boundary audits |
 | `MATHEMATICAL_STATEMENT.md` | detailed theorem statement and proof boundary |

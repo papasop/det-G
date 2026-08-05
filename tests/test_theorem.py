@@ -34,6 +34,12 @@ class ConditionalTheoremTests(unittest.TestCase):
                 "two_channel_null_residual_tol": 1e-12,
                 "centering_value_tol": 1e-14,
                 "centering_gradient_tol": 1e-8,
+                "ray_equivalence_tol": 1e-12,
+                "scale_closure_tol": 1e-12,
+                "channel_independence_tol": 1e-12,
+                "zero_set_forward_violation_tol": 0.0,
+                "zero_set_reverse_violation_tol": 0.0,
+                "minimum_branch_separation": 1e-6,
             },
         }
         G = np.array([[1.0, 0.0], [0.0, -1.0]])

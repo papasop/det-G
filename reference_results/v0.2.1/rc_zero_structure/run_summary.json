@@ -1,0 +1,209 @@
+{
+  "title": "RC ZERO-STRUCTURE TO CONDITIONAL LAW-I AUDIT",
+  "version": "0.1",
+  "scientific_status": "RC_ZERO_STRUCTURE_INTERFACE_FAIL_CLOSED_PHYSICAL_BINDING_OPEN",
+  "protocol_sha256": "a25fc08ca60cabf828d3ba867f84ce438102ee3c418d715d8b3c43a0ccece51a",
+  "gates": {
+    "Gate_1_RC_cost": {
+      "F_nonnegative": false,
+      "F_origin_zero": false,
+      "cost_source_predeclared": false
+    },
+    "Gate_2_nontrivial_zero_structure": {
+      "nontrivial_zero_structure": true,
+      "positive_scale_closed": true
+    },
+    "Gate_3_two_branch_structure": {
+      "two_distinct_unoriented_zero_rays": true,
+      "not_single_kernel_line": true
+    },
+    "Gate_4_bidirectional_binding": {
+      "physical_cost_source_bound": false,
+      "signed_representative_source_bound": false,
+      "sources_independent": false,
+      "mapping_frozen_before_outcomes": false,
+      "selected_plane_declared": false,
+      "domain_declared": false,
+      "completeness_scope_declared": false,
+      "forward_inclusion_ZF_subset_Zq": false,
+      "reverse_inclusion_Zq_subset_ZF": false
+    },
+    "Gate_5_LawI_representation": {
+      "G_symmetric": true,
+      "G_nondegenerate": true,
+      "detG_negative": true,
+      "signature_1_1": true
+    }
+  },
+  "RC_zero_structure_supported": false,
+  "single_channel_no_go_certified": true,
+  "two_channel_complexity_required": true,
+  "two_branch_zero_cone_supported": true,
+  "physical_zero_set_binding_certified": false,
+  "LawI_representation_conditional": false,
+  "unconditional_R_to_LawI_proved": false,
+  "all_scientific_gates_pass": false,
+  "single_channel_audit": {
+    "F_single": "abs(L(v))/H with H>0",
+    "zero_structure": {
+      "ambient_dimension": 2,
+      "homogeneous_degree": 1,
+      "zero_set_kind": "single_line",
+      "branch_directions": [
+        [
+          0.8944271909999159,
+          -0.4472135954999579
+        ]
+      ],
+      "linear_rank": 1,
+      "positive_scale_closed": true,
+      "source_protocol_sha256": "fd1bdabe8a6cacffa532d5598270dd6dbbf5c0caf90bc470d3b90289b63531f8",
+      "provenance_status": "single_channel_analytic"
+    },
+    "single_channel_no_go_certified": true,
+    "two_branch_zero_cone_supported": false,
+    "interpretation": "A nonzero scalar linear channel on a two-dimensional plane has one kernel line, not two distinct Lorentzian null rays."
+  },
+  "two_channel_audit": {
+    "F_double": "abs(L_plus(v) L_minus(v))/H with H>0",
+    "zero_structure": {
+      "ambient_dimension": 2,
+      "homogeneous_degree": 2,
+      "zero_set_kind": "two_branch_cone",
+      "branch_directions": [
+        [
+          0.7071067811865475,
+          -0.7071067811865475
+        ],
+        [
+          0.7071067811865475,
+          0.7071067811865475
+        ]
+      ],
+      "linear_rank": 2,
+      "positive_scale_closed": true,
+      "source_protocol_sha256": "fd1bdabe8a6cacffa532d5598270dd6dbbf5c0caf90bc470d3b90289b63531f8",
+      "provenance_status": "two_channel_analytic"
+    },
+    "quadratic_identity": {
+      "G": [
+        [
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          -1.0
+        ]
+      ],
+      "channel_matrix": [
+        [
+          1.0,
+          1.0
+        ],
+        [
+          1.0,
+          -1.0
+        ]
+      ],
+      "channel_determinant": -2.0,
+      "detG": -1.0,
+      "expected_detG": -1.0,
+      "determinant_identity_residual": 0.0,
+      "determinant_identity_verified": true,
+      "channels_independent": true,
+      "signature_1_1": true,
+      "eigenvalues": [
+        -1.0,
+        1.0
+      ]
+    },
+    "Z_F_double": "ker L_plus union ker L_minus",
+    "two_channel_complexity_required": true,
+    "two_branch_zero_cone_supported": true,
+    "gate": true
+  },
+  "zero_set_binding_audit": {
+    "gates": {
+      "physical_cost_source_bound": false,
+      "signed_representative_source_bound": false,
+      "sources_independent": false,
+      "mapping_frozen_before_outcomes": false,
+      "selected_plane_declared": false,
+      "domain_declared": false,
+      "completeness_scope_declared": false,
+      "forward_inclusion_ZF_subset_Zq": false,
+      "reverse_inclusion_Zq_subset_ZF": false
+    },
+    "forward_inclusion_certified": false,
+    "reverse_inclusion_certified": false,
+    "zero_set_equivalence_certified": false,
+    "circular_negative_control": false,
+    "gate": false
+  },
+  "LawI_audit": {
+    "declared_structural_premises": {
+      "principle_R_local_zero_mode_adopted": true,
+      "process_space_is_real_two_dimensional": true,
+      "signed_representative_is_real_C2": true,
+      "stationary_basepoint_for_signed_representative": true,
+      "quadratic_form_symmetric": true,
+      "quadratic_form_nondegenerate": true
+    },
+    "physical_zero_set_binding": {
+      "nonnegative_realization_cost_predeclared": false,
+      "physical_zero_set_equals_signed_representative_zero_set": false
+    },
+    "conclusions": {
+      "definite_signed_representative_excluded_if_nonzero_null_vector_exists": true,
+      "degenerate_signed_representative_excluded_by_assumption": true,
+      "detG_must_be_negative": true,
+      "signature_must_be_1_1": true,
+      "null_set_is_two_distinct_real_rays": true
+    },
+    "analytic_theorem_logic_gate": true,
+    "declared_structural_premises_gate": true,
+    "protocol_zero_set_binding_declaration_gate": false,
+    "physical_zero_set_binding_certificate_gate": false,
+    "conditional_theorem_premises_gate": false,
+    "metrics": {
+      "G": [
+        [
+          -1.4753511828891064,
+          -0.04866380215462485
+        ],
+        [
+          -0.04866380215462485,
+          0.2661881493004614
+        ]
+      ],
+      "eigenvalues": [
+        -1.476709934535062,
+        0.26754690094641703
+      ],
+      "detG": -0.39508916658164234,
+      "quadratic_discriminant": 1.5803566663265691,
+      "null_rays": [
+        [
+          0.36581365306394076,
+          0.9306881170574892
+        ],
+        [
+          0.4171750943170204,
+          -0.9088261333619237
+        ]
+      ],
+      "null_ray_residuals": [
+        2.2197792243292353e-17,
+        0.0
+      ],
+      "maximum_null_ray_residual": 2.2197792243292353e-17
+    }
+  },
+  "claim_boundary": "This is an interface and falsification audit, not new physical evidence. It does not prove native channels, unique TESC, spacetime, Law-II/III or a wavefunction.",
+  "elapsed_seconds": 0.002373218536376953,
+  "environment": {
+    "python": "3.9.6",
+    "numpy": "2.0.2"
+  }
+}
