@@ -29,7 +29,7 @@ def emit_report(
     units: dict[str, Any],
     sensitivity: dict[str, Any],
     operational_inputs: dict[str, Any],
-    native_selection: dict[str, Any],
+    provenance: dict[str, Any],
     output_dir: str | Path,
 ) -> dict[str, Any]:
     output = Path(output_dir)
@@ -50,30 +50,39 @@ def emit_report(
         "operational_inputs_pass": operational_inputs["gate"],
     }
     signed_tesc_gate = all(signed_tesc_gates.values())
-    native_gate = bool(native_selection["gate"])
+    physical_binding_provenance = provenance["physical_zero_set_binding_provenance"]
+    native_unique_selection = provenance["native_unique_TESC_selection"]
+    native_unique_gate = bool(native_unique_selection["gate"])
     physical_binding_gate = theorem["physical_zero_set_binding_certificate_gate"]
     conditional_support_gate = theorem["conditional_theorem_premises_gate"] and signed_tesc_gate
+    if conditional_support_gate and native_unique_gate:
+        scientific_status = "UNCONDITIONAL_R_TO_LAW_I_NATIVE_DERIVATION_CERTIFIED"
+    elif conditional_support_gate:
+        scientific_status = "CONDITIONAL_R_TO_LAWI_SUPPORTED_NATIVE_TESC_SELECTION_OPEN"
+    elif theorem["analytic_theorem_logic_gate"] and signed_tesc_gate:
+        scientific_status = "SIGNED_TESC_ZERO_SET_REPRESENTATIVE_SUPPORTED_PHYSICAL_ZERO_SET_BINDING_OPEN"
+    else:
+        scientific_status = "R_TO_LAW_I_PREMISES_OR_SIGNED_REPRESENTATIVE_INCOMPLETE_FAIL_CLOSED"
+
     report = {
         "title": "Principle R to Lorentzian Law I",
         "version": protocol["version"],
-        "scientific_status": (
-            "UNCONDITIONAL_R_TO_LAW_I_NATIVE_DERIVATION_CERTIFIED"
-            if conditional_support_gate and native_gate
-            else "SIGNED_TESC_ZERO_SET_REPRESENTATIVE_SUPPORTED_PHYSICAL_ZERO_SET_BINDING_OPEN"
-            if theorem["analytic_theorem_logic_gate"] and signed_tesc_gate
-            else "R_TO_LAW_I_PREMISES_OR_SIGNED_REPRESENTATIVE_INCOMPLETE_FAIL_CLOSED"
-        ),
+        "scientific_status": scientific_status,
         "logical_statement": "R plus a certified binding Z(F)∩V = Z(q)∩V, with q(v)=v^T G v real symmetric nondegenerate on dim(V)=2, implies det(G)<0, signature (1,1), two null rays",
         "theorem_proof_kind": "analytic_linear_algebra",
         "theorem_numerically_proved": False,
         "analytic_theorem_logic_gate": theorem["analytic_theorem_logic_gate"],
         "conditional_theorem": {
             "declared_structural_premises": theorem["declared_structural_premises"],
-            "physical_zero_set_binding": theorem["physical_zero_set_binding"],
+            "physical_zero_set_binding": physical_binding_provenance,
+            "protocol_zero_set_binding_declaration": theorem["physical_zero_set_binding"],
             "conclusions": theorem["conclusions"],
             "analytic_theorem_logic_gate": theorem["analytic_theorem_logic_gate"],
             "declared_structural_premises_gate": theorem["declared_structural_premises_gate"],
             "physical_zero_set_binding_certificate_gate": physical_binding_gate,
+            "protocol_zero_set_binding_declaration_gate": theorem[
+                "protocol_zero_set_binding_declaration_gate"
+            ],
             "premises_gate": theorem["conditional_theorem_premises_gate"],
         },
         "conditional_theorem_premises_gate": theorem["conditional_theorem_premises_gate"],
@@ -82,7 +91,9 @@ def emit_report(
             "gate": signed_tesc_gate,
         },
         "physical_zero_set_binding_certificate_gate": physical_binding_gate,
-        "native_R_selection": native_selection,
+        "physical_zero_set_binding_provenance": physical_binding_provenance,
+        "native_unique_TESC_selection": native_unique_selection,
+        "native_unique_TESC_selection_gate": native_unique_gate,
         "metrics": {
             **theorem["metrics"],
             **finite_branches["metrics"],
@@ -91,8 +102,8 @@ def emit_report(
         },
         "signed_TESC_zero_set_representative_supported": signed_tesc_gate,
         "conditional_R_to_LawI_supported": conditional_support_gate,
-        "unconditional_R_alone_to_LawI_proved": conditional_support_gate and native_gate,
-        "all_scientific_gates_pass": conditional_support_gate and native_gate,
+        "unconditional_R_alone_to_LawI_proved": conditional_support_gate and native_unique_gate,
+        "all_scientific_gates_pass": conditional_support_gate and native_unique_gate,
         "interpretation": "The exact result is conditional: R plus a certified zero-set binding between the nonnegative realization cost F and an independently declared signed quadratic representative q forces Lorentzian Law I. TESC supplies a frozen signed zero-set representative. It does not show that F=q, D^2F=G_TESC, or that R alone uniquely selects TESC.",
         "next_required_step": "supply a source-bound certificate for the physical zero-set binding Z(F)∩V = Z(q)∩V, and derive task-minus-centred-exposure, its relative normalization, two-dimensionality and global completeness from Principle R",
         "claim_boundary": "No Law II/III, spacetime metric, (1,3) signature, physical light cone, wavefunction, Born rule, Cloud or QPU claim.",

@@ -16,6 +16,22 @@
       "quadratic_form_nondegenerate": true
     },
     "physical_zero_set_binding": {
+      "gates": {
+        "nonnegative_F_definition_source_bound": false,
+        "nonnegative_F_predeclared": false,
+        "nonnegative_F_nonnegative": false,
+        "nonnegative_zero_mode_attained": false,
+        "signed_q_definition_source_bound": false,
+        "signed_q_real_C2": true,
+        "signed_q_symmetric": true,
+        "signed_q_nondegenerate": true,
+        "physical_zero_set_binding_source_bound": false,
+        "Z_F_equals_Z_q_on_selected_plane": false,
+        "binding_frozen_before_outcomes": false
+      },
+      "gate": false
+    },
+    "protocol_zero_set_binding_declaration": {
       "nonnegative_realization_cost_predeclared": false,
       "physical_zero_set_equals_signed_representative_zero_set": false
     },
@@ -29,6 +45,7 @@
     "analytic_theorem_logic_gate": true,
     "declared_structural_premises_gate": true,
     "physical_zero_set_binding_certificate_gate": false,
+    "protocol_zero_set_binding_declaration_gate": false,
     "premises_gate": false
   },
   "conditional_theorem_premises_gate": false,
@@ -51,23 +68,34 @@
     "gate": true
   },
   "physical_zero_set_binding_certificate_gate": false,
-  "native_R_selection": {
+  "physical_zero_set_binding_provenance": {
     "gates": {
-      "nonnegative_realization_cost_source_bound": false,
-      "nonnegative_realization_cost_predeclared": false,
-      "nonnegative_realization_cost_nonnegative": false,
+      "nonnegative_F_definition_source_bound": false,
+      "nonnegative_F_predeclared": false,
+      "nonnegative_F_nonnegative": false,
       "nonnegative_zero_mode_attained": false,
-      "signed_zero_set_representative_source_bound": false,
-      "signed_zero_set_representative_real_C2": true,
-      "signed_zero_set_representative_symmetric": true,
-      "signed_zero_set_representative_nondegenerate": true,
+      "signed_q_definition_source_bound": false,
+      "signed_q_real_C2": true,
+      "signed_q_symmetric": true,
+      "signed_q_nondegenerate": true,
       "physical_zero_set_binding_source_bound": false,
       "Z_F_equals_Z_q_on_selected_plane": false,
       "binding_frozen_before_outcomes": false
     },
-    "gate": false,
-    "certificate_path": "certificates/native_r_selection.template.json"
+    "gate": false
   },
+  "native_unique_TESC_selection": {
+    "gates": {
+      "task_minus_exposure_derived": false,
+      "relative_negative_sign_derived": false,
+      "lambda_physical_normalization_derived": false,
+      "two_dimensional_process_plane_derived": false,
+      "zero_set_completeness_derived": false,
+      "TESC_equivalence_class_unique": false
+    },
+    "gate": false
+  },
+  "native_unique_TESC_selection_gate": false,
   "metrics": {
     "G": [
       [

@@ -36,7 +36,11 @@ def construct_null_rays(G: np.ndarray, tolerance: float = TOLERANCE) -> dict[str
     }
 
 
-def audit_conditional_theorem(G: np.ndarray, protocol: dict[str, Any]) -> dict[str, Any]:
+def audit_conditional_theorem(
+    G: np.ndarray,
+    protocol: dict[str, Any],
+    physical_binding_gate: bool | None = None,
+) -> dict[str, Any]:
     assumptions = protocol["structural_assumptions"]
     G = np.asarray(G, dtype=float)
     eigenvalues = np.linalg.eigvalsh((G + G.T) / 2)
@@ -67,7 +71,8 @@ def audit_conditional_theorem(G: np.ndarray, protocol: dict[str, Any]) -> dict[s
         and max(rays["null_ray_residuals"], default=1.0) < TOLERANCE,
     }
     declared_gate = all(declared_structural_premises.values())
-    binding_gate = all(physical_zero_set_binding.values())
+    protocol_binding_gate = all(physical_zero_set_binding.values())
+    binding_gate = protocol_binding_gate if physical_binding_gate is None else bool(physical_binding_gate)
     analytic_gate = declared_gate and all(conclusions.values())
     return {
         "declared_structural_premises": declared_structural_premises,
@@ -75,6 +80,7 @@ def audit_conditional_theorem(G: np.ndarray, protocol: dict[str, Any]) -> dict[s
         "conclusions": conclusions,
         "analytic_theorem_logic_gate": analytic_gate,
         "declared_structural_premises_gate": declared_gate,
+        "protocol_zero_set_binding_declaration_gate": protocol_binding_gate,
         "physical_zero_set_binding_certificate_gate": binding_gate,
         "conditional_theorem_premises_gate": analytic_gate and binding_gate,
         "metrics": {

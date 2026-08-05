@@ -18,7 +18,7 @@ from r_to_law1.covariance import (  # noqa: E402
     audit_unit_rescaling,
 )
 from r_to_law1.finite_zero_set import trace_finite_zero_branches  # noqa: E402
-from r_to_law1.provenance import audit_native_r_selection  # noqa: E402
+from r_to_law1.provenance import audit_provenance  # noqa: E402
 from r_to_law1.report import emit_report  # noqa: E402
 from r_to_law1.tesc import derive_tesc_hessian, load_frozen_protocol  # noqa: E402
 from r_to_law1.theorem import audit_conditional_theorem, construct_null_rays  # noqa: E402
@@ -32,9 +32,11 @@ def main() -> int:
     if unknown:
         print("[notice] ignored notebook/kernel arguments:", unknown)
     protocol = load_frozen_protocol(args.protocol)
+    provenance = audit_provenance(protocol["native_certificate"])
+    physical_binding_gate = provenance["physical_zero_set_binding_provenance"]["gate"]
 
     G = derive_tesc_hessian(protocol)
-    theorem = audit_conditional_theorem(G, protocol)
+    theorem = audit_conditional_theorem(G, protocol, physical_binding_gate=physical_binding_gate)
     theorem["metrics"].update(construct_null_rays(G))
 
     finite_branches = trace_finite_zero_branches(protocol)
@@ -42,7 +44,6 @@ def main() -> int:
     units = audit_unit_rescaling(protocol)
     sensitivity = audit_lambda_sensitivity(protocol)
     operational_inputs = audit_tesc_operational_inputs(protocol)
-    native_selection = audit_native_r_selection(protocol["native_certificate"])
 
     report = emit_report(
         protocol,
@@ -52,7 +53,7 @@ def main() -> int:
         units,
         sensitivity,
         operational_inputs,
-        native_selection,
+        provenance,
         args.outdir,
     )
     print(json.dumps(report, indent=2))

@@ -15,5 +15,13 @@
     "binding_source_sha256": "",
     "Z_F_equals_Z_q_on_selected_plane": false,
     "frozen_before_outcomes": false
+  },
+  "native_unique_TESC_selection": {
+    "task_minus_exposure_derived": false,
+    "relative_negative_sign_derived": false,
+    "lambda_physical_normalization_derived": false,
+    "two_dimensional_process_plane_derived": false,
+    "zero_set_completeness_derived": false,
+    "TESC_equivalence_class_unique": false
   }
 }

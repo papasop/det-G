@@ -253,8 +253,8 @@ python run_r_to_law1.py
 ```
 
 recomputes the TESC Hessian, null rays, finite zero-contrast branches, covariance
-checks, unit rescalings, \(\lambda\)-sensitivity scan and native-selection
-gate. It then emits the unified report under `reference_results/v0.1.0/`.
+checks, unit rescalings, \(\lambda\)-sensitivity scan and provenance gates. It
+then emits the unified report under `reference_results/v0.1.0/`.
 
 ## Current status
 
@@ -298,7 +298,8 @@ theorem_proof_kind = analytic_linear_algebra
 theorem_numerically_proved = false
 signed_TESC_zero_set_representative.gate = true
 physical_zero_set_binding_certificate_gate = false
-native_R_selection.gate = false
+physical_zero_set_binding_provenance.gate = false
+native_unique_TESC_selection_gate = false
 conditional_R_to_LawI_supported = false
 unconditional_R_alone_to_LawI_proved = false
 all_scientific_gates_pass = false
