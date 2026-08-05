@@ -289,6 +289,49 @@ class RealizabilityTests(unittest.TestCase):
             with self.assertRaises(RealizabilityProtocolError):
                 load_realizability_protocol(path)
 
+    def test_rehashed_protocol_with_unsupported_identity_fields_is_rejected(self) -> None:
+        cases = [
+            {"schema": "realizability-zero-mode-protocol-v9.9.9"},
+            {"version": "9.9.9"},
+            {"contraction_sequence_acceptance_rule": "accept_any_contraction"},
+        ]
+        for overrides in cases:
+            with self.subTest(overrides=overrides):
+                with tempfile.TemporaryDirectory() as tmpdir:
+                    path = self._write_rehashed_protocol(Path(tmpdir), **overrides)
+                    with self.assertRaises(RealizabilityProtocolError):
+                        load_realizability_protocol(path)
+
+    def test_rehashed_protocol_with_invalid_interval_is_rejected(self) -> None:
+        cases = [
+            {"parameter_interval": [0.0]},
+            {"parameter_interval": [1.0, 0.0]},
+            {"parameter_interval": [0.0, float("inf")]},
+            {"parameter_interval": "0,1"},
+        ]
+        for overrides in cases:
+            with self.subTest(overrides=overrides):
+                with tempfile.TemporaryDirectory() as tmpdir:
+                    path = self._write_rehashed_protocol(Path(tmpdir), **overrides)
+                    with self.assertRaises(RealizabilityProtocolError):
+                        load_realizability_protocol(path)
+
+    def test_rehashed_protocol_with_invalid_fraction_or_control_is_rejected(self) -> None:
+        cases = [
+            {"minimum_positive_measure_fraction": -0.1},
+            {"minimum_positive_measure_fraction": 1.1},
+            {"minimum_positive_measure_fraction": float("nan")},
+            {"minimum_positive_control_cost": 0.0},
+            {"minimum_positive_control_cost": -1e-9},
+            {"minimum_positive_control_cost": float("inf")},
+        ]
+        for overrides in cases:
+            with self.subTest(overrides=overrides):
+                with tempfile.TemporaryDirectory() as tmpdir:
+                    path = self._write_rehashed_protocol(Path(tmpdir), **overrides)
+                    with self.assertRaises(RealizabilityProtocolError):
+                        load_realizability_protocol(path)
+
     def test_rehashed_protocol_with_alias_mismatch_is_rejected(self) -> None:
         with tempfile.TemporaryDirectory() as tmpdir:
             path = self._write_rehashed_protocol(

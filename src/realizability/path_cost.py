@@ -6,13 +6,12 @@ from typing import Any, Callable
 
 import numpy as np
 
+from .protocol import SUPPORTED_DERIVATIVE_METHOD
+
 Array = np.ndarray
 CostFunction = Callable[[Array, Array], float]
 PathFunction = Callable[[float], Array]
 VelocityFunction = Callable[[float], Array]
-SUPPORTED_DERIVATIVE_METHOD = (
-    "second_order_finite_difference_from_path_points_with_velocity_crosscheck"
-)
 
 
 def evaluate_local_cost(cost: CostFunction, x: Array, velocity: Array) -> float:
