@@ -1,6 +1,6 @@
 # Validation report
 
-## Frozen TESC Hessian
+## Frozen signed-TESC Hessian
 
 \[
 G_{\rm TESC}=\begin{pmatrix}
@@ -17,22 +17,23 @@ G_{\rm TESC}=\begin{pmatrix}
   - `(0.4171750943, -0.9088261334)`
 - maximum null-ray residual in the public run: approximately `2.22e-17`
 
-## Finite zero-set audit
+## Finite signed zero-contrast audit
 
 - frozen domain: `|x|<=0.08`, `|y|<=0.40`
-- recovered finite branches: `2`
-- maximum finite zero residual: approximately `9.90e-14`
+- recovered finite zero-contrast branches: `2`
+- maximum finite zero-contrast residual: approximately `9.90e-14`
 - no additional branch found inside the frozen domain
 
-This is bounded-domain numerical completeness, not a global analytic theorem.
+This is bounded-domain numerical completeness for the signed representative,
+not a global analytic theorem and not a physical zero-cost certificate.
 
 ## Covariance audit
 
 - `GL(2)` Hessian covariance maximum relative residual: approximately `1.49e-7`
-- finite zero-set covariance maximum residual: approximately `7.79e-14`
+- finite signed-zero-set covariance maximum residual: approximately `7.79e-14`
 - signature preserved under the declared extreme unit rescalings
 - Lorentzian behavior persists throughout the frozen coefficient scan `lambda in [0.25,4]`; therefore it is not a `lambda=1` knife-edge, but this does not derive the coefficient.
 
 ## Status
 
-`CONDITIONAL_R_PLUS_STRUCTURE_IMPLIES_LAW_I_TESC_WITNESS_SUPPORTED_NATIVE_SELECTION_OPEN`
+`SIGNED_TESC_ZERO_SET_REPRESENTATIVE_SUPPORTED_PHYSICAL_ZERO_SET_BINDING_OPEN`

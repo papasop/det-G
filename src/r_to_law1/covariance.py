@@ -54,10 +54,10 @@ def audit_gl2_covariance(protocol: dict[str, Any]) -> dict[str, Any]:
         "gates": gates,
         "gate": all(gates.values()),
         "metrics": {
-            "finite_zero_points": len(points),
+            "signed_zero_contrast_points": len(points),
             "GL2_trials": len(records),
             "maximum_GL2_Hessian_relative_residual": maximum_hessian_residual,
-            "maximum_GL2_zero_set_residual": maximum_zero_residual,
+            "maximum_GL2_signed_zero_set_residual": maximum_zero_residual,
         },
     }
 

@@ -34,46 +34,54 @@ def emit_report(
 ) -> dict[str, Any]:
     output = Path(output_dir)
     output.mkdir(parents=True, exist_ok=True)
-    tesc_witness_gates = {
-        "G_real_symmetric": theorem["premises"]["quadratic_form_symmetric"],
-        "G_nondegenerate": theorem["premises"]["quadratic_form_nondegenerate"],
+    signed_tesc_gates = {
+        "G_real_symmetric": theorem["declared_structural_premises"]["quadratic_form_symmetric"],
+        "G_nondegenerate": theorem["declared_structural_premises"]["quadratic_form_nondegenerate"],
         "detG_negative": theorem["conclusions"]["detG_must_be_negative"],
         "signature_1_1": theorem["conclusions"]["signature_must_be_1_1"],
         "two_distinct_null_rays_constructed": theorem["conclusions"]["null_set_is_two_distinct_real_rays"],
         "null_ray_residuals_pass": theorem["metrics"]["maximum_null_ray_residual"] < 1e-10,
-        "finite_two_branch_zero_set_observed": finite_branches["gates"]["all_sections_have_two_roots"],
-        "finite_zero_residual_pass": finite_branches["gates"]["all_root_residuals_small"],
-        "no_extra_branch_in_frozen_domain": finite_branches["gates"]["no_extra_zero_branches_to_maximum_boundary"],
-        "zero_set_GL2_covariance_pass": covariance["gates"]["GL2_finite_zero_set_covariance"],
+        "finite_two_branch_zero_contrast_set_observed": finite_branches["gates"]["all_sections_have_two_roots"],
+        "finite_zero_contrast_residual_pass": finite_branches["gates"]["all_root_residuals_small"],
+        "no_extra_zero_contrast_branch_in_frozen_domain": finite_branches["gates"]["no_extra_zero_branches_to_maximum_boundary"],
+        "signed_zero_set_GL2_covariance_pass": covariance["gates"]["GL2_finite_zero_set_covariance"],
         "unit_rescaling_signature_preserved": units["gates"]["signature_preserved_under_extreme_unit_rescaling"],
         "lambda_sensitivity_pass": sensitivity["gates"]["Lorentzian_not_unique_to_lambda_one"],
         "operational_inputs_pass": operational_inputs["gate"],
     }
-    tesc_witness_gate = all(tesc_witness_gates.values())
+    signed_tesc_gate = all(signed_tesc_gates.values())
     native_gate = bool(native_selection["gate"])
+    physical_binding_gate = theorem["physical_zero_set_binding_certificate_gate"]
+    conditional_support_gate = theorem["conditional_theorem_premises_gate"] and signed_tesc_gate
     report = {
         "title": "Principle R to Lorentzian Law I",
         "version": protocol["version"],
         "scientific_status": (
             "UNCONDITIONAL_R_TO_LAW_I_NATIVE_DERIVATION_CERTIFIED"
-            if theorem["gate"] and tesc_witness_gate and native_gate
-            else "CONDITIONAL_R_PLUS_STRUCTURE_IMPLIES_LAW_I_TESC_WITNESS_SUPPORTED_NATIVE_SELECTION_OPEN"
-            if theorem["gate"] and tesc_witness_gate
-            else "R_TO_LAW_I_PREMISES_OR_WITNESS_INCOMPLETE_FAIL_CLOSED"
+            if conditional_support_gate and native_gate
+            else "SIGNED_TESC_ZERO_SET_REPRESENTATIVE_SUPPORTED_PHYSICAL_ZERO_SET_BINDING_OPEN"
+            if theorem["analytic_theorem_logic_gate"] and signed_tesc_gate
+            else "R_TO_LAW_I_PREMISES_OR_SIGNED_REPRESENTATIVE_INCOMPLETE_FAIL_CLOSED"
         ),
-        "logical_statement": "Principle R + A_2D,C2,stationary,complete,symmetric,nondegenerate => det(G)<0, signature (1,1), two null rays",
+        "logical_statement": "R plus a certified binding Z(F)∩V = Z(q)∩V, with q(v)=v^T G v real symmetric nondegenerate on dim(V)=2, implies det(G)<0, signature (1,1), two null rays",
         "theorem_proof_kind": "analytic_linear_algebra",
         "theorem_numerically_proved": False,
+        "analytic_theorem_logic_gate": theorem["analytic_theorem_logic_gate"],
         "conditional_theorem": {
-            "premises": theorem["premises"],
+            "declared_structural_premises": theorem["declared_structural_premises"],
+            "physical_zero_set_binding": theorem["physical_zero_set_binding"],
             "conclusions": theorem["conclusions"],
-            "premises_gate": theorem["gate"],
+            "analytic_theorem_logic_gate": theorem["analytic_theorem_logic_gate"],
+            "declared_structural_premises_gate": theorem["declared_structural_premises_gate"],
+            "physical_zero_set_binding_certificate_gate": physical_binding_gate,
+            "premises_gate": theorem["conditional_theorem_premises_gate"],
         },
-        "conditional_theorem_premises_gate": theorem["gate"],
-        "operational_TESC_witness": {
-            "gates": tesc_witness_gates,
-            "gate": tesc_witness_gate,
+        "conditional_theorem_premises_gate": theorem["conditional_theorem_premises_gate"],
+        "signed_TESC_zero_set_representative": {
+            "gates": signed_tesc_gates,
+            "gate": signed_tesc_gate,
         },
+        "physical_zero_set_binding_certificate_gate": physical_binding_gate,
         "native_R_selection": native_selection,
         "metrics": {
             **theorem["metrics"],
@@ -81,11 +89,12 @@ def emit_report(
             **covariance["metrics"],
             **sensitivity["metrics"],
         },
-        "conditional_R_to_LawI_supported": theorem["gate"] and tesc_witness_gate,
-        "unconditional_R_alone_to_LawI_proved": theorem["gate"] and tesc_witness_gate and native_gate,
-        "all_scientific_gates_pass": theorem["gate"] and tesc_witness_gate and native_gate,
-        "interpretation": "The exact result is conditional: R plus the declared 2D quadratic-completeness assumptions forces Lorentzian Law I. TESC supplies a frozen operational existence witness. It does not show that R alone uniquely selects TESC or proves global completeness.",
-        "next_required_step": "derive task-minus-centred-exposure, its relative normalization, two-dimensionality and global zero-set completeness from a source-bound Principle-R construction",
+        "signed_TESC_zero_set_representative_supported": signed_tesc_gate,
+        "conditional_R_to_LawI_supported": conditional_support_gate,
+        "unconditional_R_alone_to_LawI_proved": conditional_support_gate and native_gate,
+        "all_scientific_gates_pass": conditional_support_gate and native_gate,
+        "interpretation": "The exact result is conditional: R plus a certified zero-set binding between the nonnegative realization cost F and an independently declared signed quadratic representative q forces Lorentzian Law I. TESC supplies a frozen signed zero-set representative. It does not show that F=q, D^2F=G_TESC, or that R alone uniquely selects TESC.",
+        "next_required_step": "supply a source-bound certificate for the physical zero-set binding Z(F)∩V = Z(q)∩V, and derive task-minus-centred-exposure, its relative normalization, two-dimensionality and global completeness from Principle R",
         "claim_boundary": "No Law II/III, spacetime metric, (1,3) signature, physical light cone, wavefunction, Born rule, Cloud or QPU claim.",
         "artifacts": {
             "run_summary": str(output / "run_summary.json"),
