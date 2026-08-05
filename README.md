@@ -1,235 +1,37 @@
-# Principle R to Lorentzian Law I
+# Principle R -> Law-I
 
-This repository is a reproducible computational companion for one limited
-bridge in the realizability programme:
+This repository checks one conditional local Law-I claim:
 
 \[
 \text{Principle R}
-+\mathcal A_{\mathrm{Law\,I}}
++ \text{two-dimensional local process plane}
++ \text{symmetric nondegenerate quadratic zero-set representation}
++ \text{physical zero-set binding}
 \Longrightarrow
-\text{two-dimensional Lorentzian Law I}.
+\det(G)<0,\quad \operatorname{sig}(G)=(1,1),\quad \ell_+\cup\ell_-.
 \]
 
-Equivalently, in the selected two-dimensional setting it studies
+Current status: the conditional mathematics is closed; the signed-TESC
+candidate reproduces the expected local zero-cone structure; the physical
+zero-set binding and cross-protocol origin remain open.
 
-\[
-R+\mathcal A_{\mathrm{Law\,I}}
-\Longrightarrow
-\det G<0
-\Longrightarrow
-\operatorname{sig}(G)=(1,1)
-\Longrightarrow
-\ell_+\cup\ell_-.
-\]
-
-It supplies a conditional analytic theorem and a reproducible signed-TESC
-zero-set representative. It does not prove that Principle R alone uniquely
-selects TESC, `lambda=1`, physical spacetime, or a wavefunction.
+| Layer | What is checked | Status |
+|---|---|---|
+| Mathematical | `det(G)<0`, signature `(1,1)`, two null rays | CERTIFIED |
+| Operational | signed-TESC candidate, covariance, unit stability | SUPPORTED_CONDITIONALLY |
+| Physical | independent protocols recover the same zero cone | OPEN_NO_DATA |
+| Outside scope | Law-II/III, spacetime, wavefunction | OUT_OF_SCOPE |
 
 Current stable computational result: `v0.1.0`.
 Prospective audit bundle: `v0.2.0-preflight`.
 
-## Result at a glance
+## Quick Start
 
-| Question | Status |
-|---|---|
-| Does the conditional 2D theorem force `det(G)<0`? | Yes, analytically |
-| Does frozen TESC exhibit signature `(1,1)` and two null rays? | Yes, numerically |
-| Is `Z(F)=Z(q)` physically certified? | No |
-| Does Principle R uniquely select TESC or `lambda=1`? | No |
-| Does this validate Law II/III, spacetime, or a wavefunction? | No |
-
-## v0.2.0-preflight audit bundle
-
-The `r_law1_final_audit_bundle_v0_2_0.zip` archive has been checked and
-imported as `v0.2.0-preflight`.
-
-Source ZIP SHA-256:
-
-```text
-db42420631fdc429d4179cc23fa28a56ba7c1d6b3242e0d86d202c96769af5d2
-```
-
-The bundle adds three fail-closed route and falsification audits:
-
-| Audit | Question | Default result |
-|---|---|---|
-| v3.0 bidirectional zero-set binding | Does an independently defined nonnegative \(F\) satisfy both \(F=0\Rightarrow q=0\) and \(q=0\Rightarrow F=0\)? | Calibration only; independent \(F\) data required |
-| v3.1 two-channel origin | Does scalar Information-Time fail as a single channel, and does an independent two-channel product give `det(G)<0`? | Single-channel obstruction and conditional mechanism certified; native channel provenance open |
-| v3.2 cross-protocol cone naturality | Do independently sourced protocols recover one common unordered zero-cone class under frozen maps? | Calibration only; independent protocol data required |
-
-These audits freeze the next theory boundary as a no-go and prospective
-falsification toolkit. They are not additional parameter scans, and they do not
-replace `python run_r_to_law1.py`.
-
-## Single-channel obstruction and two-channel candidate
-
-For the scalar Information-Time realization
-
-\[
-F_{\rm IT}(x,v)=\frac{|D\Phi_x(v)|}{H(x)},
-\]
-
-the local zero set on a two-dimensional process plane is the single linear
-subspace \(\ker D\Phi_x\). It therefore cannot equal the union of two distinct
-null lines of a nondegenerate Lorentzian quadratic form.
-
-A complete two-line zero set can instead arise conditionally from two
-independently defined nonparallel realization channels:
-
-\[
-F_\times(x,v)=\frac{|L_+(v)L_-(v)|}{H(x)}.
-\]
-
-Then
-
-\[
-Z(F_\times)=\ker L_+\cup\ker L_-,
-\]
-
-and the induced quadratic form has negative determinant. The repository has
-certified this algebraic mechanism, but has not derived the two channels or
-their product law from Principle R. Defining the channels from the already
-computed TESC null rays would be circular.
-
-## Evidence status
-
-| Layer | Current status | Meaning |
-|---|---|---|
-| Conditional mathematical theorem | Proved | \(R+\mathcal A_{\mathrm{Law\,I}}\Rightarrow\det G<0\), conditional on zero-set binding |
-| Signed TESC zero-set representative | Passed | The frozen signed contrast gives `(1,1)` signature, two null rays and finite two-branch zero-contrast structure in the declared domain |
-| Scalar Information-Time origin | Obstructed | A single scalar channel supplies only one kernel line on a two-dimensional plane |
-| Two-channel product mechanism | Conditional | Independent \(L_+,L_-\) channels would give two zero lines and `det(G)<0`, but native provenance is not supplied |
-| Physical zero-set binding | Open | \(Z(F)\cap V=Z(q)\cap V\) has not been certified |
-| Native Principle-R selection of TESC | Not proved | The repository has not derived task-minus-exposure, `lambda=1`, two-dimensionality or global completeness from Principle R alone |
-
-| Mapping | Type | Status |
-|---|---|---|
-| General Principle R -> local zero-mode premise | specialization | adopted, not derived |
-| Local zero mode + \(\mathcal A_{\mathrm{Law\,I}}\) -> Law-I quadratic representation | conditional structural bridge | assumed/defined |
-| Law-I zero-set representation -> Lorentzian signature | analytic theorem | proved |
-| Lorentzian signed representative -> TESC zero-contrast witness | operational realization | numerically supported |
-| Principle R -> unique TESC selection | native provenance | open |
-
-## Core conditional theorem
-
-Principle R is used here only in its local-zero-mode form: an attained
-nonzero direction exists in the zero set of a nonnegative realization cost
-\(F\).
-
-Law I is represented through a separate signed quadratic zero-set
-representative
-
-\[
-q(v)=v^TGv,\qquad G=G^T,\qquad \det G\ne0.
-\]
-
-The key additional binding assumption is
-
-\[
-Z(F)\cap V = Z(q)\cap V.
-\]
-
-Under this binding, the nonzero Principle-R zero mode gives a nonzero null
-vector of \(q\). In two real dimensions, a nondegenerate symmetric quadratic
-form with a nonzero null vector cannot be positive definite, negative
-definite, or degenerate. Therefore
-
-\[
-\det G<0,\qquad \operatorname{sig}(G)=(1,1),
-\]
-
-and the null set is two distinct real rays \(\ell_+\cup\ell_-\).
-
-This is a two-dimensional linear-algebra theorem. It is not proved by Python
-or by numerical experiments. The full statement is in
-`MATHEMATICAL_STATEMENT.md`.
-
-## Quick start
+Use one public entry point:
 
 ```bash
-python -m pip install -r requirements.txt
 python -m pip install -e .
 python run_r_to_law1.py
-```
-
-To test a separate provenance certificate without editing the frozen protocol:
-
-```bash
-python run_r_to_law1.py --certificate certificates/native_r_selection.template.json
-```
-
-Useful options:
-
-```bash
-python run_r_to_law1.py --protocol protocols/frozen_tesc_protocol.json
-python run_r_to_law1.py --outdir reference_results/v0.1.0
-```
-
-The v0.2.0-preflight audits are separate from the public v0.1.0 entry:
-
-```bash
-python audits/r_law1_bidirectional_zero_set_audit_v3_0.py --outdir reference_results/v0.2.0/v3_0
-python audits/r_law1_two_channel_origin_audit_v3_1.py --outdir reference_results/v0.2.0/v3_1
-python audits/r_law1_cross_protocol_cone_audit_v3_2.py --outdir reference_results/v0.2.0/v3_2
-```
-
-## Expected run result
-
-A successful reproduction may still report:
-
-```text
-analytic_theorem_logic_gate = true
-signed_TESC_zero_set_representative.gate = true
-physical_zero_set_binding_certificate_gate = false
-physical_zero_set_binding_provenance.gate = false
-native_unique_TESC_selection_gate = false
-conditional_R_to_LawI_supported = false
-unconditional_R_alone_to_LawI_proved = false
-all_scientific_gates_pass = false
-```
-
-The final `false` values do not mean that the code failed. They mean that the
-signed TESC witness reproduced correctly while physical provenance remains
-uncertified.
-
-The run writes:
-
-| File | Contents |
-|---|---|
-| `reference_results/v0.1.0/run_summary.json` | central status, gates, Hessian, rays and metrics |
-| `reference_results/v0.1.0/finite_zero_branches.json` | bounded finite signed zero-contrast branch records |
-| `reference_results/v0.1.0/covariance_records.json` | `GL(2)`, unit-rescaling and sensitivity records |
-| `reference_results/v0.2.0/v3_0/run_summary.json` | bidirectional physical zero-set binding calibration |
-| `reference_results/v0.2.0/v3_1/run_summary.json` | scalar obstruction and conditional two-channel mechanism |
-| `reference_results/v0.2.0/v3_2/run_summary.json` | cross-protocol cone naturality calibration |
-
-## File navigation
-
-| File | Purpose |
-|---|---|
-| `run_r_to_law1.py` | public entry point |
-| `src/r_to_law1/theorem.py` | conditional theorem gate and null-ray construction |
-| `src/r_to_law1/tesc.py` | frozen TESC Hessian recomputation |
-| `src/r_to_law1/finite_zero_set.py` | finite signed zero-contrast branch tracing |
-| `src/r_to_law1/covariance.py` | covariance, unit-rescaling and lambda sensitivity audits |
-| `src/r_to_law1/provenance.py` | physical zero-set binding and native unique-TESC provenance gates |
-| `audits/README.md` | scope note for prospective fail-closed audit interfaces |
-| `audits/r_law1_bidirectional_zero_set_audit_v3_0.py` | prospective independent \(F\) bidirectional binding audit |
-| `audits/r_law1_two_channel_origin_audit_v3_1.py` | v0.2.0-preflight single-channel obstruction and two-channel mechanism audit |
-| `audits/r_law1_cross_protocol_cone_audit_v3_2.py` | cross-protocol zero-cone naturality audit |
-| `MATHEMATICAL_STATEMENT.md` | detailed theorem statement and proof boundary |
-| `VALIDATION_REPORT.md` | numerical result details |
-| `CLAIM_BOUNDARY.md` | unsupported claims and scientific boundary |
-| `docs/TWO_CHANNEL_ORIGIN.md` | v3.1 route decision note |
-| `docs/V0_2_0_PREFLIGHT_AUDIT_BUNDLE.md` | v0.2.0-preflight bundle summary and boundary |
-| `certificates/native_r_selection.template.json` | template for source-bound provenance certificates |
-| `tests/` | lightweight regression tests for theorem gates, provenance gates and fail-closed audits |
-| `archive/` | historical one-file audits, not the public interface |
-
-Run the lightweight regression suite with:
-
-```bash
 python -m unittest discover -s tests -v
 ```
 
@@ -239,7 +41,135 @@ If editable installation is unavailable in a restricted system Python, use:
 PYTHONPATH=src python -m unittest discover -s tests -v
 ```
 
-## Citations and context
+A successful reproduction may still report:
+
+```text
+signed_TESC_zero_set_representative.gate = true
+physical_zero_set_binding_certificate_gate = false
+native_unique_TESC_selection_gate = false
+all_scientific_gates_pass = false
+```
+
+The final `false` values do not mean the run failed. They mean the signed-TESC
+candidate reproduced while physical provenance remains uncertified.
+
+## Core Proposition
+
+Principle R is used here only in its local-zero-mode form: an attained nonzero
+direction exists in the zero set of a nonnegative realization cost \(F\).
+
+Law I is represented by an independently declared signed quadratic zero-set
+candidate
+
+\[
+q(v)=v^TGv,\qquad G=G^T,\qquad \det G\ne0.
+\]
+
+The key additional assumption is the physical zero-set binding
+
+\[
+Z(F)\cap V = Z(q)\cap V.
+\]
+
+Once that binding is supplied, the nonzero Principle-R zero mode becomes a
+nonzero null vector of \(q\). In two real dimensions, a symmetric nondegenerate
+quadratic form with a nonzero null vector is indefinite. Therefore
+
+\[
+\det G<0,\qquad \operatorname{sig}(G)=(1,1),
+\]
+
+and the null set is the union of two distinct real rays.
+
+This is a two-dimensional linear-algebra theorem. It is not proved by Python
+or by numerical experiments. See `MATHEMATICAL_STATEMENT.md`.
+
+## Proof Boundary
+
+```mermaid
+flowchart TD
+    A["Principle R"] --> B["additional local structure assumptions"]
+    B --> C["2D symmetric nondegenerate quadratic representative"]
+    C --> D["nonzero zero-mode exists"]
+    D --> E["det(G)<0 and signature=(1,1)"]
+    E --> F["two null rays ell+ union ell-"]
+    F -.->|"missing: independent physical protocol binding"| G["candidate physical zero cone"]
+```
+
+The dashed step is open. The repository does not identify the signed-TESC
+zero-contrast set with the physical zero set of the nonnegative Principle-R
+realization cost.
+
+## Three Evidence Layers
+
+| Evidence layer | Role | Current result |
+|---|---|---|
+| Conditional theorem | Proves the 2D implication once the zero-set binding is assumed | CERTIFIED |
+| signed-TESC witness | Recomputes \(G_{\rm TESC}\), null rays, finite zero-contrast branches, covariance and unit checks | SUPPORTED_CONDITIONALLY |
+| Provenance and naturality audits | Ask whether independent physical protocols bind to the same cone | OPEN_NO_DATA |
+
+The stable run writes:
+
+| File | Contents |
+|---|---|
+| `reference_results/v0.1.0/run_summary.json` | central status, gates, Hessian, rays and metrics |
+| `reference_results/v0.1.0/finite_zero_branches.json` | finite signed-TESC zero-contrast branch records |
+| `reference_results/v0.1.0/covariance_records.json` | `GL(2)`, unit-rescaling and sensitivity records |
+
+## Advanced Audits
+
+The `audits/` scripts are prospective falsification interfaces. They are not
+the public entry point and they are not additional evidence for `R => Law I`
+without independent data.
+
+| Human-readable audit | Script | Default status |
+|---|---|---|
+| Audit A: Does the physical zero set equal the TESC zero set? | `audits/r_law1_bidirectional_zero_set_audit_v3_0.py` | OPEN_NO_DATA |
+| Audit B: Why is one scalar channel insufficient, and how can two channels produce a cone? | `audits/r_law1_two_channel_origin_audit_v3_1.py` | SUPPORTED_CONDITIONALLY |
+| Audit C: Do different protocols recover the same zero cone? | `audits/r_law1_cross_protocol_cone_audit_v3_2.py` | OPEN_NO_DATA |
+
+Run them only when inspecting the preflight boundary:
+
+```bash
+python audits/r_law1_bidirectional_zero_set_audit_v3_0.py --outdir reference_results/v0.2.0/v3_0
+python audits/r_law1_two_channel_origin_audit_v3_1.py --outdir reference_results/v0.2.0/v3_1
+python audits/r_law1_cross_protocol_cone_audit_v3_2.py --outdir reference_results/v0.2.0/v3_2
+```
+
+The v0.2.0-preflight source ZIP was imported with SHA-256:
+
+```text
+db42420631fdc429d4179cc23fa28a56ba7c1d6b3242e0d86d202c96769af5d2
+```
+
+## Status Vocabulary
+
+Result files and documentation use these meanings:
+
+| Status | Meaning |
+|---|---|
+| CERTIFIED | Strict mathematical identity or frozen gate satisfied |
+| SUPPORTED_CONDITIONALLY | Reproduced under explicitly declared assumptions |
+| OPEN_NO_DATA | Pipeline self-tests pass, but independent data or provenance is missing |
+| FALSIFIED_FOR_CURRENT_BINDING | The tested mapping fails; stronger mappings may remain open |
+| OUT_OF_SCOPE | Not claimed by this repository |
+
+## File Navigation
+
+| Path | Purpose |
+|---|---|
+| `run_r_to_law1.py` | only public reproduction entry point |
+| `src/r_to_law1/` | stable theorem, TESC, covariance, provenance and report code |
+| `tests/` | theorem, provenance and fail-closed regression tests |
+| `audits/` | preflight physical-boundary audits |
+| `MATHEMATICAL_STATEMENT.md` | detailed theorem statement and proof boundary |
+| `VALIDATION_REPORT.md` | numerical result details |
+| `CLAIM_BOUNDARY.md` | unsupported claims and scientific boundary |
+| `docs/TWO_CHANNEL_ORIGIN.md` | single-channel obstruction and two-channel route note |
+| `docs/V0_2_0_PREFLIGHT_AUDIT_BUNDLE.md` | preflight bundle summary |
+| `archive/` | historical one-file audits, not the public interface |
+
+## Citations And Context
 
 This repository is narrower than the two companion publications. It is an
 intermediate Law-I bridge between the upstream Principle-R framework and the
@@ -257,7 +187,7 @@ downstream K=1 dynamical framework.
 
 If you use this repository, see `CITATION.cff`.
 
-## Not supported by this repository
+## Not Supported
 
 This repository does not establish:
 
@@ -269,10 +199,8 @@ This repository does not establish:
 - physical light rays;
 - wavefunctions, Born rule, collapse, or physical time.
 
-## Repository summary
+## Fixed Boundary Statement
 
-> This repository supplies a rigorous conditional theorem and a reproducible
-> signed-TESC zero-set representative for the route from Principle R to
-> two-dimensional Lorentzian Law I. It does not establish the physical zero-set
-> binding, that Principle R alone uniquely selects the representative, or that
-> physical spacetime is derived.
+This repository proves a conditional local Law-I zero-cone theorem. It has not
+proved that Principle R alone uniquely selects TESC, and it has not derived
+physical spacetime, Law-II/III, or a wavefunction.
