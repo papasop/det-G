@@ -2,13 +2,19 @@ from __future__ import annotations
 
 import hashlib
 import json
+import subprocess
+import sys
 import tempfile
 import unittest
 from pathlib import Path
 
 import numpy as np
 
-from realizability.certificate import ZeroModeCertificate
+from realizability.certificate import (
+    ZeroModeCertificate,
+    ZeroModeCertificateError,
+    load_zero_mode_certificate,
+)
 from realizability.path_cost import (
     accumulated_cost,
     path_is_nonconstant,
@@ -20,24 +26,42 @@ from r_to_law1.tesc import derive_tesc_hessian, load_frozen_protocol
 from r_to_law1.theorem import audit_conditional_theorem
 
 
+ROOT = Path(__file__).resolve().parents[1]
+
+
+def sha256(path: Path) -> str:
+    return hashlib.sha256(path.read_bytes()).hexdigest()
+
+
 class RealizabilityTests(unittest.TestCase):
     def setUp(self) -> None:
         self.protocol = load_realizability_protocol()
         self.grid = np.linspace(0.0, 1.0, 11)
 
-    def _source_bound_certificate(
+    def _write_path_data(self, directory: Path, **overrides) -> Path:
+        data = {
+            "finite_cost_values": True,
+            "cost_nonnegative": True,
+            "accumulated_cost": 0.0,
+            "positive_measure_fraction": 1.0,
+            "same_meter_positive_control_cost": 1.0,
+        }
+        data.update(overrides)
+        path = directory / "path_data.json"
+        path.write_text(json.dumps(data, sort_keys=True) + "\n")
+        return path
+
+    def _source_bound_certificate_data(
         self,
         directory: Path,
+        path_data: Path,
         **overrides,
-    ) -> ZeroModeCertificate:
+    ) -> dict:
         files = {}
         for name in ("cost", "path", "admissible", "vacuum"):
             source = directory / f"{name}.txt"
             source.write_text(f"{name} source\n")
-            files[name] = (
-                source.name,
-                hashlib.sha256(source.read_bytes()).hexdigest(),
-            )
+            files[name] = (source.name, sha256(source))
         data = {
             "schema_version": "zero-mode-certificate-v0.1.0",
             "protocol_sha256": self.protocol["protocol_sha256"],
@@ -49,6 +73,8 @@ class RealizabilityTests(unittest.TestCase):
             "admissible_class_source_sha256": files["admissible"][1],
             "vacuum_sector_source_path": files["vacuum"][0],
             "vacuum_sector_source_sha256": files["vacuum"][1],
+            "path_data_source_path": path_data.name,
+            "path_data_source_sha256": sha256(path_data),
             "protocol_predeclared": True,
             "cost_nonnegative": True,
             "contraction_family_certified": True,
@@ -60,30 +86,275 @@ class RealizabilityTests(unittest.TestCase):
             "witness_not_constructed_from_target_G": True,
         }
         data.update(overrides)
-        return ZeroModeCertificate.from_dict(data)
+        return data
 
-    def test_constant_path_rejected(self) -> None:
-        path = lambda _t: np.array([1.0, 0.0])
-        self.assertFalse(path_is_nonconstant(path, self.grid, 1e-10))
+    def _source_bound_certificate(
+        self,
+        directory: Path,
+        path_data: Path,
+        **overrides,
+    ) -> ZeroModeCertificate:
+        return ZeroModeCertificate.from_dict(
+            self._source_bound_certificate_data(directory, path_data, **overrides)
+        )
 
-    def test_nonconstant_positive_cost_path_is_not_zero_witness(self) -> None:
+    def _audit_with(self, directory: Path, cert: ZeroModeCertificate, path_data: Path) -> dict:
+        return audit_principle_r_witness(
+            self.protocol,
+            cert,
+            certificate_base_dir=directory,
+            path_record=json.loads(path_data.read_text()),
+            path_record_source_path=path_data,
+        )
+
+    def test_valid_upstream_zero_mode_certificate_gate_true(self) -> None:
         with tempfile.TemporaryDirectory() as tmpdir:
-            cert = self._source_bound_certificate(Path(tmpdir))
-            record = {
-                "finite_cost_values": True,
-                "cost_nonnegative": True,
-                "accumulated_cost": 1.0,
-                "positive_measure_fraction": 1.0,
-                "same_meter_positive_control_cost": 1.0,
-            }
+            directory = Path(tmpdir)
+            path_data = self._write_path_data(directory)
+            cert = self._source_bound_certificate(directory, path_data)
+            result = self._audit_with(directory, cert, path_data)
+        self.assertTrue(result["principle_R_witness_certified"])
+        self.assertTrue(result["path_data_source_bound"])
+
+    def test_certificate_supplied_without_path_data_fails_closed(self) -> None:
+        with tempfile.TemporaryDirectory() as tmpdir:
+            directory = Path(tmpdir)
+            path_data = self._write_path_data(directory)
+            cert = self._source_bound_certificate(directory, path_data)
             result = audit_principle_r_witness(
                 self.protocol,
                 cert,
-                certificate_base_dir=tmpdir,
-                path_record=record,
+                certificate_base_dir=directory,
+                path_record=None,
+                path_record_source_path=None,
             )
-        self.assertFalse(result["gates"]["R5_accumulated_cost_zero"])
         self.assertFalse(result["principle_R_witness_certified"])
+        self.assertFalse(result["path_record_validation"]["valid"])
+
+    def test_path_data_supplied_without_certificate_fails_closed(self) -> None:
+        with tempfile.TemporaryDirectory() as tmpdir:
+            path_data = self._write_path_data(Path(tmpdir))
+            result = audit_principle_r_witness(
+                self.protocol,
+                None,
+                path_record=json.loads(path_data.read_text()),
+                path_record_source_path=path_data,
+            )
+        self.assertFalse(result["principle_R_witness_certified"])
+
+    def test_missing_path_record_field_fails_closed(self) -> None:
+        with tempfile.TemporaryDirectory() as tmpdir:
+            directory = Path(tmpdir)
+            path_data = self._write_path_data(directory)
+            record = json.loads(path_data.read_text())
+            record.pop("accumulated_cost")
+            path_data.write_text(json.dumps(record) + "\n")
+            cert = self._source_bound_certificate(directory, path_data)
+            result = self._audit_with(directory, cert, path_data)
+        self.assertFalse(result["path_record_validation"]["valid"])
+        self.assertFalse(result["principle_R_witness_certified"])
+
+    def test_certificate_string_false_is_rejected(self) -> None:
+        with tempfile.TemporaryDirectory() as tmpdir:
+            directory = Path(tmpdir)
+            path_data = self._write_path_data(directory)
+            data = self._source_bound_certificate_data(
+                directory,
+                path_data,
+                cost_nonnegative="false",
+            )
+            with self.assertRaises(ZeroModeCertificateError):
+                ZeroModeCertificate.from_dict(data)
+
+    def test_path_record_string_false_is_rejected(self) -> None:
+        with tempfile.TemporaryDirectory() as tmpdir:
+            directory = Path(tmpdir)
+            path_data = self._write_path_data(directory, cost_nonnegative="false")
+            cert = self._source_bound_certificate(directory, path_data)
+            result = self._audit_with(directory, cert, path_data)
+        self.assertFalse(result["path_record_validation"]["valid"])
+        self.assertFalse(result["principle_R_witness_certified"])
+
+    def test_unknown_certificate_schema_rejected(self) -> None:
+        with tempfile.TemporaryDirectory() as tmpdir:
+            directory = Path(tmpdir)
+            path_data = self._write_path_data(directory)
+            data = self._source_bound_certificate_data(
+                directory,
+                path_data,
+                schema_version="zero-mode-certificate-v9.9.9",
+            )
+            with self.assertRaises(ZeroModeCertificateError):
+                ZeroModeCertificate.from_dict(data)
+
+    def test_malformed_sha_rejected(self) -> None:
+        with tempfile.TemporaryDirectory() as tmpdir:
+            directory = Path(tmpdir)
+            path_data = self._write_path_data(directory)
+            data = self._source_bound_certificate_data(
+                directory,
+                path_data,
+                cost_source_sha256="A" * 64,
+            )
+            with self.assertRaises(ZeroModeCertificateError):
+                ZeroModeCertificate.from_dict(data)
+
+    def test_forged_sha_fails_closed(self) -> None:
+        with tempfile.TemporaryDirectory() as tmpdir:
+            directory = Path(tmpdir)
+            path_data = self._write_path_data(directory)
+            cert = self._source_bound_certificate(
+                directory,
+                path_data,
+                cost_source_sha256="a" * 64,
+            )
+            result = self._audit_with(directory, cert, path_data)
+        self.assertFalse(result["principle_R_witness_source_bound"])
+        self.assertFalse(result["principle_R_witness_certified"])
+
+    def test_stale_protocol_hash_fails_closed(self) -> None:
+        with tempfile.TemporaryDirectory() as tmpdir:
+            directory = Path(tmpdir)
+            path_data = self._write_path_data(directory)
+            cert = self._source_bound_certificate(
+                directory,
+                path_data,
+                protocol_sha256="b" * 64,
+            )
+            result = self._audit_with(directory, cert, path_data)
+        self.assertFalse(result["gates"]["R2_protocol_and_nonnegative_cost_predeclared"])
+
+    def test_path_data_change_after_hash_fails_closed(self) -> None:
+        with tempfile.TemporaryDirectory() as tmpdir:
+            directory = Path(tmpdir)
+            path_data = self._write_path_data(directory)
+            cert = self._source_bound_certificate(directory, path_data)
+            path_data.write_text(
+                json.dumps(
+                    {
+                        "finite_cost_values": True,
+                        "cost_nonnegative": True,
+                        "accumulated_cost": 0.0,
+                        "positive_measure_fraction": 1.0,
+                        "same_meter_positive_control_cost": 2.0,
+                    }
+                )
+                + "\n"
+            )
+            result = self._audit_with(directory, cert, path_data)
+        self.assertFalse(result["path_data_source_bound"])
+        self.assertFalse(result["principle_R_witness_certified"])
+
+    def test_negative_local_cost_fails_nonnegativity_gate(self) -> None:
+        path = lambda t: np.array([t, 0.0])
+        velocity = lambda _t: np.array([1.0, 0.0])
+        cost = lambda _x, _v: -1e-3
+        record = accumulated_cost(
+            cost,
+            path,
+            self.grid,
+            protocol=self.protocol,
+            velocity=velocity,
+        )
+        self.assertFalse(record["cost_nonnegative"])
+        with tempfile.TemporaryDirectory() as tmpdir:
+            directory = Path(tmpdir)
+            path_data = self._write_path_data(
+                directory,
+                cost_nonnegative=record["cost_nonnegative"],
+            )
+            cert = self._source_bound_certificate(directory, path_data)
+            result = self._audit_with(directory, cert, path_data)
+        self.assertFalse(result["gates"]["R2_protocol_and_nonnegative_cost_predeclared"])
+
+    def test_nonzero_accumulated_cost_fails_zero_gate(self) -> None:
+        with tempfile.TemporaryDirectory() as tmpdir:
+            directory = Path(tmpdir)
+            path_data = self._write_path_data(directory, accumulated_cost=1.0)
+            cert = self._source_bound_certificate(directory, path_data)
+            result = self._audit_with(directory, cert, path_data)
+        self.assertFalse(result["gates"]["R5_accumulated_cost_zero"])
+
+    def test_constant_path_declaration_fails_closed(self) -> None:
+        path = lambda _t: np.array([1.0, 0.0])
+        self.assertFalse(path_is_nonconstant(path, self.grid, 1e-10))
+        with tempfile.TemporaryDirectory() as tmpdir:
+            directory = Path(tmpdir)
+            path_data = self._write_path_data(directory)
+            cert = self._source_bound_certificate(
+                directory,
+                path_data,
+                path_nonconstant=False,
+            )
+            result = self._audit_with(directory, cert, path_data)
+        self.assertFalse(result["gates"]["R4_attained_path_finite_and_nonconstant"])
+
+    def test_positive_measure_fraction_below_threshold_fails_closed(self) -> None:
+        with tempfile.TemporaryDirectory() as tmpdir:
+            directory = Path(tmpdir)
+            path_data = self._write_path_data(directory, positive_measure_fraction=0.0)
+            cert = self._source_bound_certificate(directory, path_data)
+            result = self._audit_with(directory, cert, path_data)
+        self.assertFalse(result["gates"]["R6_local_zero_mode_positive_measure"])
+
+    def test_zero_same_meter_positive_control_fails_R7(self) -> None:
+        with tempfile.TemporaryDirectory() as tmpdir:
+            directory = Path(tmpdir)
+            path_data = self._write_path_data(
+                directory,
+                same_meter_positive_control_cost=0.0,
+            )
+            cert = self._source_bound_certificate(directory, path_data)
+            result = self._audit_with(directory, cert, path_data)
+        self.assertFalse(result["gates"]["R7_same_meter_positive_control_nonzero"])
+
+    def test_target_G_constructed_witness_is_circular_negative_control(self) -> None:
+        with tempfile.TemporaryDirectory() as tmpdir:
+            directory = Path(tmpdir)
+            path_data = self._write_path_data(directory)
+            cert = self._source_bound_certificate(
+                directory,
+                path_data,
+                witness_not_constructed_from_target_G=False,
+            )
+            result = self._audit_with(directory, cert, path_data)
+        self.assertTrue(result["circular_negative_control"])
+        self.assertFalse(result["gates"]["R8_witness_independent_of_target_G_TESC"])
+
+    def test_valid_upstream_witness_does_not_certify_physical_binding(self) -> None:
+        with tempfile.TemporaryDirectory() as tmpdir:
+            directory = Path(tmpdir)
+            path_data = self._write_path_data(directory)
+            certificate_path = directory / "certificate.json"
+            certificate_path.write_text(
+                json.dumps(
+                    self._source_bound_certificate_data(directory, path_data),
+                    sort_keys=True,
+                )
+                + "\n"
+            )
+            completed = subprocess.run(
+                [
+                    sys.executable,
+                    "run_r_to_law1.py",
+                    "--zero-mode-certificate",
+                    str(certificate_path),
+                    "--zero-mode-path-data",
+                    str(path_data),
+                    "--outdir",
+                    str(directory / "out"),
+                ],
+                cwd=ROOT,
+                check=True,
+                text=True,
+                capture_output=True,
+            )
+        report = json.loads(completed.stdout)
+        self.assertTrue(report["zero_mode_certificate_gate"])
+        self.assertTrue(report["zero_mode_path_data_source_bound"])
+        self.assertFalse(report["physical_zero_set_binding_certificate_gate"])
+        self.assertFalse(report["R_plus_declared_structure_to_LawI_certified"])
+        self.assertFalse(report["unconditional_R_alone_to_LawI_proved"])
 
     def test_nonconstant_zero_cost_path_gives_positive_measure_local_zero_mode(self) -> None:
         path = lambda t: np.array([t, 0.0])
@@ -103,91 +374,6 @@ class RealizabilityTests(unittest.TestCase):
         self.assertGreaterEqual(fraction, self.protocol["minimum_positive_measure_fraction"])
         self.assertAlmostEqual(record["accumulated_cost"], 0.0)
 
-    def test_measure_zero_nonzero_velocity_rejected(self) -> None:
-        with tempfile.TemporaryDirectory() as tmpdir:
-            cert = self._source_bound_certificate(Path(tmpdir))
-            record = {
-                "finite_cost_values": True,
-                "cost_nonnegative": True,
-                "accumulated_cost": 0.0,
-                "positive_measure_fraction": 0.0,
-                "same_meter_positive_control_cost": 1.0,
-            }
-            result = audit_principle_r_witness(
-                self.protocol,
-                cert,
-                certificate_base_dir=tmpdir,
-                path_record=record,
-            )
-        self.assertFalse(result["gates"]["R6_local_zero_mode_positive_measure"])
-
-    def test_negative_local_cost_fails_nonnegativity_gate(self) -> None:
-        path = lambda t: np.array([t, 0.0])
-        velocity = lambda _t: np.array([1.0, 0.0])
-        cost = lambda _x, _v: -1e-3
-        record = accumulated_cost(
-            cost,
-            path,
-            self.grid,
-            protocol=self.protocol,
-            velocity=velocity,
-        )
-        self.assertFalse(record["cost_nonnegative"])
-        with tempfile.TemporaryDirectory() as tmpdir:
-            cert = self._source_bound_certificate(Path(tmpdir))
-            result = audit_principle_r_witness(
-                self.protocol,
-                cert,
-                certificate_base_dir=tmpdir,
-                path_record={
-                    **record,
-                    "positive_measure_fraction": 1.0,
-                    "same_meter_positive_control_cost": 1.0,
-                },
-            )
-        self.assertFalse(result["gates"]["R2_protocol_and_nonnegative_cost_predeclared"])
-
-    def test_zero_same_meter_positive_control_fails_R7(self) -> None:
-        with tempfile.TemporaryDirectory() as tmpdir:
-            cert = self._source_bound_certificate(Path(tmpdir))
-            result = audit_principle_r_witness(
-                self.protocol,
-                cert,
-                certificate_base_dir=tmpdir,
-                path_record={
-                    "finite_cost_values": True,
-                    "cost_nonnegative": True,
-                    "accumulated_cost": 0.0,
-                    "positive_measure_fraction": 1.0,
-                    "same_meter_positive_control_cost": 0.0,
-                },
-            )
-        self.assertFalse(result["gates"]["R7_same_meter_positive_control_nonzero"])
-
-    def test_missing_source_file_fails_closed(self) -> None:
-        cert = ZeroModeCertificate.from_dict(
-            {
-                "protocol_sha256": self.protocol["protocol_sha256"],
-                "cost_source_path": "missing.txt",
-                "cost_source_sha256": "a" * 64,
-            }
-        )
-        result = audit_principle_r_witness(self.protocol, cert)
-        self.assertFalse(result["principle_R_witness_source_bound"])
-
-    def test_forged_sha_fails_closed(self) -> None:
-        with tempfile.TemporaryDirectory() as tmpdir:
-            cert = self._source_bound_certificate(
-                Path(tmpdir),
-                cost_source_sha256="a" * 64,
-            )
-            result = audit_principle_r_witness(
-                self.protocol,
-                cert,
-                certificate_base_dir=tmpdir,
-            )
-        self.assertFalse(result["principle_R_witness_source_bound"])
-
     def test_missing_protocol_hash_fails_closed(self) -> None:
         with tempfile.TemporaryDirectory() as tmpdir:
             protocol = dict(self.protocol)
@@ -197,27 +383,6 @@ class RealizabilityTests(unittest.TestCase):
             with self.assertRaises(RealizabilityProtocolError):
                 load_realizability_protocol(path)
 
-    def test_target_G_constructed_witness_is_circular_negative_control(self) -> None:
-        with tempfile.TemporaryDirectory() as tmpdir:
-            cert = self._source_bound_certificate(
-                Path(tmpdir),
-                witness_not_constructed_from_target_G=False,
-            )
-            result = audit_principle_r_witness(
-                self.protocol,
-                cert,
-                certificate_base_dir=tmpdir,
-            )
-        self.assertTrue(result["circular_negative_control"])
-        self.assertFalse(result["gates"]["R8_witness_independent_of_target_G_TESC"])
-
-    def test_no_certificate_keeps_existing_lawI_conditional(self) -> None:
-        protocol = load_frozen_protocol()
-        G = derive_tesc_hessian(protocol)
-        theorem = audit_conditional_theorem(G, protocol, physical_binding_gate=False)
-        self.assertTrue(theorem["analytic_theorem_logic_gate"])
-        self.assertFalse(theorem["conditional_theorem_premises_gate"])
-
     def test_existing_v011_lawi_regression_unchanged(self) -> None:
         protocol = load_frozen_protocol()
         G = derive_tesc_hessian(protocol)
@@ -225,6 +390,13 @@ class RealizabilityTests(unittest.TestCase):
         self.assertLess(theorem["metrics"]["detG"], 0)
         self.assertTrue(theorem["conclusions"]["signature_must_be_1_1"])
         self.assertEqual(len(theorem["metrics"]["null_rays"]), 2)
+
+    def test_load_zero_mode_certificate_rejects_malformed_file(self) -> None:
+        with tempfile.TemporaryDirectory() as tmpdir:
+            path = Path(tmpdir, "certificate.json")
+            path.write_text(json.dumps({"schema_version": "unknown"}) + "\n")
+            with self.assertRaises(ZeroModeCertificateError):
+                load_zero_mode_certificate(path)
 
 
 if __name__ == "__main__":

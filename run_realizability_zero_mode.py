@@ -22,8 +22,42 @@ def load_path_record(path: str | None) -> dict | None:
         return None
     source = Path(path)
     if not source.is_file():
-        return None
+        raise FileNotFoundError(f"path-data file not found: {path}")
     return json.loads(source.read_text())
+
+
+def fail_closed_audit(
+    error: str,
+    *,
+    certificate_supplied: bool,
+    path_data_supplied: bool,
+) -> dict:
+    gates = {
+        "R1_state_admissible_domain_source_bound": False,
+        "R2_protocol_and_nonnegative_cost_predeclared": False,
+        "R3_contraction_family_gives_zero_infimum": False,
+        "R4_attained_path_finite_and_nonconstant": False,
+        "R5_accumulated_cost_zero": False,
+        "R6_local_zero_mode_positive_measure": False,
+        "R7_same_meter_positive_control_nonzero": False,
+        "R8_witness_independent_of_target_G_TESC": False,
+        "R9_path_data_source_bound": False,
+    }
+    return {
+        "gates": gates,
+        "certificate_supplied": certificate_supplied,
+        "path_data_supplied": path_data_supplied,
+        "path_level_R_pipeline_supported": False,
+        "zero_infimum_certified": False,
+        "attained_nonconstant_zero_cost_path": False,
+        "local_zero_mode_positive_measure": False,
+        "principle_R_witness_source_bound": False,
+        "path_data_source_bound": False,
+        "principle_R_witness_certified": False,
+        "self_tests": {},
+        "circular_negative_control": False,
+        "errors": [error],
+    }
 
 
 def main() -> int:
@@ -37,26 +71,47 @@ def main() -> int:
         print("[notice] ignored notebook/kernel arguments:", unknown)
 
     protocol = load_realizability_protocol(args.protocol)
-    certificate = (
-        load_zero_mode_certificate(args.certificate) if args.certificate else None
-    )
-    path_record = load_path_record(args.path_data)
+    certificate = None
+    path_record = None
     certificate_path = Path(args.certificate) if args.certificate else None
-    audit = audit_principle_r_witness(
-        protocol,
-        certificate,
-        certificate_base_dir=certificate_path.parent if certificate_path else ".",
-        path_record=path_record,
-    )
+    path_data_path = Path(args.path_data) if args.path_data else None
+    error = ""
+    if bool(args.certificate) != bool(args.path_data):
+        error = "zero-mode certificate and path data must be supplied together"
+    else:
+        try:
+            certificate = (
+                load_zero_mode_certificate(args.certificate) if args.certificate else None
+            )
+            path_record = load_path_record(args.path_data)
+        except (OSError, ValueError, json.JSONDecodeError) as exc:
+            error = str(exc)
+
+    if error:
+        audit = fail_closed_audit(
+            error,
+            certificate_supplied=bool(args.certificate),
+            path_data_supplied=bool(args.path_data),
+        )
+    else:
+        audit = audit_principle_r_witness(
+            protocol,
+            certificate,
+            certificate_base_dir=certificate_path.parent if certificate_path else ".",
+            path_record=path_record,
+            path_record_source_path=path_data_path,
+        )
     output = Path(args.outdir)
     output.mkdir(parents=True, exist_ok=True)
     report = {
         "title": "Realizability zero-mode witness audit",
         "version": protocol["version"],
         "protocol_sha256": protocol["protocol_sha256"],
-        "certificate_supplied": certificate is not None,
-        "path_data_supplied": path_record is not None,
         **audit,
+        "all_zero_mode_certificate_gates_pass": bool(
+            audit["principle_R_witness_certified"]
+        ),
+        "universal_Principle_R_proved": False,
         "all_scientific_gates_pass": False,
         "claim_boundary": (
             "This path-level interface does not prove Principle R as a universal "

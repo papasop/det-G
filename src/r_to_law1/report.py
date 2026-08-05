@@ -58,7 +58,9 @@ def emit_report(
     signed_tesc_gate = all(signed_tesc_gates.values())
     zero_mode = zero_mode or {
         "certificate_supplied": False,
+        "path_data_supplied": False,
         "principle_R_witness_source_bound": False,
+        "path_data_source_bound": False,
         "principle_R_witness_certified": False,
     }
     physical_binding_provenance = provenance["physical_zero_set_binding_provenance"]
@@ -110,12 +112,17 @@ def emit_report(
             "declared_structural_premises"
         ]["principle_R_local_zero_mode_adopted"],
         "zero_mode_certificate_supplied": bool(zero_mode["certificate_supplied"]),
+        "zero_mode_path_data_supplied": bool(zero_mode["path_data_supplied"]),
         "zero_mode_certificate_source_bound": bool(
             zero_mode["principle_R_witness_source_bound"]
+        ),
+        "zero_mode_path_data_source_bound": bool(
+            zero_mode["path_data_source_bound"]
         ),
         "zero_mode_certificate_gate": bool(
             zero_mode["principle_R_witness_certified"]
         ),
+        "zero_mode_errors": zero_mode.get("errors", []),
         "signed_TESC_zero_set_representative": {
             "gates": signed_tesc_gates,
             "gate": signed_tesc_gate,
