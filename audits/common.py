@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import hashlib
 import json
+from dataclasses import asdict, is_dataclass
 from pathlib import Path
 from typing import Any
 
@@ -11,6 +12,8 @@ import numpy as np
 
 
 def jsonable(value: Any) -> Any:
+    if is_dataclass(value):
+        return jsonable(asdict(value))
     if isinstance(value, dict):
         return {str(key): jsonable(item) for key, item in value.items()}
     if isinstance(value, (list, tuple)):

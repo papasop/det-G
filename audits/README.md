@@ -20,5 +20,6 @@ The v0.2.1-preflight audits are fail-closed tools:
 | `r_law1_bidirectional_zero_set_audit_v3_0.py` | tests prospective independent \(F\) data against both zero-set inclusions | calibration only |
 | `r_law1_two_channel_origin_audit_v3_1.py` | records scalar single-channel obstruction and conditional two-channel mechanism using protocol-derived \(G_{\rm TESC}\) | native channel provenance open |
 | `r_law1_cross_protocol_cone_audit_v3_2.py` | tests cross-protocol unordered cone naturality under frozen maps with manifest-declared criteria | calibration only |
+| `rc_zero_structure_to_law1_audit_v0_1.py` | exposes the RC zero-structure interface and five-gate bridge audit | physical binding open |
 
 Do not interpret passing self-tests as a derivation of `R => Law I`.

@@ -6,7 +6,6 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
-import math
 import platform
 import sys
 import time
@@ -25,14 +24,15 @@ except ModuleNotFoundError:
 
 from r_to_law1.protocol import protocol_sha256, threshold
 from r_to_law1.tesc import derive_tesc_hessian, load_frozen_protocol
+from r_to_law1.channel_origin import (
+    audit_single_channel_no_go,
+    audit_two_channel_origin,
+    induced_quadratic_form,
+)
 
 
 TITLE = "PRINCIPLE R -> LAW-I SINGLE-CHANNEL NO-GO / TWO-CHANNEL ORIGIN AUDIT"
 VERSION = "3.1.1"
-
-
-def quadratic_from_channels(plus: np.ndarray, minus: np.ndarray) -> np.ndarray:
-    return 0.5 * (np.outer(plus, minus) + np.outer(minus, plus))
 
 
 def conformal_fit(candidate: np.ndarray, target: np.ndarray) -> tuple[float, float]:
@@ -42,13 +42,6 @@ def conformal_fit(candidate: np.ndarray, target: np.ndarray) -> tuple[float, flo
         / max(np.linalg.norm(candidate), 1e-300)
     )
     return scale, residual
-
-
-def unoriented_angle(first: np.ndarray, second: np.ndarray) -> float:
-    cosine = abs(float(first @ second)) / (
-        np.linalg.norm(first) * np.linalg.norm(second)
-    )
-    return math.acos(min(1.0, max(-1.0, cosine)))
 
 
 def algebra(plus: list[float], minus: list[float]) -> dict[str, Any]:
@@ -70,9 +63,15 @@ def algebra_against_tesc(
     channel_matrix = np.vstack([plus_covector, minus_covector])
     channel_determinant = float(np.linalg.det(channel_matrix))
 
-    induced_G = quadratic_from_channels(plus_covector, minus_covector)
-    eigenvalues = np.linalg.eigvalsh(induced_G)
-    det_G = float(np.linalg.det(induced_G))
+    two_channel_audit = audit_two_channel_origin(
+        plus_covector,
+        minus_covector,
+        protocol,
+    )
+    identity = two_channel_audit["quadratic_identity"]
+    induced_G = induced_quadratic_form(plus_covector, minus_covector)
+    eigenvalues = identity["eigenvalues"]
+    det_G = identity["detG"]
 
     # The exact null lines are ker(L_+) and ker(L_-).
     plus_ray = np.array([-plus_covector[1], plus_covector[0]])
@@ -88,7 +87,6 @@ def algebra_against_tesc(
         "channel_matrix": channel_matrix,
         "channel_determinant": channel_determinant,
         "channels_independent": abs(channel_determinant) > independence_tol,
-        "channel_angle_radians": unoriented_angle(plus_covector, minus_covector),
         "induced_G": induced_G,
         "induced_G_eigenvalues": eigenvalues,
         "induced_detG": det_G,
@@ -102,6 +100,8 @@ def algebra_against_tesc(
         "TESC_conformal_scale": scale,
         "TESC_conformal_relative_residual": residual,
         "same_TESC_null_cone": scale > 0 and residual < conformal_residual_tol,
+        "zero_structure": two_channel_audit["zero_structure"],
+        "determinant_identity_verified": identity["determinant_identity_verified"],
     }
 
 
@@ -227,13 +227,17 @@ def main() -> int:
     G_TESC = derive_tesc_hessian(frozen_protocol)
 
     single_channel = np.array([1.0, 2.0])
+    single_channel_audit = audit_single_channel_no_go(single_channel, frozen_protocol)
     single_kernel = np.array([-2.0, 1.0])
     single_channel_record = {
         "nonzero_channel": True,
         "kernel_dimension": 1,
         "one_unoriented_null_line": True,
-        "cannot_equal_two_distinct_Lorentzian_null_lines": True,
+        "cannot_equal_two_distinct_Lorentzian_null_lines": single_channel_audit[
+            "single_channel_no_go_certified"
+        ],
         "kernel_witness": single_kernel,
+        "zero_structure": single_channel_audit["zero_structure"],
     }
 
     positive_control = algebra_against_tesc([1.0, 1.0], [1.0, -1.0], frozen_protocol)
@@ -253,7 +257,8 @@ def main() -> int:
         and positive_control["channels_independent"],
         "dependent_channel_negative_control_rejected": not dependent_control[
             "induced_Lorentzian"
-        ],
+        ]
+        and not dependent_control["channels_independent"],
         "circular_q_cost_rejected_as_provenance": not circular_control[
             "admissible_as_independent_R_to_LawI_evidence"
         ],

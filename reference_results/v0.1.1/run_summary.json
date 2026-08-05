@@ -2,7 +2,7 @@
   "title": "Principle R to Lorentzian Law I",
   "version": "0.1.1",
   "protocol_schema": "r-to-law1-frozen-tesc-protocol-v0.1.1",
-  "protocol_sha256": "f01078947ee5e54f2ef11ecf0a403d5ba1b60a747b1dcd3d6a5712c2050abf4b",
+  "protocol_sha256": "fd1bdabe8a6cacffa532d5598270dd6dbbf5c0caf90bc470d3b90289b63531f8",
   "derivation_version": "tesc-hessian-finite-difference-v0.1.1",
   "scientific_status": "SIGNED_TESC_ZERO_SET_REPRESENTATIVE_SUPPORTED_PHYSICAL_ZERO_SET_BINDING_OPEN",
   "logical_statement": "R plus a certified binding Z(F)\u2229V = Z(q)\u2229V, with q(v)=v^T G v real symmetric nondegenerate on dim(V)=2, implies det(G)<0, signature (1,1), two null rays",

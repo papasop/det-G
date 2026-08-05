@@ -29,8 +29,8 @@
     "alternative_advantage_tolerance": 0.05,
     "thresholds_frozen_before_data": true
   },
-  "frozen_tesc_protocol_sha256": "f01078947ee5e54f2ef11ecf0a403d5ba1b60a747b1dcd3d6a5712c2050abf4b",
+  "frozen_tesc_protocol_sha256": "fd1bdabe8a6cacffa532d5598270dd6dbbf5c0caf90bc470d3b90289b63531f8",
   "derivation_version": "tesc-hessian-finite-difference-v0.1.1",
   "data_contract": "F is independent, nonnegative, prospective; q/TESC not used to construct F",
-  "protocol_sha256": "1cac636ff699d7c0eb860278895c87011e717d8faea45f9b303d098b36a2fc74"
+  "protocol_sha256": "301deafd4dd02fd4ce75d0fc1c24f6e5aa6eee716973ae6c5a7709da4e7d2f4a"
 }
