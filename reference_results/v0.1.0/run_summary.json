@@ -53,12 +53,17 @@
   "physical_zero_set_binding_certificate_gate": false,
   "native_R_selection": {
     "gates": {
-      "three_source_hashes_bound": false,
-      "definitions_frozen_before_outcomes": false,
-      "R_derives_task_minus_exposure": false,
-      "R_derives_relative_coefficient": false,
-      "R_proves_global_zero_set_completeness": false,
-      "R_uniquely_selects_this_cost": false
+      "nonnegative_realization_cost_source_bound": false,
+      "nonnegative_realization_cost_predeclared": false,
+      "nonnegative_realization_cost_nonnegative": false,
+      "nonnegative_zero_mode_attained": false,
+      "signed_zero_set_representative_source_bound": false,
+      "signed_zero_set_representative_real_C2": true,
+      "signed_zero_set_representative_symmetric": true,
+      "signed_zero_set_representative_nondegenerate": true,
+      "physical_zero_set_binding_source_bound": false,
+      "Z_F_equals_Z_q_on_selected_plane": false,
+      "binding_frozen_before_outcomes": false
     },
     "gate": false,
     "certificate_path": "certificates/native_r_selection.template.json"

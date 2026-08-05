@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "principle_R": {
     "status": "axiom",
-    "statement": "physical law requires at least one attainable nonzero zero-realization-cost direction",
+    "statement": "conditional on a physically relevant zero infimum being attained by a nonconstant admissible process, the zero-mode theorem supplies nonzero local zero-cost directions on a positive-measure set",
     "nonzero_zero_cost_direction_required": true
   },
   "structural_assumptions": {
