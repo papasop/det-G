@@ -1,13 +1,7 @@
 # Principle R to Lorentzian Law I
 
-This repository is a reproducible computational companion to the
-realizability programme introduced in
-[*A Principle of Physical Realizability: Attainability and Local Zero Modes*](https://doi.org/10.5281/zenodo.21782618)
-and used as upstream context for
-[*K=1 Chronogeometrodynamics*](https://doi.org/10.5281/zenodo.21770348).
-
-Its scope is deliberately narrower than either paper. It studies one
-intermediate bridge:
+This repository is a reproducible computational companion for one limited
+bridge in the realizability programme:
 
 \[
 \text{Principle R}
@@ -16,7 +10,7 @@ intermediate bridge:
 \text{two-dimensional Lorentzian Law I}.
 \]
 
-In the selected two-dimensional setting, the corresponding local chain is
+Equivalently, in the selected two-dimensional setting it studies
 
 \[
 R+\mathcal A_{\mathrm{Law\,I}}
@@ -28,36 +22,28 @@ R+\mathcal A_{\mathrm{Law\,I}}
 \ell_+\cup\ell_-.
 \]
 
-## Scientific context and companion publications
+It supplies a conditional analytic theorem and a reproducible signed-TESC
+zero-set representative. It does not prove that Principle R alone uniquely
+selects TESC, `lambda=1`, physical spacetime, or a wavefunction.
 
-The conceptual and dynamical context is developed in two separate works:
+## Result at a glance
 
-1. **Foundational source of Principle R**
+| Question | Status |
+|---|---|
+| Does the conditional 2D theorem force `det(G)<0`? | Yes, analytically |
+| Does frozen TESC exhibit signature `(1,1)` and two null rays? | Yes, numerically |
+| Is `Z(F)=Z(q)` physically certified? | No |
+| Does Principle R uniquely select TESC or `lambda=1`? | No |
+| Does this validate Law II/III, spacetime, or a wavefunction? | No |
 
-   Y.Y.N. Li,  
-   *A Principle of Physical Realizability: Attainability and Local Zero Modes*,  
-   Zenodo, 2026.  
-   DOI: [10.5281/zenodo.21782618](https://doi.org/10.5281/zenodo.21782618)
+## Evidence status
 
-   This work supplies the upstream realizability principle: physical
-   admissibility requires attainability and motivates the local
-   zero-realization-cost mode studied here.
-
-2. **Downstream K=1 dynamical framework**
-
-   Y.Y.N. Li,  
-   *K=1 Chronogeometrodynamics*,  
-   Zenodo, 2026.  
-   DOI: [10.5281/zenodo.21770348](https://doi.org/10.5281/zenodo.21770348)
-
-   This work develops the downstream K=1 critical dynamics, including rank
-   reduction and G-null-flow structures.
-
-The present repository does not computationally validate either paper in full.
-Its scope is restricted to the intermediate conditional Law-I bridge and the
-frozen signed-TESC zero-set representative.
-
-## Mapping status
+| Layer | Current status | Meaning |
+|---|---|---|
+| Conditional mathematical theorem | Proved | \(R+\mathcal A_{\mathrm{Law\,I}}\Rightarrow\det G<0\), conditional on zero-set binding |
+| Signed TESC zero-set representative | Passed | The frozen signed contrast gives `(1,1)` signature, two null rays and finite two-branch zero-contrast structure in the declared domain |
+| Physical zero-set binding | Open | \(Z(F)\cap V=Z(q)\cap V\) has not been certified |
+| Native Principle-R selection of TESC | Not proved | The repository has not derived task-minus-exposure, `lambda=1`, two-dimensionality or global completeness from Principle R alone |
 
 | Mapping | Type | Status |
 |---|---|---|
@@ -67,235 +53,66 @@ frozen signed-TESC zero-set representative.
 | Lorentzian signed representative -> TESC zero-contrast witness | operational realization | numerically supported |
 | Principle R -> unique TESC selection | native provenance | open |
 
-## Evidence hierarchy
+## Core conditional theorem
 
-| Layer | Source | Status in this repository |
-|---|---|---|
-| Principle R and attainability | *A Principle of Physical Realizability* | Upstream theoretical premise; not proved by code |
-| Conditional Lorentzian Law I | This repository | Analytic conditional theorem plus signed-TESC zero-set representative |
-| Native selection of TESC from Principle R | Open | Not derived |
-| K=1 critical rank-one/G-null dynamics | *K=1 Chronogeometrodynamics* | Downstream theory; not validated here |
-| Law II/III, spacetime and wavefunction claims | Outside scope | Not established by this repository |
+Principle R is used here only in its local-zero-mode form: an attained
+nonzero direction exists in the zero set of a nonnegative realization cost
+\(F\).
 
-## Principle R in this repository
-
-Principle R states that a fundamental physical law must possess physically
-attainable realizations. This repository uses only its local-zero-mode form:
-at a realizable stationary configuration, at least one nonzero tangent
-variation is required to have vanishing leading realization cost.
-
-In this local reading:
-
-- **attainable** means admitted by the selected physical process model;
-- **realization cost** is the leading local cost assigned to a tangent
-  process variation;
-- **nonzero zero-cost mode** means a nontrivial tangent direction \(v\ne0\)
-  whose leading cost vanishes.
-
-This local-zero-mode statement is the Principle-R premise used here. The
-repository does not derive the selected model, selected coordinates, or TESC
-functional from Principle R alone.
-
-## Law I: local zero-cost geometry
-
-Law I is the claim that, on a selected real two-dimensional local process
-plane, the complete zero set of the nonnegative realization cost is
-independently represented by the null set of \(q\), an independently declared
-real, symmetric, nondegenerate signed quadratic form:
+Law I is represented through a separate signed quadratic zero-set
+representative
 
 \[
-q(v)=v^T Gv.
+q(v)=v^TGv,\qquad G=G^T,\qquad \det G\ne0.
 \]
 
-Equivalently, inside the selected tangent plane,
+The key additional binding assumption is
 
 \[
-F(v)=0
-\quad\Longleftrightarrow\quad
-v^TGv=0.
+Z(F)\cap V = Z(q)\cap V.
 \]
 
-The double implication is essential: Law I is not merely the existence of some
-vector satisfying \(v^TGv=0\). It says the complete local zero set of the
-nonnegative cost is represented by the null geometry of \(G\). It does not say
-that \(F=q\), and it does not say that \(D^2F=G\).
-
-## Auxiliary assumptions
-
-The conditional theorem uses the following assumptions
-\(\mathcal A_{\mathrm{Law\,I}}\):
-
-| Layer | Assumption | Role | Current source |
-|---|---|---|---|
-| Principle-R layer | nonnegative realization cost \(F\ge0\) is predeclared | prevents confusing the physical cost with the signed representative | open without source-bound certificate |
-| Principle-R layer | R supplies an attained nonzero direction in \(Z(F)\) | gives the physical zero-mode premise | adopted local form |
-| Law-I representation layer | selected real two-dimensional process space \(V\) | in two dimensions, a real nondegenerate indefinite form has signature `(1,1)` | selected reduction; not derived from R |
-| Law-I representation layer | signed representative \(C\) is real \(C^2\) | permits the quadratic germ \(q(v)=v^TGv\) | frozen TESC protocol |
-| Law-I representation layer | \(Z(F)\cap V=Z(q)\cap V\) | binds the physical zero set to the signed representative null set | key open certificate |
-| Law-I representation layer | symmetry and nondegeneracy of \(G\) | gives a real noncollapsed quadratic null geometry | audited for signed TESC |
-
-These assumptions are not cosmetic. They specify exactly what must be supplied
-in addition to the local Principle-R zero-mode premise before the Lorentzian
-conclusion follows.
-
-## Conditional theorem
-
-Under Principle R in the local-zero-mode form, plus the zero-set binding
-\(Z(F)\cap V=Z(q)\cap V\) and the remaining assumptions
-\(\mathcal A_{\mathrm{Law\,I}}\), there exists \(v\ne0\) such that
+Under this binding, the nonzero Principle-R zero mode gives a nonzero null
+vector of \(q\). In two real dimensions, a nondegenerate symmetric quadratic
+form with a nonzero null vector cannot be positive definite, negative
+definite, or degenerate. Therefore
 
 \[
-F(v)=0,\qquad q(v)=v^TGv=0,\qquad G=G^T,\qquad \det G\ne0.
+\det G<0,\qquad \operatorname{sig}(G)=(1,1),
 \]
 
-A positive-definite or negative-definite real symmetric form has no nonzero
-null vector. Nondegeneracy excludes the degenerate case. Therefore the two
-real eigenvalues of \(G\) have opposite signs, and
+and the null set is two distinct real rays \(\ell_+\cup\ell_-\).
 
-\[
-\det G<0,\qquad \operatorname{sig}(G)=(1,1).
-\]
+This is a two-dimensional linear-algebra theorem. It is not proved by Python
+or by numerical experiments. The full statement is in
+`MATHEMATICAL_STATEMENT.md`.
 
-The null set of \(q\) is then the union of two distinct real rays:
-
-\[
-\operatorname{Null}(q)=\ell_+\cup\ell_-.
-\]
-
-This is an analytic two-dimensional linear-algebra theorem. It is not proved
-by Python or by numerical experiments.
-
-## TESC signed zero-set representative
-
-The frozen operational object is TESC: Task-Exposure Signed Cost. It is a
-signed contrast, not the nonnegative Principle-R realization cost \(F\). The
-process coordinates are
-
-\[
-z=(\delta\Omega,\delta\Delta),
-\]
-
-where \(\delta\Omega\) is a Rabi-amplitude perturbation and
-\(\delta\Delta\) is a detuning perturbation. The frozen cost is
-
-\[
-\mathcal C_{\mathrm{TESC}}(z)
-=\mathcal E_{\mathrm{task}}(z)
--\lambda\,\widetilde{\mathcal E}_{\mathrm{exposure}}(z),
-\qquad \lambda=1,
-\]
-
-where the exposure term is centred so that its value and linear tangent at the
-base point are removed. The local metric candidate is
-
-\[
-G_{\mathrm{TESC}}=D^2\mathcal C_{\mathrm{TESC}}(0).
-\]
-
-For the frozen protocol, the public run recomputes
-
-\[
-G_{\mathrm{TESC}}\approx
-\begin{pmatrix}
--1.47535118 & -0.04866380\\
--0.04866380 & 0.26618815
-\end{pmatrix},
-\qquad
-\det G_{\mathrm{TESC}}\approx -0.39508917.
-\]
-
-Thus the TESC Hessian supplies a concrete operational witness for the signed
-quadratic zero-set representative in the declared two-dimensional model. It
-does not establish \(F=\mathcal C_{\mathrm{TESC}}\), and it does not establish
-\(D^2F=G_{\mathrm{TESC}}\).
-
-TESC supplies a signed quadratic zero-set candidate. Its physical zero-set
-binding to the nonnegative Principle-R realization cost remains open.
-
-## Rays and finite branches
-
-There are two related geometric objects:
-
-- the local tangent rays \(\ell_\pm\), defined by the quadratic equation
-  \(v^TGv=0\);
-- the finite signed-TESC zero-contrast branches \(\Gamma_\pm\), defined by the full
-  equation \(\mathcal C_{\mathrm{TESC}}(z)=0\) inside the frozen bounded
-  domain.
-
-The intended relation is
-
-\[
-T_0\Gamma_\pm=\ell_\pm.
-\]
-
-In words: the finite signed zero-contrast branches may curve at finite scale,
-but at the base point their tangent directions agree with the two Hessian null
-rays. The code checks this bounded-domain relationship numerically; it does not
-prove a global analytic continuation theorem or certify these branches as
-physical zero-cost branches of \(F\).
-
-## What mathematics proves and what the code checks
-
-| Claim or object | Source in this repository |
-|---|---|
-| \(R+\mathcal A_{\mathrm{Law\,I}}\Rightarrow\det G<0\), where \(\mathcal A_{\mathrm{Law\,I}}\) includes \(Z(F)\cap V=Z(q)\cap V\) | analytic linear-algebra proof |
-| \(G_{\mathrm{TESC}}\), \(\det G\), signature and \(\ell_\pm\) | numerical recomputation from the frozen signed-TESC protocol |
-| finite nonlinear signed zero-contrast branches \(\Gamma_\pm\) | bounded numerical search in `r_to_law1.finite_zero_set` |
-| no extra signed zero-contrast branch in the frozen rectangle | bounded numerical search, not a global theorem |
-| `GL(2)` covariance, unit rescaling and \(\lambda\) sensitivity | numerical audit in `r_to_law1.covariance` |
-| physical binding \(Z(F)\cap V=Z(q)\cap V\) | not proved |
-| native Principle-R selection of TESC | not proved |
-
-The public command
+## Quick start
 
 ```bash
+python -m pip install -r requirements.txt
 python run_r_to_law1.py
 ```
 
-recomputes the TESC Hessian, null rays, finite zero-contrast branches, covariance
-checks, unit rescalings, \(\lambda\)-sensitivity scan and provenance gates. It
-then emits the unified report under `reference_results/v0.1.0/`.
+To test a separate provenance certificate without editing the frozen protocol:
 
-## Current status
-
-| Layer | Current status | Meaning |
-|---|---|---|
-| Conditional mathematical theorem | Proved | \(R+\mathcal A_{\mathrm{Law\,I}}\Rightarrow\det G<0\), conditional on zero-set binding |
-| Signed TESC zero-set representative | Passed | The frozen signed contrast gives `(1,1)` signature, two null rays and finite two-branch zero-contrast structure in the declared domain |
-| Physical zero-set binding | Open | \(Z(F)\cap V=Z(q)\cap V\) has not been certified |
-| Native Principle R selection of TESC | Not proved | The repository has not derived task-minus-exposure, `lambda=1`, two-dimensionality or global completeness from Principle R alone |
-
-## Theory-chain position
-
-The repository sits between the cited works:
-
-```text
-Principle R paper
-|
-|  Principle R:
-|  attainable nonzero zero-cost mode
-v
-det-G repository
-|
-|  R + 2D/signed C^2 representative/zero-set binding/symmetry/nondegeneracy
-|  => detG < 0 => signature (1,1) => two null rays
-v
-K=1 Chronogeometrodynamics
-|
-|  critical damping, rank reduction, G-null flow
-v
-Law II / Law III / later quantum extensions
+```bash
+python run_r_to_law1.py --certificate certificates/native_r_selection.template.json
 ```
 
-## How to read the central status
+Useful options:
 
-A correct reference run reports:
+```bash
+python run_r_to_law1.py --protocol protocols/frozen_tesc_protocol.json
+python run_r_to_law1.py --outdir reference_results/v0.1.0
+```
+
+## Expected run result
+
+A successful reproduction may still report:
 
 ```text
 analytic_theorem_logic_gate = true
-conditional_theorem_premises_gate = false
-theorem_proof_kind = analytic_linear_algebra
-theorem_numerically_proved = false
 signed_TESC_zero_set_representative.gate = true
 physical_zero_set_binding_certificate_gate = false
 physical_zero_set_binding_provenance.gate = false
@@ -305,33 +122,63 @@ unconditional_R_alone_to_LawI_proved = false
 all_scientific_gates_pass = false
 ```
 
-The final `false` does not mean that the analytic theorem or signed-TESC
-representative failed. It means that the physical zero-set binding and the
-stronger native-selection claim remain open.
+The final `false` values do not mean that the code failed. They mean that the
+signed TESC witness reproduced correctly while physical provenance remains
+uncertified.
 
-## Quick start
+The run writes:
 
-```bash
-python -m pip install -r requirements.txt
-python run_r_to_law1.py
-```
+| File | Contents |
+|---|---|
+| `reference_results/v0.1.0/run_summary.json` | central status, gates, Hessian, rays and metrics |
+| `reference_results/v0.1.0/finite_zero_branches.json` | bounded finite signed zero-contrast branch records |
+| `reference_results/v0.1.0/covariance_records.json` | `GL(2)`, unit-rescaling and sensitivity records |
 
-The historical one-file audits are preserved under `archive/`. They are not
-the public interface for this release.
+## File navigation
 
-## Repository layout
+| File | Purpose |
+|---|---|
+| `run_r_to_law1.py` | public entry point |
+| `src/r_to_law1/theorem.py` | conditional theorem gate and null-ray construction |
+| `src/r_to_law1/tesc.py` | frozen TESC Hessian recomputation |
+| `src/r_to_law1/finite_zero_set.py` | finite signed zero-contrast branch tracing |
+| `src/r_to_law1/covariance.py` | covariance, unit-rescaling and lambda sensitivity audits |
+| `src/r_to_law1/provenance.py` | physical zero-set binding and native unique-TESC provenance gates |
+| `MATHEMATICAL_STATEMENT.md` | detailed theorem statement and proof boundary |
+| `VALIDATION_REPORT.md` | numerical result details |
+| `CLAIM_BOUNDARY.md` | unsupported claims and scientific boundary |
+| `certificates/native_r_selection.template.json` | template for source-bound provenance certificates |
+| `archive/` | historical one-file audits, not the public interface |
 
-```text
-run_r_to_law1.py                 public entry point
-src/r_to_law1/                   recomputable theorem and witness modules
-protocols/frozen_tesc_protocol.json
-certificates/native_r_selection.template.json
-reference_results/v0.1.0/        reference report and generated evidence
-archive/                         historical one-file audits
-```
+## Citations and context
 
-See `MATHEMATICAL_STATEMENT.md`, `VALIDATION_REPORT.md`, and
-`CLAIM_BOUNDARY.md` before citing the result.
+This repository is narrower than the two companion publications. It is an
+intermediate Law-I bridge between the upstream Principle-R framework and the
+downstream K=1 dynamical framework.
+
+1. Y.Y.N. Li,
+   *A Principle of Physical Realizability: Attainability and Local Zero Modes*,
+   Zenodo, 2026.
+   DOI: [10.5281/zenodo.21782618](https://doi.org/10.5281/zenodo.21782618)
+
+2. Y.Y.N. Li,
+   *K=1 Chronogeometrodynamics*,
+   Zenodo, 2026.
+   DOI: [10.5281/zenodo.21770348](https://doi.org/10.5281/zenodo.21770348)
+
+If you use this repository, see `CITATION.cff`.
+
+## Not supported by this repository
+
+This repository does not establish:
+
+- `Principle R => Law I` without auxiliary assumptions;
+- physical certification of \(Z(F)\cap V=Z(q)\cap V\);
+- unique derivation of TESC, the relative sign, or `lambda=1` from Principle R;
+- Law II/III;
+- physical spacetime or a spacetime metric;
+- physical light rays;
+- wavefunctions, Born rule, collapse, or physical time.
 
 ## Repository summary
 
@@ -340,7 +187,3 @@ See `MATHEMATICAL_STATEMENT.md`, `VALIDATION_REPORT.md`, and
 > two-dimensional Lorentzian Law I. It does not establish the physical zero-set
 > binding, that Principle R alone uniquely selects the representative, or that
 > physical spacetime is derived.
-
-det-G connects the Principle-R foundation to the local Lorentzian Law-I
-structure through a rigorous conditional theorem and a reproducible signed
-TESC representative. It does not establish the complete K=1 dynamics.

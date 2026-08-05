@@ -6,6 +6,12 @@
 python run_r_to_law1.py
 ```
 
+To test a separate provenance certificate without editing the frozen protocol:
+
+```bash
+python run_r_to_law1.py --certificate certificates/native_r_selection.template.json
+```
+
 Expected central fields:
 
 ```text

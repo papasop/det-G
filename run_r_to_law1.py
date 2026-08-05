@@ -25,13 +25,23 @@ from r_to_law1.theorem import audit_conditional_theorem, construct_null_rays  # 
 
 
 def main() -> int:
-    parser = argparse.ArgumentParser(description="Recompute the Principle-R to Lorentzian Law-I evidence package.")
+    parser = argparse.ArgumentParser(
+        description="Recompute the Principle-R to Lorentzian Law-I evidence package."
+    )
     parser.add_argument("--protocol", default="protocols/frozen_tesc_protocol.json")
+    parser.add_argument(
+        "--certificate",
+        default=None,
+        help="Override the provenance certificate path declared by the protocol.",
+    )
     parser.add_argument("--outdir", default="reference_results/v0.1.0")
     args, unknown = parser.parse_known_args()
     if unknown:
         print("[notice] ignored notebook/kernel arguments:", unknown)
     protocol = load_frozen_protocol(args.protocol)
+    if args.certificate is not None:
+        protocol = dict(protocol)
+        protocol["native_certificate"] = args.certificate
     provenance = audit_provenance(protocol["native_certificate"])
     physical_binding_gate = provenance["physical_zero_set_binding_provenance"]["gate"]
 
