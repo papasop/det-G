@@ -1,0 +1,25 @@
+cff-version: 1.2.0
+message: "If you use this repository, please cite the software package and the relevant foundational publication."
+title: "Principle R to Lorentzian Law I"
+version: 0.1.0
+date-released: 2026-08-05
+authors:
+  - family-names: "Li"
+    given-names: "Y.Y.N."
+references:
+  - type: article
+    title: "A Principle of Physical Realizability: Attainability and Local Zero Modes"
+    authors:
+      - family-names: "Li"
+        given-names: "Y.Y.N."
+    year: 2026
+    doi: "10.5281/zenodo.21782618"
+    url: "https://zenodo.org/records/21782618"
+  - type: article
+    title: "K=1 Chronogeometrodynamics"
+    authors:
+      - family-names: "Li"
+        given-names: "Y.Y.N."
+    year: 2026
+    doi: "10.5281/zenodo.21770348"
+    url: "https://zenodo.org/records/21770348"
